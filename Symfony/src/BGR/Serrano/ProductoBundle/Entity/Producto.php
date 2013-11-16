@@ -3,6 +3,8 @@
 namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Type;
+
 
 /**
  * Producto
@@ -18,6 +20,7 @@ class Producto
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Type("integer")
      */
     private $id;
 
@@ -25,6 +28,7 @@ class Producto
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50)
+     * @Type("string")
      */
     private $name;
 
@@ -32,6 +36,7 @@ class Producto
      * @var float
      *
      * @ORM\Column(name="precioVenta", type="decimal")
+     * @Type("float")
      */
     private $precioVenta;
 
@@ -39,6 +44,7 @@ class Producto
      * @var float
      *
      * @ORM\Column(name="precionCompra", type="decimal")
+     * @Type("float")
      */
     private $precionCompra;
 
@@ -125,6 +131,7 @@ class Producto
     /**
      * @ORM\ManyToOne(targetEntity="Categoria", inversedBy="productps")
      * @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
+     * @Type("BGR\Serrano\ProductoBundle\Entity\Categoria")
      */
     private $categoria;
 

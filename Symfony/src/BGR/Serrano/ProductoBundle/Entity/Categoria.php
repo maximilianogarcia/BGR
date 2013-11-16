@@ -4,6 +4,8 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Type;
+
 /**
  * Categoria
  *
@@ -18,6 +20,7 @@ class Categoria
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Type("integer")
      */
     private $id;
 
@@ -25,6 +28,7 @@ class Categoria
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Type("string")
      */
     private $name;
 
@@ -64,6 +68,7 @@ class Categoria
 
     /**
      * @ORM\OneToMany(targetEntity="Producto", mappedBy="categoria")
+     * @Type("ArrayCollection<BGR\Serrano\ProductoBundle\Entity\Producto>")
      */
     private $productos;
 

@@ -8,6 +8,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\Serializer\SerializerBuilder;
 use BGR\Serrano\ProductoBundle\Entity\Producto as Producto;
 use Symfony\Component\HttpFoundation\Response as Response;
+use Doctrine\Common\Collections\ArrayCollection;
+
 class ProductoController extends Controller
 {
     /**
@@ -24,6 +26,18 @@ class ProductoController extends Controller
         $response = new Response($jsonContent);
       //  $response->headers->set('Content-Type', 'application/json');
         return $response;
+    }
+
+
+    /**
+     * @Route("/save")
+     */
+    public function saveAction()
+    {
+        $jsonData = $this->get('request')->request->get('data');
+        $serializer =  SerializerBuilder::create()->build();
+        $object = $serializer->deserialize($jsonData, 'ArrayCollection<BGR\Serrano\ProductoBundle\Entity\Producto>', 'json');
+        return new Response($jsonData);
     }
 
     /**
