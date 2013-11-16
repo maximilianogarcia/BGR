@@ -1,0 +1,4 @@
+bgr_serrano_default:
+    resource: "@BGRSerranoProductoBundle/Resources/config/routing.yml"
+    prefix:   /rest
+

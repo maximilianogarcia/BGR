@@ -1,0 +1,5 @@
+bgr_serrano_chota:
+    resource: "@BGRSerranoProductoBundle/Controller/"
+    type:     annotation
+    prefix:   /producto
+
