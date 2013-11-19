@@ -4,6 +4,7 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\Exclude;
 
 
 /**
@@ -143,6 +144,39 @@ class Producto
     public function getCategoria()
     {
         return $this->categoria;
+    }
+
+
+     /**
+     * @ORM\ManyToMany(targetEntity="UnidadDeMedida")
+     * @ORM\JoinTable(name="producto_medida",
+     *      joinColumns={@ORM\JoinColumn(name="producto_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="medida_id", referencedColumnName="id")}
+     *      )
+     */
+    protected $unidadDeMedida;
+
+    public function setUnidadDeMedida(UnidadDeMedida $unidadDeMedida)
+    {
+        $this->unidadDeMedida = $unidadDeMedida;
+    }
+
+    public function getUnidadDeMedida()
+    {
+        return $this->unidadDeMedida;
+    }
+
+
+     /**
+     * @ORM\OneToMany(targetEntity="Lote", mappedBy="producto")
+     * @Type("ArrayCollection<BGR\Serrano\ProductoBundle\Entity\Lote>")
+     * @Exclude
+     */
+    protected $lotes;
+
+    public function __construct()
+    {
+        $this->lotes = new ArrayCollection();
     }
     
 }

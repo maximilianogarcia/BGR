@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class CategoriaRepository extends EntityRepository
 {
+	public function save($categoria)
+    {   
+        $em = $this->getEntityManager();
+        $em->persist($categoria);
+        $em->flush();
+    }
 }

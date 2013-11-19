@@ -66,21 +66,5 @@ class Categoria
         return $this->name;
     }
 
-    /**
-     * @ORM\OneToMany(targetEntity="Producto", mappedBy="categoria")
-     * @Type("ArrayCollection<BGR\Serrano\ProductoBundle\Entity\Producto>")
-     * @Exclude
-     */
-    protected $productos;
 
-    public function __construct()
-    {
-        $this->productos = new ArrayCollection();
-    }
-
-
-    public function getProductos()
-    {
-        return $this->productos;
-    }
 }

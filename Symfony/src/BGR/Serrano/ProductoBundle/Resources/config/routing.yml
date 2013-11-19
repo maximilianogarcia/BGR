@@ -1,5 +1,6 @@
-bgr_serrano_chota:
-    resource: "@BGRSerranoProductoBundle/Controller/"
+
+bgr_serrano_producto:
+    resource: "@BGRSerranoProductoBundle/Controller"
     type:     annotation
-    prefix:   /producto
+    prefix:   /
 
