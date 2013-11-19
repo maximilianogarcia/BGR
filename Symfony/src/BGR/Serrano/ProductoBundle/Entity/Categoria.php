@@ -9,7 +9,7 @@ use JMS\Serializer\Annotation\Exclude;
 /**
  * Categoria
  *
- * @ORM\Table()
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="search_idx", columns={"name"})})
  * @ORM\Entity(repositoryClass="BGR\Serrano\ProductoBundle\Entity\CategoriaRepository")
  */
 class Categoria
@@ -32,6 +32,13 @@ class Categoria
      */
     protected $name;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="descripcion", type="string", length=255)
+     * @Type("string")
+     */
+    protected $descripcion;
 
     /**
      * Get id
@@ -64,6 +71,16 @@ class Categoria
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
     }
 
 

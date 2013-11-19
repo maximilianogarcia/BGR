@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <style></style>
+
+    <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
+    <script type='text/javascript'  src='Model/Categoria.js'></script>
+    <script type='text/javascript'  src='View/CategoriaViewModel.js'></script>
+    <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
+
+    <script type='text/javascript'>
+       $(document).ready(function(){
+            var viewModel = new CategoriaViewModel();
+            viewModel.apply();
+       });
+    </script>
+   
+  </head>
+  <body>
+  		<form action="#">
+  			<p>Nombre de la categor&iacute;a: <input data-bind="value: categoria.name" /></p>
+            <p>Descripcion de la categor&iacute;a: <input data-bind="value: categoria.descripcion" /></p>
+            <button data-bind="click: submit">Reserve another seat</button>
+      </form>
+
+        <p>First name: <strong data-bind="text: categoria.name">     </strong></p>
+        <p>Last name:  <strong data-bind="text: categoria.descripcion"></strong></p>
+    
+
+  </body>
+</html>

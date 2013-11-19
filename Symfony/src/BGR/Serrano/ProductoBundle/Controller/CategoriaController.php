@@ -37,14 +37,15 @@ class CategoriaController extends Controller
     {
 
         $jsonData = $this->get('request')->request->get('data');
+        
         $serializer =  SerializerBuilder::create()->build();
+
         $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Categoria', 'json');
 
         $em = $this->getDoctrine()->getManager();
         $em->getRepository('BGRSerranoProductoBundle:Categoria')->save($object);
- 
-        return new Response($jsonData);
 
+        return new Response($jsonData);
     }
 
 }
