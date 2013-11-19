@@ -22,7 +22,7 @@ class Producto
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Type("integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -30,7 +30,7 @@ class Producto
      * @ORM\Column(name="name", type="string", length=50)
      * @Type("string")
      */
-    private $name;
+    protected $name;
 
     /**
      * @var float
@@ -38,15 +38,15 @@ class Producto
      * @ORM\Column(name="precioVenta", type="decimal")
      * @Type("float")
      */
-    private $precioVenta;
+    protected $precioVenta;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="precionCompra", type="decimal")
+     * @ORM\Column(name="precioCompra", type="decimal")
      * @Type("float")
      */
-    private $precionCompra;
+    protected $precioCompra;
 
 
     /**
@@ -106,34 +106,34 @@ class Producto
     }
 
     /**
-     * Set precionCompra
+     * Set precioCompra
      *
-     * @param float $precionCompra
+     * @param float $precioCompra
      * @return Producto
      */
-    public function setPrecionCompra($precionCompra)
+    public function setPrecioCompra($precioCompra)
     {
-        $this->precionCompra = $precionCompra;
+        $this->precioCompra = $precioCompra;
     
         return $this;
     }
 
     /**
-     * Get precionCompra
+     * Get precioCompra
      *
      * @return float 
      */
-    public function getPrecionCompra()
+    public function getPrecioCompra()
     {
-        return $this->precionCompra;
+        return $this->precioCompra;
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="Categoria", inversedBy="productps")
+     * @ORM\ManyToOne(targetEntity="Categoria") 
      * @ORM\JoinColumn(name="categoria_id", referencedColumnName="id")
      * @Type("BGR\Serrano\ProductoBundle\Entity\Categoria")
      */
-    private $categoria;
+    protected $categoria;
 
     public function setCategoria(Categoria $categoria)
     {

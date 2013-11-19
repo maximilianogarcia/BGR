@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProductoRepository extends EntityRepository
 {
+
+	public function save($producto)
+    {   
+        $em = $this->getEntityManager();
+	    $producto->setCategoria($em->merge($producto->getCategoria()));
+        $em->persist($producto);
+        $em->flush();
+    }
+
 }
