@@ -18,4 +18,19 @@ class CategoriaRepository extends EntityRepository
         $em->persist($categoria);
         $em->flush();
     }
+
+
+    public function delete($categoria)
+    {   
+        $em = $this->getEntityManager();
+        $em->remove($em->merge($categoria));
+        $em->flush();
+    }
+
+    public function update($categoria)
+    {   
+        $em = $this->getEntityManager();
+        $em->persist($em->merge($categoria));
+        $em->flush();
+    }
 }

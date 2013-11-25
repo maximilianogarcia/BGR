@@ -9,6 +9,7 @@ use JMS\Serializer\Annotation\Exclude;
 /**
  * Categoria
  *
+ *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="search_idx", columns={"name"})})
  * @ORM\Entity(repositoryClass="BGR\Serrano\ProductoBundle\Entity\CategoriaRepository")
  */

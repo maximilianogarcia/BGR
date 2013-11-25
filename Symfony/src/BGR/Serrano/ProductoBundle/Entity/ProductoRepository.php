@@ -21,4 +21,11 @@ class ProductoRepository extends EntityRepository
         $em->flush();
     }
 
+	public function update($producto)
+    {   
+    	//verificar que tenga id
+        $em = $this->getEntityManager();
+        $em->persist($em->merge($producto));
+        $em->flush();
+    }
 }
