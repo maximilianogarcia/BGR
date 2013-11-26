@@ -12,4 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class UnidadDeMedidaRepository extends EntityRepository
 {
+	public function save($unidadMedida)
+    {   
+        $em = $this->getEntityManager();
+        $em->persist($unidadMedida);
+        $em->flush();
+    }
+
+
+    public function delete($unidadMedida)
+    {   
+        $em = $this->getEntityManager();
+        $em->remove($em->merge($unidadMedida));
+        $em->flush();
+    }
+
+    public function update($unidadMedida)
+    {   
+        $em = $this->getEntityManager();
+        $em->persist($em->merge($unidadMedida));
+        $em->flush();
+    }
 }

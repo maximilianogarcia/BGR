@@ -1,0 +1,113 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .hide{
+          display: none;
+          visibility: hidden;
+      }
+      .clickeable:hover{
+          background-color: gray;
+          color:white;
+      }
+      .margenArriba{
+        margin-top: 1em;
+      }
+    </style>
+
+    <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
+    <script type='text/javascript'  src='lib/knockout.mapping-latest.js'></script>
+    <script type='text/javascript'  src='Model/UnidadMedida.js'></script>
+    <script type='text/javascript'  src='View/UnidadMedidaViewModel.js'></script>
+    <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+
+    <script type='text/javascript'>
+       $(document).ready(function(){
+            viewModel = new UnidadMedidaViewModel();
+            viewModel.apply();
+           $('#equivalenciaInput').popover({ trigger: "hover" });
+       });
+    </script>
+   
+  </head>
+  <body>
+
+
+    <div class="container">
+        <div class="alert alert-info" data-bind="text: selected.name"> 
+              <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+        </div>
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-primary margenArriba"/>
+
+        <table class="table">
+            <thead><tr><th>Nombre</th><th>Descripcion</th><th>Equivalencia</th></tr></thead>
+            <tbody data-bind="foreach: unidadMedidas">
+                <tr data-bind="click: $root.editar" class="clickeable">
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: descripcion"></td>
+                    <td data-bind="text: equivalencia"></td>
+                </tr>     
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="editUnity">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Editar unidad de medida</h4>
+              </div>
+              <div class="modal-body">
+                <form action="#" id="editUnityForm" >
+                 <label>Nombre</label>
+                 <input required data-bind="value: selected.name" class="input-block-level" placeholder="Nombre"> 
+                    <label class="margenArriba">Descripcion</label>
+                    <input   required data-bind="value: selected.descripcion" 
+                          class="input-block-level " 
+                          placeholder="Descripci&oacute;n">
+                    <label class="margenArriba">Equivalencia</label>
+
+                    <input
+                          id="equivalenciaInput"   
+                          required data-bind="value: selected.equivalencia" 
+                          pattern="-?[0-9]*[\.|,]?[0-9]+" 
+                          class="input-block-level " 
+                          placeholder="Equivalencia"
+                          data-content="Numero real con un '.' como separador" 
+                          rel="popover" data-placement="bottom" 
+                          data-original-title="Formato requerido:"/> 
+                    <input type="submit"  id="submitOculto" class="hide"/>
+
+                    <!-- ko if: createNew -->
+
+                    <input type="button" data-bind="click: save" value="crear" class="btn btn-large btn-success margenArriba"/>
+
+                    <!-- /ko -->
+                    <!-- ko ifnot: createNew -->
+
+                    <input type="button" data-bind="click: update" value="Guardar" class="btn btn-large btn-success  margenArriba"/>      
+                    <!-- /ko -->
+
+                 </form>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!-- ko ifnot: createNew -->
+
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: borrar">
+                  Eliminar Categor&iacute;a</button>
+               <!-- /ko -->
+
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+  </body>
+</html>

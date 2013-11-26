@@ -3,11 +3,12 @@
 namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * UnidadDeMedida
  *
- * @ORM\Table()
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="search_idx", columns={"name"})})
  * @ORM\Entity(repositoryClass="BGR\Serrano\ProductoBundle\Entity\UnidadDeMedidaRepository")
  */
 class UnidadDeMedida
@@ -18,13 +19,29 @@ class UnidadDeMedida
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Type("integer")
+     *
      */
     protected $id;
 
     /**
      * @var string
      *
+     * @ORM\Column(name="name", type="string", length=50)
+     *
+     * @Type("string")
+     *
+     */
+    protected $name;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="descripcion", type="string", length=50)
+     *
+     * @Type("string")
+     *
      */
     protected $descripcion;
 
@@ -32,6 +49,9 @@ class UnidadDeMedida
      * @var float
      *
      * @ORM\Column(name="equivalencia", type="float")
+     *
+     * @Type("float")
+     *
      */
     protected $equivalencia;
 
@@ -45,7 +65,28 @@ class UnidadDeMedida
     {
         return $this->id;
     }
+    /**
+     * Set name
+     *
+     * @param string $name
+     * @return UnidadDeMedida
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    
+        return $this;
+    }
 
+    /**
+     * Get name
+     *
+     * @return string 
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
     /**
      * Set descripcion
      *

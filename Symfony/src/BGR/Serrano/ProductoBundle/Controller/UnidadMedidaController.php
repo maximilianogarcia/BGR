@@ -7,23 +7,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use JMS\Serializer\SerializerBuilder;
-use BGR\Serrano\ProductoBundle\Entity\Producto as Producto;
 use Symfony\Component\HttpFoundation\Response as Response;
-use Doctrine\Common\Collections\ArrayCollection;
-use BGR\Serrano\ProductoBundle\Entity\Categoria as Categoria;
 
-
-
-class CategoriaController extends Controller
+class UnidadMedidaController extends Controller
 {
     /**
-     * @Route("/categoria/getAll")
+     * @Route("/unidadMedida/getAll")
      * @Template()
      */
     public function getAllAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository('BGRSerranoProductoBundle:Categoria')->findAll();
+        $data = $em->getRepository('BGRSerranoProductoBundle:UnidadDeMedida')->findAll();
 
         $serializer =  SerializerBuilder::create()->build();
         $jsonContent = $serializer->serialize($data, 'json');
@@ -33,20 +28,19 @@ class CategoriaController extends Controller
     }
 
     /**
-     * @Route("/categoria/save")
+     * @Route("/unidadMedida/save")
      * @Template()
      */
     public function saveAction()
     {
-
         $jsonData = $this->get('request')->request->get('data');
 
         $serializer =  SerializerBuilder::create()->build();
 
-        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Categoria', 'json');
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida', 'json');
 
         $em = $this->getDoctrine()->getManager();
-        $em->getRepository('BGRSerranoProductoBundle:Categoria')->save($object);
+        $em->getRepository('BGRSerranoProductoBundle:UnidadDeMedida')->save($object);
 
         $response = new Response($serializer->serialize($object,'json'));
         
@@ -55,9 +49,31 @@ class CategoriaController extends Controller
         return $response;
     }
 
+    /**
+     * @Route("/unidadMedida/delete")
+     * @Template()
+     */
+    public function deleteAction()
+    {
+        $jsonData = $this->get('request')->request->get('data');
+
+        $serializer =  SerializerBuilder::create()->build();
+
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida', 'json');
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $em->getRepository('BGRSerranoProductoBundle:UnidadDeMedida')->update($object);
+
+        $response = new Response($serializer->serialize($object,'json'));
+        
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
 
     /**
-     * @Route("/categoria/update")
+     * @Route("/unidadMedida/update")
      * @Template()
      */
     public function updateAction()
@@ -67,11 +83,11 @@ class CategoriaController extends Controller
 
         $serializer =  SerializerBuilder::create()->build();
 
-        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Categoria', 'json');
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida', 'json');
 
         $em = $this->getDoctrine()->getManager();
         
-        $em->getRepository('BGRSerranoProductoBundle:Categoria')->update($object);
+        $em->getRepository('BGRSerranoProductoBundle:UnidadDeMedida')->update($object);
 
         $response = new Response($serializer->serialize($object,'json'));
         
@@ -79,29 +95,5 @@ class CategoriaController extends Controller
 
         return $response;
     }
-
-    /**
-     * @Route("/categoria/delete")
-     * @Template()
-     */
-    public function deleteAction()
-    {
-
-        $jsonData = $this->get('request')->request->get('data');
-        
-        $serializer =  SerializerBuilder::create()->build();
-
-        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Categoria', 'json');
-
-        $em = $this->getDoctrine()->getManager();
-        $em->getRepository('BGRSerranoProductoBundle:Categoria')->delete($object);
-
-        return new Response($jsonData);
-    }
-
-
-
-
-
 
 }
