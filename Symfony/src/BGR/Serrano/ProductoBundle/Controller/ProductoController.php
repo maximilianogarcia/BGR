@@ -51,6 +51,50 @@ class ProductoController extends Controller
         return $response;
     }
 
+   /**
+     * @Route("/producto/delete")
+     * @Template()
+     */
+    public function deleteAction()
+    {
+        $jsonData = $this->get('request')->request->get('data');
+        
+        $serializer =  SerializerBuilder::create()->build();
+
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Producto', 'json');
+
+        $em = $this->getDoctrine()->getManager();
+        $em->getRepository('BGRSerranoProductoBundle:Producto')->delete($object);
+
+        return new Response($jsonData);
+    }
+
+
+
+ /**
+     * @Route("/producto/update")
+     * @Template()
+     */
+    public function updateAction()
+    {
+
+        $jsonData = $this->get('request')->request->get('data');
+
+        $serializer =  SerializerBuilder::create()->build();
+
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Producto', 'json');
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $em->getRepository('BGRSerranoProductoBundle:Producto')->update($object);
+
+        $response = new Response($serializer->serialize($object,'json'));
+        
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
     /**
      * @Route("/producto/getById")
      */

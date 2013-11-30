@@ -7,7 +7,7 @@ function UnidadMedidaViewModel() {
 
 
    self.apply = function(){
-     self.getAll();
+     self.getAll(self.unidadMedidas);
  	  ko.applyBindings(self);
    }
    
@@ -53,14 +53,19 @@ function UnidadMedidaViewModel() {
       }
    }
 
-   self.getAll = function(){
+   self.getAll = function(destino){
      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/getAll", {
             type: "GET",
             success: function(result) { 
-                  ko.mapping.fromJS(result, self.unidadMedidas);
+              self.map(result, destino)
             }
       });
    }
+
+   self.map = function(origen, destino){
+         ko.mapping.fromJS(origen, destino);
+   }
+
 
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);

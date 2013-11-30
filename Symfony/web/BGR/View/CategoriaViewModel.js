@@ -1,5 +1,5 @@
 function CategoriaViewModel() {
-   self = this;
+   var self = this;
    self.selectedUnmapped = null;
    self.categorias = ko.mapping.fromJS([new Categoria()]);
    self.selected = ko.mapping.fromJS(new Categoria());
@@ -7,12 +7,17 @@ function CategoriaViewModel() {
 
 
    self.apply = function(){
-     self.getAll();
- 	  ko.applyBindings(self);
+     self.getAll(self.map);
+ 	   ko.applyBindings(self);
    }
+
    
    self.serialized = function(){
       return ko.mapping.toJSON(self.selected);
+   }
+
+   self.map = function(destino){
+         ko.mapping.fromJS(self.selected, destino);
    }
 
    self.save = function(){
@@ -52,11 +57,11 @@ function CategoriaViewModel() {
       }
    }
 
-   self.getAll = function(){
+   self.getAll = function(callback){
      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/categoria/getAll", {
             type: "GET",
             success: function(result) { 
-                  ko.mapping.fromJS(result, self.categorias);
+                  callback(result);
             }
       });
    }

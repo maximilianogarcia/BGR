@@ -37,7 +37,7 @@ class Producto
      * @var float
      *
      * @ORM\Column(name="precioVenta", type="decimal")
-     * @Type("float")
+     * @Type("double")
      */
     protected $precioVenta;
 
@@ -45,7 +45,7 @@ class Producto
      * @var float
      *
      * @ORM\Column(name="precioCompra", type="decimal")
-     * @Type("float")
+     * @Type("double")
      */
     protected $precioCompra;
 
@@ -153,6 +153,9 @@ class Producto
      *      joinColumns={@ORM\JoinColumn(name="producto_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="medida_id", referencedColumnName="id")}
      *      )
+     *
+     * @Type("BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida")
+     *
      */
     protected $unidadDeMedida;
 

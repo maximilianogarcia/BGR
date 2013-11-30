@@ -56,20 +56,15 @@ class UnidadMedidaController extends Controller
     public function deleteAction()
     {
         $jsonData = $this->get('request')->request->get('data');
-
+        
         $serializer =  SerializerBuilder::create()->build();
 
         $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida', 'json');
 
         $em = $this->getDoctrine()->getManager();
-        
-        $em->getRepository('BGRSerranoProductoBundle:UnidadDeMedida')->update($object);
+        $em->getRepository('BGRSerranoProductoBundle:UnidadDeMedida')->delete($object);
 
-        $response = new Response($serializer->serialize($object,'json'));
-        
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
+        return new Response($jsonData);
     }
 
     /**

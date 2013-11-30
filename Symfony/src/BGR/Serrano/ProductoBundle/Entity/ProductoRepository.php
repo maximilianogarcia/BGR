@@ -28,4 +28,13 @@ class ProductoRepository extends EntityRepository
         $em->persist($em->merge($producto));
         $em->flush();
     }
+
+    public function delete($producto)
+    {   
+        $em = $this->getEntityManager();
+        $em->remove($em->merge($producto));
+        $em->flush();
+    }
+
+
 }
