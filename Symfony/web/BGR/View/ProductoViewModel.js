@@ -8,10 +8,6 @@ function ProductoViewModel() {
 
    self.selectedCategoriaId = ko.observable(1);
 
-   self.selectedCategoriaName = ko.computed(function(){
-
-   });
-
 
    self.selectedCategoria = function() {
        var self = this;
@@ -23,7 +19,7 @@ function ProductoViewModel() {
 
    self.apply = function(){
      ko.applyBindings(self);
-     self.getAll();
+     self.getAll(self.mapProductos);
      var viewModelCategoria = new CategoriaViewModel();
      viewModelCategoria.getAll(self.copiar);
    }
@@ -36,6 +32,9 @@ function ProductoViewModel() {
         self.categorias(destino);
    }
 
+   self.mapProductos =function(data){
+        ko.mapping.fromJS(data, self.productos);
+   }
 
    self.save = function(){
     var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
@@ -86,11 +85,11 @@ function ProductoViewModel() {
       }
    }
 
-   self.getAll = function(){
+   self.getAll = function(callback){
      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/getAll", {
             type: "GET",
             success: function(result) {
-                  ko.mapping.fromJS(result, self.productos);
+                  callback(result);
             }
       });
    }

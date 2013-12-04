@@ -1,0 +1,124 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .hide{
+          display: none;
+          visibility: hidden;
+      }
+
+      .margenArriba{
+        margin-top: 1em;
+      }
+    </style>
+
+    <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
+    <script type='text/javascript'  src='lib/knockout.mapping-latest.js'></script>
+    <script type='text/javascript'  src='Model/Material.js'></script>
+    <script type='text/javascript'  src='View/MaterialViewModel.js'></script>
+    <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+
+    <script type='text/javascript'>
+       $(document).ready(function(){
+            viewModel = new MaterialViewModel();
+            viewModel.apply();
+       });
+    </script>
+   
+  </head>
+  <body>
+
+
+    <div class="container">
+        <div class="alert alert-info" data-bind="text: selected.name"> 
+              <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+        </div>
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-primary margenArriba"/>
+
+        <table class="table table-hover">
+            <thead><tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Peso</th>
+            <th>Alto</th>
+            <th>Largo</th>
+            <th>Ancho</th>
+            </tr></thead>
+            <tbody data-bind="foreach: materiales">
+                <tr data-bind="click: $root.editar" >
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: descripcion"></td>
+                    <td data-bind="text: peso"></td>
+                    <td data-bind="text: alto"></td>
+                    <td data-bind="text: largo"></td>
+                    <td data-bind="text: ancho"></td>
+                </tr>     
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="editMaterial">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Editar Material</h4>
+              </div>
+              <div class="modal-body">
+                <form action="#" id="editMaterialForm" >
+                    <label>nombre</label>
+                    <input required data-bind="value: selected.name" class="input-block-level" placeholder="Nombre del material"> 
+                    <label class="margenArriba">descripcion</label>
+                    <input   required data-bind="value: selected.descripcion" 
+                          class="input-block-level " 
+                          placeholder="Descripci&oacute;n"> 
+
+                    <label class="margenArriba">peso</label>
+                    <input required data-bind="value: selected.peso" 
+                    class="input-block-level" placeholder="Peso en gramos"> 
+                    <label class="margenArriba">alto</label>
+                    <input   required data-bind="value: selected.alto" 
+                          class="input-block-level " 
+                          placeholder="Alto en cm"> 
+
+                    <label class="margenArriba">largo</label>
+                    <input required data-bind="value: selected.largo" class="input-block-level" placeholder="Largo en cm"> 
+                    <label class="margenArriba">ancho</label>
+                    <input   required data-bind="value: selected.ancho" 
+                          class="input-block-level " 
+                          placeholder="ancho en cm"> 
+                    <input type="submit"  id="submitOculto" class="hide"/>
+
+                    <!-- ko if: createNew -->
+
+                    <input type="button" data-bind="click: save" value="crear" class="btn btn-primary margenArriba"/>
+
+                    <!-- /ko -->
+                    <!-- ko ifnot: createNew -->
+
+                    <input type="button" data-bind="click: update" value="Guardar" class="btn btn-primary margenArriba"/>      
+                    <!-- /ko -->
+
+                 </form>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!-- ko ifnot: createNew -->
+
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: borrar">
+                  Eliminar Material</button>
+               <!-- /ko -->
+
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+      </div>
+  </body>
+</html>
