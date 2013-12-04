@@ -19,6 +19,7 @@ class Material
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Type("integer")
      */
     private $id;
 
@@ -26,6 +27,7 @@ class Material
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Type("string")
      */
     private $name;
 
@@ -33,6 +35,7 @@ class Material
      * @var string
      *
      * @ORM\Column(name="descripcion", type="string", length=255)
+     * @Type("string")
      */
     private $descripcion;
 
@@ -40,6 +43,7 @@ class Material
      * @var float
      *
      * @ORM\Column(name="peso", type="decimal")
+     * @Type("double")
      */
     private $peso;
 
@@ -47,6 +51,7 @@ class Material
      * @var float
      *
      * @ORM\Column(name="alto", type="decimal")
+     * @Type("double")
      */
     private $alto;
 
@@ -54,6 +59,7 @@ class Material
      * @var float
      *
      * @ORM\Column(name="ancho", type="decimal")
+     * @Type("double")
      */
     private $ancho;
 
@@ -61,6 +67,7 @@ class Material
      * @var float
      *
      * @ORM\Column(name="largo", type="decimal")
+     * @Type("double")
      */
     private $largo;
 

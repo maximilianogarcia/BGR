@@ -11,5 +11,27 @@ use Doctrine\ORM\EntityRepository;
  * repository methods below.
  */
 class MaterialRepository extends EntityRepository
-{
+{	
+
+	public function save($material)
+    {   
+        $em = $this->getEntityManager();
+        $em->persist($material);
+        $em->flush();
+    }
+
+
+    public function delete($material)
+    {   
+        $em = $this->getEntityManager();
+        $em->remove($em->merge($material));
+        $em->flush();
+    }
+
+    public function update($material)
+    {   
+        $em = $this->getEntityManager();
+        $em->persist($em->merge($material));
+        $em->flush();
+    }
 }

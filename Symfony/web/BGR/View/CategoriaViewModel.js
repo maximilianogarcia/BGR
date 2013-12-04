@@ -7,7 +7,7 @@ function CategoriaViewModel() {
 
 
    self.apply = function(){
-     self.getAll(self.map);
+     self.getAll(self.categorias);
  	   ko.applyBindings(self);
    }
 

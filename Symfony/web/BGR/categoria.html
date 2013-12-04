@@ -8,10 +8,6 @@
           display: none;
           visibility: hidden;
       }
-      .clickeable:hover{
-          background-color: gray;
-          color:white;
-      }
       .margenArriba{
         margin-top: 1em;
       }
@@ -34,24 +30,7 @@
   </head>
   <body>
 
-
-    <div class="container">
-        <div class="alert alert-info" data-bind="text: selected.name"> 
-              <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-        </div>
-        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-primary margenArriba"/>
-
-        <table class="table">
-            <thead><tr><th>Nombre</th><th>Descripcion</th></tr></thead>
-            <tbody data-bind="foreach: categorias">
-                <tr data-bind="click: $root.editar" class="clickeable">
-                    <td data-bind="text: name"></td>
-                    <td data-bind="text: descripcion"></td>
-                </tr>     
-            </tbody>
-        </table>
-
-        <div class="modal fade" id="editCategory">
+        <div class="modal fade" id="editCategory" style="display: none;">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -95,6 +74,21 @@
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+    <div class="container">
+        <div class="alert alert-info" data-bind="text: selected.name"> 
+              <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
+        </div>
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-primary margenArriba"/>
+
+        <table class="table table-hover table-striped">
+            <thead><tr><th>Nombre</th><th>Descripcion</th></tr></thead>
+            <tbody data-bind="foreach: categorias">
+                <tr data-bind="click: $root.editar" >
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: descripcion"></td>
+                </tr>     
+            </tbody>
+        </table>
 
       </div>
   </body>
