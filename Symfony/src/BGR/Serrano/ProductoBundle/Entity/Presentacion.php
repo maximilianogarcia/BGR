@@ -5,6 +5,8 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\Type;
+
 /**
  * Presentacion
  *
@@ -19,6 +21,7 @@ class Presentacion
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Type("integer")
      */
     private $id;
 
@@ -26,6 +29,7 @@ class Presentacion
      * @var string
      *
      * @ORM\Column(name="SKU", type="string", length=255)
+     * @Type("string")
      */
     private $sKU;
 
@@ -33,6 +37,7 @@ class Presentacion
      * @var boolean
      *
      * @ORM\Column(name="active", type="boolean")
+     * @Type("string")
      */
     private $active;
 
@@ -54,6 +59,7 @@ class Presentacion
      * @var string
      *
      * @ORM\Column(name="fraccionable", type="string", length=255)
+     * @Type("string")
      */
     private $fraccionable;
 
@@ -236,4 +242,22 @@ class Presentacion
     {
         return $this->unidadDeMedida;
     }
+    /**
+     * @ORM\ManyToOne(targetEntity="Producto") 
+     * @ORM\JoinColumn(name="producto_id", referencedColumnName="id")
+     * @Type("BGR\Serrano\ProductoBundle\Entity\Producto")
+     *
+     */
+    protected $producto;
+
+    public function setProducto(Producto $producto)
+    {
+        $this->producto = $producto;
+    }
+
+    public function getProducto()
+    {
+        return $this->producto;
+    }
+
 }

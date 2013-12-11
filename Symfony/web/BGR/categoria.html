@@ -3,6 +3,8 @@
     <title></title>
     <meta content="">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/navbar.css" rel="stylesheet">
+
     <style>
       .hide{
           display: none;
@@ -75,20 +77,45 @@
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     <div class="container">
-        <div class="alert alert-info" data-bind="text: selected.name"> 
-              <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-        </div>
-        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-primary margenArriba"/>
 
-        <table class="table table-hover table-striped">
-            <thead><tr><th>Nombre</th><th>Descripcion</th></tr></thead>
-            <tbody data-bind="foreach: categorias">
-                <tr data-bind="click: $root.editar" >
-                    <td data-bind="text: name"></td>
-                    <td data-bind="text: descripcion"></td>
-                </tr>     
-            </tbody>
-        </table>
+      <div class="navbar navbar-default" role="navigation">
+        
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Categorias</a></li>
+            <li><a href="unidadMedida.html">Unidades de medida</a></li>
+            <li><a href="producto.html">Productos</a></li>
+            <li><a href="lote.html">Lotes</a></li>
+            <li><a href="material.html">Materiales de presentacion</a></li>
+            <li><a href="presentacion.html">Presentaciones</a></li>
+            <li><a href="mix.html">Mixes</a></li>
+          </ul>
+      <!--  <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="./">Default</a></li>
+                <li><a href="../navbar-static-top/">Static top</a></li>
+                <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+            </ul>
+      -->
+      </div>
+
+
+
+
+
+
+
+
+
+              <input type="button" data-bind="click: create" value="Agregar" class="btn btn-primary margenArriba"/>
+
+              <table class="table table-hover table-striped">
+                  <thead><tr><th>Nombre</th><th>Descripcion</th></tr></thead>
+                  <tbody data-bind="foreach: categorias">
+                      <tr data-bind="click: $root.editar" >
+                          <td data-bind="text: name"></td>
+                          <td data-bind="text: descripcion"></td>
+                      </tr>     
+                  </tbody>
+              </table>
 
       </div>
   </body>
