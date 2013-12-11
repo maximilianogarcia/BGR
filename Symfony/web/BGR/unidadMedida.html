@@ -43,7 +43,8 @@
 
       <div class="navbar navbar-default" role="navigation">
         
-          <ul class="nav navbar-nav">
+        <div class="navbar-collapse in collapse" style="height: auto;">
+           <ul class="nav navbar-nav">
             <li ><a href="categoria.html">Categorias</a></li>
             <li class="active"><a href="#">Unidades de medida</a></li>
             <li><a href="producto.html">Productos</a></li>
@@ -52,23 +53,19 @@
             <li><a href="presentacion.html">Presentaciones</a></li>
             <li><a href="mix.html">Mixes</a></li>
           </ul>
-      <!--  <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="./">Default</a></li>
-                <li><a href="../navbar-static-top/">Static top</a></li>
-                <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-            </ul>
-      -->
+        </div><!--/.nav-collapse -->
       </div>
 
 
+        <h3>Edicion de unidades de medida</h3>
 
 
-        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-primary margenArriba"/>
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
 
-        <table class="table">
+        <table class="table table-hover">
             <thead><tr><th>Nombre</th><th>Descripcion</th><th>Equivalencia</th></tr></thead>
             <tbody data-bind="foreach: unidadMedidas">
-                <tr data-bind="click: $root.editar" class="clickeable">
+                <tr data-bind="click: $root.editar" >
                     <td data-bind="text: name"></td>
                     <td data-bind="text: descripcion"></td>
                     <td data-bind="text: equivalencia"></td>

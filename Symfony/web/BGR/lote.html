@@ -45,7 +45,7 @@
                 <form action="#" id="editLoteForm" >
                 <div id="step1" data-bind="visible: step1">
                     <label class="margenArriba"> Producto 
-                      <select class="form-control input-block-level" data-bind="options: productos, optionsText: 'name', 
+                      <select class="input-block-level form-control" data-bind="options: productos, optionsText: 'name', 
                      optionsValue: 'id', value: selectedProductoId," size="10" required></select>
                     </label>
                   <input type="button" data-bind="click: next,enable: hayProductoSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
@@ -96,9 +96,10 @@
 
     <div class="container">
 
-       <div class="navbar navbar-default" role="navigation">
+      <div class="navbar navbar-default" role="navigation">
         
-          <ul class="nav navbar-nav">
+        <div class="navbar-collapse in collapse" style="height: auto;">
+           <ul class="nav navbar-nav">
             <li ><a href="categoria.html">Categorias</a></li>
             <li><a href="unidadMedida.html">Unidades de medida</a></li>
             <li><a href="producto.html">Productos</a></li>
@@ -107,17 +108,13 @@
             <li><a href="presentacion.html">Presentaciones</a></li>
             <li><a href="mix.html">Mixes</a></li>
           </ul>
-      <!--  <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="./">Default</a></li>
-                <li><a href="../navbar-static-top/">Static top</a></li>
-                <li><a href="../navbar-fixed-top/">Fixed top</a></li>
-            </ul>
-      -->
+        </div><!--/.nav-collapse -->
       </div>
+        <h3>Edicion de lotes</h3>
 
-        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-primary margenArriba"/>
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
 
-        <table class="table table-hover table-striped">
+        <table class="table table-hover">
             <thead><tr><th>Descripcion</th><th>Elaboracion</th>
               <th>Vencimiento</th><th>Codigo</th></tr></thead>
             <tbody data-bind="foreach: lotes">
