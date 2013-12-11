@@ -5,7 +5,6 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
-use JMS\Serializer\Annotation\Type;
 
 /**
  * Presentacion
