@@ -5,7 +5,6 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
-use JMS\Serializer\Annotation\Type;
 
 /**
  * Presentacion
@@ -37,7 +36,7 @@ class Presentacion
      * @var boolean
      *
      * @ORM\Column(name="active", type="boolean")
-     * @Type("string")
+     * @Type("boolean")
      */
     private $active;
 
@@ -59,7 +58,7 @@ class Presentacion
      * @var string
      *
      * @ORM\Column(name="fraccionable", type="string", length=255)
-     * @Type("string")
+     * @Type("boolean")
      */
     private $fraccionable;
 
