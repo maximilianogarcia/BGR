@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Doctrine\Common\Collections\ArrayCollection;
-use BGR\Serrano\ProductoBundle\Entity\Materual as Material;
+use BGR\Serrano\ProductoBundle\Entity\Material as Material;
 
 class MaterialController extends Controller
 {

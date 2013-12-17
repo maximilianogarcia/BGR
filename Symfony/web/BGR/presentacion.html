@@ -1,0 +1,163 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/navbar.css" rel="stylesheet">
+
+    <style>
+      .hide{
+          display: none;
+          visibility: hidden;
+      }
+      .margenArriba{
+        margin-top: 1em;
+      }
+    </style>
+
+    <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
+    <script type='text/javascript'  src='lib/knockout.mapping-latest.js'></script>
+    <script type='text/javascript'  src='Model/Lote.js'></script>
+    <script type='text/javascript'  src='Model/Producto.js'></script>
+    <script type='text/javascript'  src='Model/Presentacion.js'></script>
+    <script type='text/javascript'  src='Model/UnidadMedida.js'></script>
+    <script type='text/javascript'  src='View/LoteViewModel.js'></script>
+    <script type='text/javascript'  src='View/UnidadMedidaViewModel.js'></script>
+    <script type='text/javascript'  src='View/PresentacionViewModel.js'></script>
+    <script type='text/javascript'  src='View/ProductoViewModel.js'></script>
+    <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+
+    <script type='text/javascript'>
+       $(document).ready(function(){
+            viewModel = new PresentacionViewModel();
+            viewModel.apply();
+       });
+    </script>
+   
+  </head>
+  <body>
+
+        <div class="modal fade" id="editPresentacion" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Editar Lote</h4>
+              </div>
+              <div class="modal-body">
+                <form action="#" id="editPresentacionForm" >
+                <div id="step1" data-bind="visible: step1">
+                    <label class="margenArriba"> Producto 
+                      <select class="input-block-level form-control" data-bind="options: productos, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedProductoId," size="10" required></select>
+                    </label>
+                  <input 
+                  type="button" data-bind="click: function(data, event) { next('lote', data, event) },
+                  enable: hayProductoSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+                
+                <div id="step2" data-bind="visible: step2">
+                    <label class="margenArriba"> Lote 
+                      <select class="input-block-level form-control" data-bind="options: lotes, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedLoteId," size="10" required></select>
+                    </label>
+                  <input type="button" data-bind="click: function(data, event) { next('material', data, event) },
+                  enable: hayLoteSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+                
+                <div id="step3" data-bind="visible: step3">
+                    <label class="margenArriba"> Material 
+                      <select class="input-block-level form-control" data-bind="options: materiales, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedMaterialId," size="10" required></select>
+                    </label>
+                  <input type="button" data-bind="click: next,enable: hayMaterialSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+
+                <div id="step4" data-bind="visible: step4">
+                    <label class="margenArriba"> Unidades de medida 
+                      <select class="input-block-level form-control" data-bind="options: medidas, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedMedidaId," size="10" required></select>
+                    </label>
+                  <input type="button" data-bind="click: next,enable: hayMedidaSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+                <div id="step5" data-bind="visible: step5">
+                      <label>Descripcion</label>
+                      <input   required data-bind="value: selected.descripcion" 
+                            class="input-block-level " 
+                            placeholder="Descripci&oacute;n"> 
+                      <label class="margenArriba">Fecha de Elaboracion</label>
+                      <input type="date"   required data-bind="value: selected.fecha_de_elaboracion" 
+                            class="input-block-level"> 
+                      <label class="margenArriba">Fecha de vencimiento</label>
+                      <input type="date"   required data-bind="value: selected.fecha_de_vencimiento" 
+                            class="input-block-level"> 
+                      <label class="margenArriba">Codigo</label>
+                      <input   required data-bind="value: selected.codigo" 
+                            class="input-block-level " 
+                            placeholder="Codigo"> 
+                      <input type="submit"  id="submitOculto" class="hide"/>
+
+                   </form>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <input type="button" data-bind="click: back,visible: step2" value="Atras" class="btn btn-primary"/>
+                <!-- ko if: createNew -->
+                <input type="button" data-bind="click: save,visible: step2" value="crear" class="btn btn-primary"/>
+                <!-- /ko -->
+                <!-- ko ifnot: createNew -->
+                <input type="button" data-bind="click: update,visible: step2" value="Guardar" class="btn btn-primary"/> 
+                <!-- /ko -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!-- ko ifnot: createNew -->
+
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: borrar">
+                  Eliminar Lote</button>
+               <!-- /ko -->
+
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+
+    <div class="container">
+
+      <div class="navbar navbar-default" role="navigation">
+        
+        <div class="navbar-collapse in collapse" style="height: auto;">
+           <ul class="nav navbar-nav">
+            <li ><a href="categoria.html">Categorias</a></li>
+            <li><a href="unidadMedida.html">Unidades de medida</a></li>
+            <li><a href="producto.html">Productos</a></li>
+            <li><a href="lote.html">Lotes</a></li>
+            <li><a href="material.html">Materiales de presentacion</a></li>
+            <li class="active"><a href="#">Presentaciones</a></li>
+            <li><a href="mix.html">Mixes</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+        <h3>Edicion de lotes</h3>
+
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
+
+        <table class="table table-hover">
+            <thead><tr><th>Descripcion</th><th>Elaboracion</th>
+              <th>Vencimiento</th><th>Codigo</th></tr></thead>
+            <tbody data-bind="foreach: lotes">
+                <tr data-bind="click: $root.editar" >
+                    <td data-bind="text: descripcion"></td>
+                    <td data-bind="text: fecha_de_elaboracion"></td>
+                    <td data-bind="text: fecha_de_vencimiento"></td>
+                    <td data-bind="text: codigo"></td>
+                </tr>     
+            </tbody>
+        </table>
+
+      </div>
+  </body>
+</html>
