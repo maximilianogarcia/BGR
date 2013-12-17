@@ -17,11 +17,11 @@ class ProductoRepository extends EntityRepository
 	public function save($producto)
     {   
         $em = $this->getEntityManager();
-	     $producto->setCategoria($em->merge($producto->getCategoria()));
+	    $producto->setCategoria($em->merge($producto->getCategoria()));
 	    
-	     $temporales = new ArrayCollection();
+	    $temporales = new ArrayCollection();
 	      
-	     foreach($producto->getUnidadDeMedidas() as $unidadMedida){
+	    foreach($producto->getUnidadDeMedidas() as $unidadMedida){
 				$temporales->add($em->merge($unidadMedida));
         }
         

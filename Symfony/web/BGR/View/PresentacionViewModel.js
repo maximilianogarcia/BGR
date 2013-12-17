@@ -24,7 +24,8 @@ function PresentacionViewModel() {
 
 
    self.productos = ko.observableArray();
-   self.lotes = ko.observableArray();
+   self.lotes =  ko.mapping.fromJS([new Lote()]);
+
    self.materiales = ko.observableArray();
    self.medidas = ko.observableArray();
 
@@ -132,13 +133,13 @@ function PresentacionViewModel() {
    }
 
 
-  self.getLotesFor = function(producto){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/getLotesFor", {
-            type: "GET",
-            data: {'data': producto},
+  self.getLotesByProducto = function(producto){
+     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/lote/getLotesByProducto", {
+            type: "POST",
+            data: {'data': JSON.stringify(producto)},
             success: function(result) {
-                  ko.mapping.fromJS(result, self.presentaciones
-              );
+               ko.mapping.fromJS(result, self.lotes);
+               self.doNext()
             }
       });
    }
@@ -188,7 +189,7 @@ function PresentacionViewModel() {
       {
       case "lote":
 
-         self.getLotesFor(self.selectedProducto());
+         self.getLotesByProducto(self.selectedProducto());
          break;
       case "material":
         alert("material");        

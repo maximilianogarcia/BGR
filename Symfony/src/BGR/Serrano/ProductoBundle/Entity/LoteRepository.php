@@ -34,4 +34,16 @@ public function save($lote)
         $em->remove($em->merge($lote));
         $em->flush();
     }
+
+    public function findByProducto($producto)
+    {          
+        $em = $this->getEntityManager();
+        $result = $em->createQuery("SELECT l FROM BGRSerranoProductoBundle:Lote l   
+            WHERE l.producto = :producto"
+        )->setParameter('producto', $producto->getId())->getArrayResult();
+    
+        return $result;
+    }
+
+
 }

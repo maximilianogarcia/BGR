@@ -91,5 +91,30 @@ class LoteController extends Controller
 
         return new Response($jsonData);
     }
+    /**
+     * @Route("/lote/getLotesByProducto")
+     */
+    public function getLotesByProducto()
+    {
+        $logger = $this->get('logger');
+
+        $jsonData = $this->get('request')->request->get('data');
+
+
+        $serializer =  SerializerBuilder::create()->build();
+       
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Producto', 'json');
+
+        $em = $this->getDoctrine()->getManager();
+        $data = $em->getRepository('BGRSerranoProductoBundle:Lote')->findByProducto($object);
+        
+
+        $logger->info($object->getName());
+        
+        $response = new Response($serializer->serialize($data,'json'));
+       
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 
 }

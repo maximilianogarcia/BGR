@@ -41,7 +41,7 @@ class Lote
      *
      * @ORM\Column(name="fechaDeElaboracion", type="date")
      */
-    protected $fechaDeElaboracion;
+    protected $fecha_de_elaboracion;
 
     /**
      * @var \DateTime
@@ -50,7 +50,7 @@ class Lote
      *
      * @ORM\Column(name="fechaDeVencimiento", type="date")
      */
-    protected $fechaDeVencimiento;
+    protected $fecha_de_vencimiento;
 
     /**
      * @var string
@@ -101,9 +101,9 @@ class Lote
      * @param \DateTime $fechaDeElaboracion
      * @return Lote
      */
-    public function setFechaDeElaboracion($fechaDeElaboracion)
+    public function setFechaDeElaboracion($fecha_de_elaboracion)
     {
-        $this->fechaDeElaboracion = $fechaDeElaboracion;
+        $this->fecha_de_elaboracion = $fecha_de_elaboracion;
     
         return $this;
     }
@@ -115,7 +115,7 @@ class Lote
      */
     public function getFechaDeElaboracion()
     {
-        return $this->fechaDeElaboracion;
+        return $this->fecha_de_elaboracion;
     }
 
     /**
@@ -124,9 +124,9 @@ class Lote
      * @param \DateTime $fechaDeVencimiento
      * @return Lote
      */
-    public function setFechaDeVencimiento($fechaDeVencimiento)
+    public function setFechaDeVencimiento($fecha_de_vencimiento)
     {
-        $this->fechaDeVencimiento = $fechaDeVencimiento;
+        $this->$fecha_de_vencimiento = $fecha_de_vencimiento;
     
         return $this;
     }
@@ -138,7 +138,7 @@ class Lote
      */
     public function getFechaDeVencimiento()
     {
-        return $this->fechaDeVencimiento;
+        return $this->$fecha_de_vencimiento;
     }
 
     /**

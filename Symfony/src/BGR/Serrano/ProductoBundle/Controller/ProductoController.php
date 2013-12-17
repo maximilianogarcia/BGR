@@ -44,13 +44,6 @@ class ProductoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->getRepository('BGRSerranoProductoBundle:Producto')->save($object);
 
-		  	     
-		  //	
-		  $em_m_2_m = $this->getDoctrine()->getManager(); 
-		  $em_m_2_m->getRepository('BGRSerranoProductoBundle:Producto')->save($object);
-   
-	     $producto->setUnidadDeMedidas($em->merge($producto->getUnidadDeMedidas()));
-	     //	
 
         $response = new Response($serializer->serialize($object,'json'));
         
@@ -86,8 +79,8 @@ class ProductoController extends Controller
     public function updateAction()
     {
     
-        	$logger = $this->get('logger');
-			$logger->info('request flechita'.$this->get('request')->request->get('data'));  
+        $logger = $this->get('logger');
+		$logger->info('request flechita'.$this->get('request')->request->get('data'));  
 
         $jsonData = $this->get('request')->request->get('data');
 
@@ -112,4 +105,5 @@ class ProductoController extends Controller
     public function getByIdAction()
     {
     }
+
 }
