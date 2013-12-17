@@ -30,14 +30,14 @@ class Lote
      *
      * @Type("string")
      *
-     * @ORM\Column(name="descripsion", type="string", length=255)
+     * @ORM\Column(name="descripcion", type="string", length=255)
      */
-    protected $descripsion;
+    protected $descripcion;
 
     /**
      * @var \DateTime
      *
-     * @Type("DateTime")
+     * @Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="fechaDeElaboracion", type="date")
      */
@@ -46,7 +46,7 @@ class Lote
     /**
      * @var \DateTime
      *
-     * @Type("DateTime")
+     * @Type("DateTime<'Y-m-d'>")
      *
      * @ORM\Column(name="fechaDeVencimiento", type="date")
      */
@@ -78,21 +78,21 @@ class Lote
      * @param string $descripsion
      * @return Lote
      */
-    public function setDescripsion($descripsion)
+    public function setDescripcion($descripcion)
     {
-        $this->descripsion = $descripsion;
+        $this->descripcion = $descripcion;
     
         return $this;
     }
 
     /**
-     * Get descripsion
+     * Get descripcion
      *
      * @return string 
      */
-    public function getDescripsion()
+    public function getDescripcion()
     {
-        return $this->descripsion;
+        return $this->descripcion;
     }
 
     /**
@@ -169,10 +169,11 @@ class Lote
      * @ORM\ManyToOne(targetEntity="Producto") 
      * @ORM\JoinColumn(name="producto_id", referencedColumnName="id")
      * @Type("BGR\Serrano\ProductoBundle\Entity\Producto")
+     *
      */
     protected $producto;
 
-    public function setProducto(Categoria $producto)
+    public function setProducto(Producto $producto)
     {
         $this->producto = $producto;
     }

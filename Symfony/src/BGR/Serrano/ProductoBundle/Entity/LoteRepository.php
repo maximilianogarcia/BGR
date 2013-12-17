@@ -12,4 +12,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class LoteRepository extends EntityRepository
 {
+public function save($lote)
+    {   
+        $em = $this->getEntityManager();
+	    $lote->setProducto($em->merge($lote->getProducto()));
+        $em->persist($lote);
+        $em->flush();
+    }
+
+	public function update($lote)
+    {   
+    	//verificar que tenga id
+        $em = $this->getEntityManager();
+        $em->persist($em->merge($lote));
+        $em->flush();
+    }
+
+    public function delete($lote)
+    {   
+        $em = $this->getEntityManager();
+        $em->remove($em->merge($lote));
+        $em->flush();
+    }
 }

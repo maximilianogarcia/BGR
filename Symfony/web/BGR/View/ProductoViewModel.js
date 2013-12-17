@@ -23,7 +23,7 @@ function ProductoViewModel() {
 
    self.apply = function(){
      ko.applyBindings(self);
-     self.getAll();
+     self.getAll(self.mapProductos);
      var viewModelCategoria = new CategoriaViewModel();
      var viewModelUnidadMedida = new UnidadMedidaViewModel();
 
@@ -59,6 +59,10 @@ function ProductoViewModel() {
    self.copiar =function(destino){
         self.categorias(destino);
    }
+
+   self.mapProductos =function(data){
+        ko.mapping.fromJS(data, self.productos);
+   }
    
    self.copiarUnidadMedida =function(destino){
         self.allUnidadDeMedidas(destino);
@@ -68,6 +72,7 @@ function ProductoViewModel() {
    self.save = function(){
     var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
     serializado.categoria = self.selectedCategoria();
+  
 
 
     var $myForm = $('#editProductForm');
@@ -114,18 +119,18 @@ function ProductoViewModel() {
       }
    }
 
-   self.getAll = function(){
+   self.getAll = function(callback){
      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/getAll", {
             type: "GET",
             success: function(result) {
-                  ko.mapping.fromJS(result, self.productos);
+                  callback(result);
             }
       });
    }
 
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
-     serializado.categoria = self.selectedCategoria();
+     serializado.categoria(self.selectedCategoria);
      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/delete", {
             data: {'data': serializado},
             type: "DELETE",

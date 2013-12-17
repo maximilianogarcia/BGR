@@ -1,37 +1,36 @@
-function CategoriaViewModel() {
+function MaterialViewModel() {
    var self = this;
    self.selectedUnmapped = null;
-   self.categorias = ko.mapping.fromJS([new Categoria()]);
-   self.selected = ko.mapping.fromJS(new Categoria());
+   self.materiales = ko.mapping.fromJS([new Material()]);
+   self.selected = ko.mapping.fromJS(new Material());
    self.createNew = ko.observable(false);
 
 
    self.apply = function(){
-     self.getAll(self.categorias);
+     self.getAll(self.materiales);
  	   ko.applyBindings(self);
    }
 
-   
    self.serialized = function(){
       return ko.mapping.toJSON(self.selected);
    }
 
-   self.map = function(origen){
-         ko.mapping.fromJS(self.selected, origen);
+   self.map = function(destino){
+         ko.mapping.fromJS(self.selected, destino);
    }
 
    self.save = function(){
-    var $myForm = $('#editCategoryForm');
+    var $myForm = $('#editMaterialForm');
     if ($myForm[0].checkValidity()) {
-     	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/categoria/save", {
+     	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/save", {
                 data: {'data': self.serialized() },         
                 type: "POST",
                 error: function(result){
                   alert("Ocurrio un error al salvar");
                 },
                 success: function(result) { 
-                  $('#editCategory').modal('hide');
-                  self.categorias.push(ko.mapping.fromJS(result)); 
+                  $('#editMaterial').modal('hide');
+                  self.materiales.push(ko.mapping.fromJS(result)); 
                 }
         });
     }else{
@@ -41,15 +40,20 @@ function CategoriaViewModel() {
 
 
    self.update = function(){
-      var $myForm = $('#editCategoryForm');
+      var $myForm = $('#editMaterialForm');
       if ($myForm[0].checkValidity()) {
-          $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/categoria/update", {
+          $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/update", {
                   data: {'data': self.serialized() },         
                   type: "PUT",
                   success: function(result) {
                     self.selectedUnmapped.name(result.name);
                     self.selectedUnmapped.descripcion(result.descripcion);
-                    $('#editCategory').modal('hide');
+                    self.selectedUnmapped.peso(result.peso);
+                    self.selectedUnmapped.alto(result.alto);
+                    self.selectedUnmapped.largo(result.largo);
+                    self.selectedUnmapped.ancho(result.ancho);
+
+                    $('#editMaterial').modal('hide');
                   }
             });
       }else{
@@ -58,7 +62,7 @@ function CategoriaViewModel() {
    }
 
    self.getAll = function(callback){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/categoria/getAll", {
+     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/getAll", {
             type: "GET",
             success: function(result) { 
                   callback(result);
@@ -68,12 +72,12 @@ function CategoriaViewModel() {
 
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/categoria/delete", {
+     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/delete", {
             data: {'data': serializado},         
             type: "DELETE",
             success: function(result) { 
-               $('#editCategory').modal('hide');
-               self.categorias.remove(self.selectedUnmapped); 
+               $('#editMaterial').modal('hide');
+               self.materiales.remove(self.selectedUnmapped); 
             }
       });
    }
@@ -82,14 +86,14 @@ function CategoriaViewModel() {
       self.createNew(false);
       self.selectedUnmapped = data;
       ko.mapping.fromJS(data, self.selected);
-      $('#editCategory').modal('show');
+      $('#editMaterial').modal('show');
    }
 
    self.create = function(data){
       self.createNew(true);
-      ko.mapping.fromJS(new Categoria, self.selected);
+      ko.mapping.fromJS(new Material, self.selected);
       self.selectedUnmapped = data;
-      $('#editCategory').modal('show');
+      $('#editMaterial').modal('show');
    }
 
 }

@@ -2,23 +2,24 @@
 
 namespace BGR\Serrano\ProductoBundle\Controller;
 
-use JMS\Serializer\SerializerBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use BGR\Serrano\ProductoBundle\Entity\Producto as Producto;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Doctrine\Common\Collections\ArrayCollection;
-use BGR\Serrano\ProductoBundle\Entity\Material as Material;
+use JMS\Serializer\SerializerBuilder;
 
-class MaterialController extends Controller
+class LoteController extends Controller
 {
     /**
-     * @Route("/material/getAll")
+     * @Route("/lote/getAll")
+     * @Template()
      */
     public function getAllAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository('BGRSerranoProductoBundle:Material')->findAll();
+        $data = $em->getRepository('BGRSerranoProductoBundle:Lote')->findAll();
 
         $serializer =  SerializerBuilder::create()->build();
         $jsonContent = $serializer->serialize($data, 'json');
@@ -28,46 +29,8 @@ class MaterialController extends Controller
     }
 
     /**
-     * @Route("/material/delete")
-     */
-    public function deleteAction()
-    {
-        $jsonData = $this->get('request')->request->get('data');
-        
-        $serializer =  SerializerBuilder::create()->build();
-
-        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Material', 'json');
-
-        $em = $this->getDoctrine()->getManager();
-        $em->getRepository('BGRSerranoProductoBundle:Material')->delete($object);
-
-        return new Response($jsonData);
-    }
-
-    /**
-     * @Route("/material/update")
-     */
-    public function updateAction()
-    {
-       $jsonData = $this->get('request')->request->get('data');
-
-        $serializer =  SerializerBuilder::create()->build();
-
-        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Material', 'json');
-
-        $em = $this->getDoctrine()->getManager();
-        
-        $em->getRepository('BGRSerranoProductoBundle:Material')->update($object);
-
-        $response = new Response($serializer->serialize($object,'json'));
-        
-        $response->headers->set('Content-Type', 'application/json');
-
-        return $response;
-    }
-
-    /**
-     * @Route("/material/save")
+     * @Route("/lote/save")
+     * @Template()
      */
     public function saveAction()
     {
@@ -76,18 +39,57 @@ class MaterialController extends Controller
 
         $serializer =  SerializerBuilder::create()->build();
 
-        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Material', 'json');
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Lote', 'json');
 
         $em = $this->getDoctrine()->getManager();
-        $em->getRepository('BGRSerranoProductoBundle:Material')->save($object);
+        $em->getRepository('BGRSerranoProductoBundle:Lote')->save($object);
 
         $response = new Response($serializer->serialize($object,'json'));
         
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
 
+    /**
+     * @Route("/lote/update")
+     * @Template()
+     */
+    public function updateAction()
+    {
+        $jsonData = $this->get('request')->request->get('data');
 
+        $serializer =  SerializerBuilder::create()->build();
+
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Lote', 'json');
+
+        $em = $this->getDoctrine()->getManager();
+        
+        $em->getRepository('BGRSerranoProductoBundle:Lote')->update($object);
+
+        $response = new Response($serializer->serialize($object,'json'));
+        
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+    /**
+     * @Route("/lote/delete")
+     * @Template()
+     */
+    public function deleteAction()
+    {
+        $jsonData = $this->get('request')->request->get('data');
+        
+        $serializer =  SerializerBuilder::create()->build();
+
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Lote', 'json');
+
+        $em = $this->getDoctrine()->getManager();
+        $em->getRepository('BGRSerranoProductoBundle:Lote')->delete($object);
+
+        return new Response($jsonData);
     }
 
 }

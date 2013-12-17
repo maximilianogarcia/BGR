@@ -3,6 +3,8 @@
     <title></title>
     <meta content="">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/navbar.css" rel="stylesheet">
+
     <style>
       .hide{
           display: none;
@@ -69,7 +71,7 @@
                              </label>
 
                     <label class="margenArriba"> Categoria
-                      <select class="form-control input-block-level" data-bind="options: categorias, optionsText: 'name', 
+                      <select class="input-block-level form-control" data-bind="options: categorias, optionsText: 'name', 
                      optionsValue: 'id', value: selectedCategoriaId, optionsCaption:'Seleccione'" required></select>
                     </label>
                     <!-- ko if: createNew -->
@@ -110,15 +112,30 @@
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     <div class="container">
-        <div class="alert alert-info" data-bind="text: selected.name"> 
-              <a class="close" data-dismiss="alert" href="#" aria-hidden="true">&times;</a>
-        </div>
-        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-primary margenArriba"/>
 
-        <table class="table">
+      <div class="navbar navbar-default" role="navigation">
+        
+        <div class="navbar-collapse in collapse" style="height: auto;">
+           <ul class="nav navbar-nav">
+            <li ><a href="categoria.html">Categorias</a></li>
+            <li><a href="unidadMedida.html">Unidades de medida</a></li>
+            <li class="active"><a href="#">Productos</a></li>
+            <li><a href="lote.html">Lotes</a></li>
+            <li><a href="material.html">Materiales de presentacion</a></li>
+            <li><a href="presentacion.html">Presentaciones</a></li>
+            <li><a href="mix.html">Mixes</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+
+
+        <h3>Edicion de productos</h3>
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
+
+        <table class="table table-hover">
             <thead><tr><th>Nombre</th><th>Precio de Compra</th><th>Precio de Venta</th><th>categoria</th></tr></thead>
             <tbody data-bind="foreach: productos">
-                <tr data-bind="click: $root.editar" class="clickeable">
+                <tr data-bind="click: $root.editar">
                     <td data-bind="text: name"></td>
                     <td data-bind="text: precio_compra"></td>
                     <td data-bind="text: precio_venta"></td>
@@ -126,7 +143,6 @@
                 </tr>     
             </tbody>
         </table>
-
 
 
       </div>
