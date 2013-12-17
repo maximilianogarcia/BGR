@@ -57,7 +57,8 @@ function UnidadMedidaViewModel() {
      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/getAll", {
             type: "GET",
             success: function(result) { 
-              self.map(result, destino)
+            //  self.map(result, destino)
+              destino(result);
             }
       });
    }

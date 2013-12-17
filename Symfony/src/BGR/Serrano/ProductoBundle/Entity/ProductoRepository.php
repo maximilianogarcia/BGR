@@ -3,6 +3,7 @@
 namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * ProductoRepository
@@ -16,16 +17,53 @@ class ProductoRepository extends EntityRepository
 	public function save($producto)
     {   
         $em = $this->getEntityManager();
-	    $producto->setCategoria($em->merge($producto->getCategoria()));
+	     $producto->setCategoria($em->merge($producto->getCategoria()));
+	    
+	     $temporales = new ArrayCollection();
+	      
+	     foreach($producto->getUnidadDeMedidas() as $unidadMedida){
+				$temporales->add($em->merge($unidadMedida));
+        }
+        
+        $producto->setUnidadDeMedidas($temporales);
+        
+	     
         $em->persist($producto);
         $em->flush();
     }
 
 	public function update($producto)
     {   
-    	//verificar que tenga id
         $em = $this->getEntityManager();
+        
+  /*    $producto->setCategoria($em->merge($producto->getCategoria()));
+ 		  $temporales = new ArrayCollection();
+	      
+	     foreach($producto->getUnidadDeMedidas() as $unidadMedida){
+				$temporales->add($em->merge($unidadMedida));
+        }
+        
+         
+        	$logger = this->get('logger');
+			$logge->info();             
+        
+        */
+        
+	     $temporales = new ArrayCollection();
+	      
+	     foreach($producto->getUnidadDeMedidas() as $unidadMedida){
+	
+  			   $temporales->add($em->merge($unidadMedida));
+
+				$unidadMedida->addProducto($producto);
+				
+				$em->persist($em->merge($unidadMedida));
+        }        
+        
+ 		  $producto->setUnidadDeMedidas($temporales);
+ 		   
         $em->persist($em->merge($producto));
+
         $em->flush();
     }
 

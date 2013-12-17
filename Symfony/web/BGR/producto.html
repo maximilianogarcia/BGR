@@ -21,18 +21,24 @@
     <script type='text/javascript'  src='lib/knockout.mapping-latest.js'></script>
     <script type='text/javascript'  src='Model/Producto.js'></script>
     <script type='text/javascript'  src='Model/Categoria.js'></script>
+    <script type='text/javascript'  src='Model/UnidadMedida.js'></script> 
 
     <script type='text/javascript'  src='View/ProductoViewModel.js'></script>
     <script type='text/javascript'  src='View/CategoriaViewModel.js'></script>
-
+    <script type='text/javascript'  src='View/UnidadMedidaViewModel.js'></script>
+    
+    
     <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
     <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
 
     <script type='text/javascript'>
        $(document).ready(function(){
+
             viewModel = new ProductoViewModel();
             viewModel.apply();
+
        });
+
     </script>
    
   </head>
@@ -76,7 +82,16 @@
                     <input type="button" data-bind="click: update" value="Guardar" class="btn btn-primary margenArriba"/>      
                     <!-- /ko -->
                     <input type="submit"  id="submitOculto" class="hide"/>
-
+                
+   	
+       				  <select data-bind="foreach: selected.unidad_de_medidas" multiple="false">
+						  		<option data-bind="text: name, click: $root.unSelectUnidad "></option>
+						  </select>	
+						  
+						  <select data-bind="foreach: notSelectedUnidadDeMedidas" multiple="false">
+						  		<option data-bind="text: name, click: $root.selectUnidad "></option>
+						  </select>	
+        		
                  </form>
 
               </div>

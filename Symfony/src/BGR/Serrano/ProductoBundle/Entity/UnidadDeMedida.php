@@ -4,12 +4,14 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * UnidadDeMedida
  *
  * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="search_idx", columns={"name"})})
  * @ORM\Entity(repositoryClass="BGR\Serrano\ProductoBundle\Entity\UnidadDeMedidaRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class UnidadDeMedida
 {
@@ -54,7 +56,22 @@ class UnidadDeMedida
      *
      */
     protected $equivalencia;
+  
+    /**
+     * @ORM\ManyToMany(targetEntity="Producto", mappedBy="unidad_de_medidas")
+     * @Type("ArrayCollection<BGR\Serrano\ProductoBundle\Entity\Producto>")
+     */
+    private $productos;
 
+    public function setProductos(\BGR\Serrano\ProductoBundle\Entity\Producto $productos)
+    {
+        $this->productos = $productos;
+    }
+
+    public function getProductos()
+    {
+        return $this->productos;
+    }
 
     /**
      * Get id
@@ -131,5 +148,34 @@ class UnidadDeMedida
     public function getEquivalencia()
     {
         return $this->equivalencia;
+    }
+    
+    public function __construct()
+    {
+        $this->productos = new ArrayCollection();
+
+    }
+    	
+
+    /**
+     * Add productos
+     *
+     * @param \BGR\Serrano\ProductoBundle\Entity\Producto $productos
+     * @return UnidadDeMedida
+     */
+    public function addProducto(\BGR\Serrano\ProductoBundle\Entity\Producto $producto)
+    {
+        $this->productos->add($producto);
+        return $this;
+    }
+
+    /**
+     * Remove productos
+     *
+     * @param \BGR\Serrano\ProductoBundle\Entity\Producto $productos
+     */
+    public function removeProducto(\BGR\Serrano\ProductoBundle\Entity\Producto $productos)
+    {
+        $this->productos->removeElement($productos);
     }
 }

@@ -5,13 +5,14 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
-
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Producto
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="BGR\Serrano\ProductoBundle\Entity\ProductoRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Producto
 {
@@ -136,39 +137,36 @@ class Producto
      */
     protected $categoria;
 
-    public function setCategoria(Categoria $categoria)
-    {
-        $this->categoria = $categoria;
-    }
 
     public function getCategoria()
     {
         return $this->categoria;
     }
-
-
-     /**
-     * @ORM\ManyToMany(targetEntity="UnidadDeMedida")
-     * @ORM\JoinTable(name="producto_medida",
-     *      joinColumns={@ORM\JoinColumn(name="producto_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="medida_id", referencedColumnName="id")}
-     *      )
-     *
-     * @Type("BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida")
+    
+    public function setCategoria(Categoria $categoria)
+    {
+        $this->categoria = $categoria;
+    }
+ 
+    /**
+     * @ORM\ManyToMany(targetEntity="UnidadDeMedida", inversedBy="productos")
+	  * @ORM\JoinTable(name="producto_unidad_de_medida")
+	  *
+     * @Type("ArrayCollection<BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida>")
      *
      */
-    protected $unidadDeMedida;
+    protected $unidad_de_medidas;
 
-    public function setUnidadDeMedida(UnidadDeMedida $unidadDeMedida)
+
+    public function getUnidadDeMedidas()
     {
-        $this->unidadDeMedida = $unidadDeMedida;
+        return $this->unidad_de_medidas;
     }
 
-    public function getUnidadDeMedida()
+    public function setUnidadDeMedidas($unidadDeMedidas)
     {
-        return $this->unidadDeMedida;
+        $this->unidad_de_medidas = $unidadDeMedidas;
     }
-
 
      /**
      * @ORM\OneToMany(targetEntity="Lote", mappedBy="producto")
@@ -180,6 +178,63 @@ class Producto
     public function __construct()
     {
         $this->lotes = new ArrayCollection();
+        $this->unidad_de_medidas = new ArrayCollection();
     }
     
+
+    /**
+     * Add unidad_de_medidas
+     *
+     * @param \BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida $unidadDeMedidas
+     * @return Producto
+     */
+    public function addUnidadDeMedida(\BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida $unidadDeMedidas)
+    {
+        $this->unidad_de_medidas[] = $unidadDeMedidas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove unidad_de_medidas
+     *
+     * @param \BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida $unidadDeMedidas
+     */
+    public function removeUnidadDeMedida(\BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida $unidadDeMedidas)
+    {
+        $this->unidad_de_medidas->removeElement($unidadDeMedidas);
+    }
+
+    /**
+     * Add lotes
+     *
+     * @param \BGR\Serrano\ProductoBundle\Entity\Lote $lotes
+     * @return Producto
+     */
+    public function addLote(\BGR\Serrano\ProductoBundle\Entity\Lote $lotes)
+    {
+        $this->lotes[] = $lotes;
+    
+        return $this;
+    }
+
+    /**
+     * Remove lotes
+     *
+     * @param \BGR\Serrano\ProductoBundle\Entity\Lote $lotes
+     */
+    public function removeLote(\BGR\Serrano\ProductoBundle\Entity\Lote $lotes)
+    {
+        $this->lotes->removeElement($lotes);
+    }
+
+    /**
+     * Get lotes
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getLotes()
+    {
+        return $this->lotes;
+    }
 }

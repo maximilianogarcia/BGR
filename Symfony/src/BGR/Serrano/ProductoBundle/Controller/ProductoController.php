@@ -44,6 +44,14 @@ class ProductoController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->getRepository('BGRSerranoProductoBundle:Producto')->save($object);
 
+		  	     
+		  //	
+		  $em_m_2_m = $this->getDoctrine()->getManager(); 
+		  $em_m_2_m->getRepository('BGRSerranoProductoBundle:Producto')->save($object);
+   
+	     $producto->setUnidadDeMedidas($em->merge($producto->getUnidadDeMedidas()));
+	     //	
+
         $response = new Response($serializer->serialize($object,'json'));
         
         $response->headers->set('Content-Type', 'application/json');
@@ -71,19 +79,22 @@ class ProductoController extends Controller
 
 
 
- /**
+   /**
      * @Route("/producto/update")
      * @Template()
      */
     public function updateAction()
     {
+    
+        	$logger = $this->get('logger');
+			$logger->info('request flechita'.$this->get('request')->request->get('data'));  
 
         $jsonData = $this->get('request')->request->get('data');
 
         $serializer =  SerializerBuilder::create()->build();
 
         $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Producto', 'json');
-
+	
         $em = $this->getDoctrine()->getManager();
         
         $em->getRepository('BGRSerranoProductoBundle:Producto')->update($object);

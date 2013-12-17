@@ -85,4 +85,17 @@ class Categoria
     }
 
 
+
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     * @return Categoria
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+    
+        return $this;
+    }
 }

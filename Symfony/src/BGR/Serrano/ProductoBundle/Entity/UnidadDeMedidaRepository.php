@@ -3,6 +3,7 @@
 namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * UnidadDeMedidaRepository

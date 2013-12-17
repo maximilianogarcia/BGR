@@ -6,12 +6,11 @@ function ProductoViewModel() {
    self.createNew = ko.observable(false);
    self.categorias = ko.observableArray();
 
+	self.allUnidadDeMedidas = ko.observableArray();
+
    self.selectedCategoriaId = ko.observable(1);
-
-   self.selectedCategoriaName = ko.computed(function(){
-
-   });
-
+   
+   self.unidadesNotSelected = ko.observableArray();
 
    self.selectedCategoria = function() {
        var self = this;
@@ -20,13 +19,38 @@ function ProductoViewModel() {
        });
    }.bind(this);
 
+   self.notSelectedUnidadDeMedidas = ko.observableArray();
 
    self.apply = function(){
      ko.applyBindings(self);
      self.getAll();
      var viewModelCategoria = new CategoriaViewModel();
+     var viewModelUnidadMedida = new UnidadMedidaViewModel();
+
      viewModelCategoria.getAll(self.copiar);
+     viewModelUnidadMedida.getAll(self.copiarUnidadMedida);
    }
+
+	self.containThisId = function(array,id){
+		var contains = false;
+		$.each(array, function( index, value ) {
+			if(value.id() === id){
+				contains = value;			
+			}  			
+		});
+		return contains;
+	}    
+   
+	self.chargeUnidades = function(data){
+
+		self.unidadesNotSelected = ko.mapping.fromJS(ko.toJS(self.allUnidadDeMedidas));
+		self.unidadesSelected = ko.mapping.fromJS(ko.toJS(data.unidad_de_medidas));
+		$.each(data.unidad_de_medidas(), function( index, value ) {
+
+			self.unidadesNotSelected.remove(self.containThisId(self.unidadesNotSelected(),value.id()));	
+		});
+		return self.unidadesNotSelected();
+	}   
    
    self.serialized = function(){
       return ko.mapping.toJSON(self.selected);
@@ -35,12 +59,15 @@ function ProductoViewModel() {
    self.copiar =function(destino){
         self.categorias(destino);
    }
+   
+   self.copiarUnidadMedida =function(destino){
+        self.allUnidadDeMedidas(destino);
+   }
 
 
    self.save = function(){
     var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
     serializado.categoria = self.selectedCategoria();
-  
 
 
     var $myForm = $('#editProductForm');
@@ -65,6 +92,7 @@ function ProductoViewModel() {
    self.update = function(){
       var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
       serializado.categoria = self.selectedCategoria();
+      serializado.unidad_de_medidas = ko.toJS(self.selected.unidad_de_medidas());
       var $myForm = $('#editProductForm');
       if ($myForm[0].checkValidity()) {
           $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/update", {
@@ -77,7 +105,7 @@ function ProductoViewModel() {
                     self.selectedUnmapped.categoria.id(result.categoria.id);
                     self.selectedUnmapped.categoria.name(result.categoria.name);
                     self.selectedUnmapped.categoria.descripcion(result.descripcion);
-
+						  self.selectedUnmapped.unidad_de_medidas(result.unidad_de_medidas);	
                     $('#editProduct').modal('hide');
                   }
             });
@@ -97,7 +125,7 @@ function ProductoViewModel() {
 
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
-     serializado.categoria(self.selectedCategoria);
+     serializado.categoria = self.selectedCategoria();
      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/delete", {
             data: {'data': serializado},
             type: "DELETE",
@@ -113,6 +141,7 @@ function ProductoViewModel() {
       self.createNew(false);
       self.selectedUnmapped = data;
       self.selected.categoria(null);
+      self.notSelectedUnidadDeMedidas(self.chargeUnidades(data));
       ko.mapping.fromJS(data, self.selected);
       $('#editProduct').modal('show');
    }
@@ -124,6 +153,16 @@ function ProductoViewModel() {
       self.selectedUnmapped = data;
       ko.mapping.fromJS(new Producto, self.selected);
       $('#editProduct').modal('show');
+   }
+   
+   self.selectUnidad = function(data){   	
+		self.notSelectedUnidadDeMedidas.remove(data);
+		self.selected.unidad_de_medidas.push(data);
+   }
+   
+   self.unSelectUnidad = function(data){
+		self.selected.unidad_de_medidas.remove(data);
+		self.notSelectedUnidadDeMedidas.push(data);  
    }
 
 }
