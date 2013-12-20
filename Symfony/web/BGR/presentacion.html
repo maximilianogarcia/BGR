@@ -17,9 +17,11 @@
 
     <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
     <script type='text/javascript'  src='lib/knockout.mapping-latest.js'></script>
-    <script type='text/javascript'  src='Model/Lote.js'></script>
+    <script type='text/javascript'  src='lib/moment.min.js'></script>
     <script type='text/javascript'  src='Model/Producto.js'></script>
+    <script type='text/javascript'  src='Model/Lote.js'></script>
     <script type='text/javascript'  src='Model/Presentacion.js'></script>
+    <script type='text/javascript'  src='Model/Material.js'></script>
     <script type='text/javascript'  src='Model/UnidadMedida.js'></script>
     <script type='text/javascript'  src='View/LoteViewModel.js'></script>
     <script type='text/javascript'  src='View/UnidadMedidaViewModel.js'></script>
@@ -50,17 +52,17 @@
                 <div id="step1" data-bind="visible: step1">
                     <label class="margenArriba"> Producto 
                       <select class="input-block-level form-control" data-bind="options: productos, optionsText: 'name', 
-                     optionsValue: 'id', value: selectedProductoId," size="10" required></select>
+                     optionsValue: 'id', value: selectedProductoId" size="10" required></select>
                     </label>
                   <input 
                   type="button" data-bind="click: function(data, event) { next('lote', data, event) },
                   enable: hayProductoSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
                 </div>
-                
+
                 <div id="step2" data-bind="visible: step2">
                     <label class="margenArriba"> Lote 
                       <select class="input-block-level form-control" data-bind="options: lotes, optionsText: 'codigo', 
-                     optionsValue: 'id', value: selectedLoteId," size="10" required></select>
+                     optionsValue: 'id', value: selectedLoteId" size="10" required></select>
                     </label>
                   <input type="button" data-bind="click: function(data, event) { next('material', data, event) },
                   enable: hayLoteSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
@@ -69,9 +71,10 @@
                 <div id="step3" data-bind="visible: step3">
                     <label class="margenArriba"> Material 
                       <select class="input-block-level form-control" data-bind="options: materiales, optionsText: 'name', 
-                     optionsValue: 'id', value: selectedMaterialId," size="10" required></select>
+                     optionsValue: 'id', value: selectedMaterialId" size="10" required></select>
                     </label>
-                  <input type="button" data-bind="click: next,enable: hayMaterialSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                  <input type="button" data-bind="click: function(data, event) { next('medida', data, event) },
+                  enable: hayMaterialSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
                 </div>
 
                 <div id="step4" data-bind="visible: step4">
@@ -79,35 +82,40 @@
                       <select class="input-block-level form-control" data-bind="options: medidas, optionsText: 'name', 
                      optionsValue: 'id', value: selectedMedidaId," size="10" required></select>
                     </label>
-                  <input type="button" data-bind="click: next,enable: hayMedidaSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                  <input type="button" data-bind="click: function(data, event) { next('form', data, event) },
+                  enable: hayMedidaSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
                 </div>
                 <div id="step5" data-bind="visible: step5">
                       <label>Descripcion</label>
                       <input   required data-bind="value: selected.descripcion" 
                             class="input-block-level " 
                             placeholder="Descripci&oacute;n"> 
-                      <label class="margenArriba">Fecha de Elaboracion</label>
-                      <input type="date"   required data-bind="value: selected.fecha_de_elaboracion" 
-                            class="input-block-level"> 
-                      <label class="margenArriba">Fecha de vencimiento</label>
-                      <input type="date"   required data-bind="value: selected.fecha_de_vencimiento" 
-                            class="input-block-level"> 
-                      <label class="margenArriba">Codigo</label>
-                      <input   required data-bind="value: selected.codigo" 
+                      <label class=" checkbox margenArriba">Fraccionable
+                       <input type="checkbox" data-bind="checked: selected.fraccionable" /> 
+                      </label>
+                      
+                      <label class="margenArriba">Peso neto
+                      <input   required data-bind="value: selected.peso_neto" 
                             class="input-block-level " 
-                            placeholder="Codigo"> 
+                            placeholder="Peso Neto en gramos">
+                     </label>
+                     <label class="margenArriba">Peso escurrido
+                      <input   required data-bind="value: selected.peso_escurrido" 
+                            class="input-block-level " 
+                            placeholder="Peso escurrido en gramos">
+                     </label>
                       <input type="submit"  id="submitOculto" class="hide"/>
 
                    </form>
                   </div>
               </div>
               <div class="modal-footer">
-                <input type="button" data-bind="click: back,visible: step2" value="Atras" class="btn btn-primary"/>
+                <input type="button" data-bind="click: back,visible: backeable" value="Atras" class="btn btn-primary"/>
                 <!-- ko if: createNew -->
-                <input type="button" data-bind="click: save,visible: step2" value="crear" class="btn btn-primary"/>
+                <input type="button" data-bind="click: save,visible: step5" value="crear" class="btn btn-primary"/>
                 <!-- /ko -->
                 <!-- ko ifnot: createNew -->
-                <input type="button" data-bind="click: update,visible: step2" value="Guardar" class="btn btn-primary"/> 
+                <input type="button" data-bind="click: update,visible: step5" value="Guardar" class="btn btn-primary"/> 
                 <!-- /ko -->
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <!-- ko ifnot: createNew -->
@@ -146,14 +154,16 @@
         <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
 
         <table class="table table-hover">
-            <thead><tr><th>Descripcion</th><th>Elaboracion</th>
-              <th>Vencimiento</th><th>Codigo</th></tr></thead>
-            <tbody data-bind="foreach: lotes">
+            <thead><tr><th>Descripcion</th><th>Producto</th><th>Peso Neto</th>
+              <th>Peso Escurrido</th><th>Fracionable</th></tr></thead>
+            <tbody data-bind="foreach: presentaciones">
                 <tr data-bind="click: $root.editar" >
                     <td data-bind="text: descripcion"></td>
-                    <td data-bind="text: fecha_de_elaboracion"></td>
-                    <td data-bind="text: fecha_de_vencimiento"></td>
-                    <td data-bind="text: codigo"></td>
+                    <td data-bind="text: producto.name"></td>
+                    <td data-bind="text: peso_neto"></td>
+                    <td data-bind="text: peso_escurrido"></td>
+                    <td ><span class="glyphicon glyphicon-search"></span>
+</td>
                 </tr>     
             </tbody>
         </table>

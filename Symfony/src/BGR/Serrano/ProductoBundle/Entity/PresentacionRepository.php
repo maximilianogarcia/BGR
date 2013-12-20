@@ -12,4 +12,26 @@ use Doctrine\ORM\EntityRepository;
  */
 class PresentacionRepository extends EntityRepository
 {
+    public function save($presentacion)
+    {   
+        $em = $this->getEntityManager();
+	    $presentacion->setProducto($em->merge($presentacion->getProducto()));
+	    $presentacion->setLote($em->merge($presentacion->getLote()));
+	    $presentacion->setMaterial($em->merge($presentacion->getMaterial()));
+	    $presentacion->setUnidad_de_medida($em->merge($presentacion->getUnidad_de_medida()));
+        $em->persist($presentacion);
+        $em->flush();
+    }
+
+    public function update($presentacion)
+    {   
+        $em = $this->getEntityManager();
+        $presentacion->setProducto($em->merge($presentacion->getProducto()));
+        $presentacion->setLote($em->merge($presentacion->getLote()));
+        $presentacion->setMaterial($em->merge($presentacion->getMaterial()));
+        $presentacion->setUnidad_de_medida($em->merge($presentacion->getUnidad_de_medida()));
+        $em->persist($em->merge($presentacion));
+        $em->flush();
+    }
+
 }

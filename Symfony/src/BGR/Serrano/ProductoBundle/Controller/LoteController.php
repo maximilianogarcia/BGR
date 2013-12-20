@@ -35,13 +35,16 @@ class LoteController extends Controller
     public function saveAction()
     {
 
+
         $jsonData = $this->get('request')->request->get('data');
 
         $serializer =  SerializerBuilder::create()->build();
 
         $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Lote', 'json');
 
+ 
         $em = $this->getDoctrine()->getManager();
+
         $em->getRepository('BGRSerranoProductoBundle:Lote')->save($object);
 
         $response = new Response($serializer->serialize($object,'json'));

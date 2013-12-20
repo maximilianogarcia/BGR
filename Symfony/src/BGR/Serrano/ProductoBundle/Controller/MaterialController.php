@@ -87,7 +87,30 @@ class MaterialController extends Controller
 
         return $response;
 
+    }
+    /**
+     * @Route("/material/getMaterialesByProducto")
+     */
+    public function getMaterialesByProducto()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $logger = $this->get('logger');
 
+        $jsonData = $this->get('request')->request->get('data');
+
+        $serializer =  SerializerBuilder::create()->build();
+       
+        /*        
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Producto', 'json');
+
+        $data = $em->getRepository('BGRSerranoProductoBundle:Material')->findByProducto($object);
+         */
+        $data = $em->getRepository('BGRSerranoProductoBundle:Material')->findAll();
+        
+        $response = new Response($serializer->serialize($data,'json'));
+       
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
     }
 
 }

@@ -22,15 +22,15 @@ class Presentacion
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Type("integer")
      */
-    private $id;
-
-    /**
+    private $sKu;
+ 
+     /**
      * @var string
      *
-     * @ORM\Column(name="SKU", type="string", length=255)
+     * @ORM\Column(name="descripcion", type="string", length=255)
      * @Type("string")
      */
-    private $sKU;
+    private $descripcion;
 
     /**
      * @var boolean
@@ -43,16 +43,18 @@ class Presentacion
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateCreate", type="datetime")
+     * @ORM\Column(name="date_create", type="datetime")
+     * @Type("DateTime<'Y-m-d'>")
      */
-    private $dateCreate;
+    private $date_create;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="dateUpdate", type="datetime")
+     * @ORM\Column(name="date_update", type="datetime")
+     * @Type("DateTime<'Y-m-d'>")
      */
-    private $dateUpdate;
+    private $date_update;
 
     /**
      * @var string
@@ -62,29 +64,23 @@ class Presentacion
      */
     private $fraccionable;
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="peso_neto", type="decimal", length=255)
+     * @Type("double")
+     */
+    private $peso_neto;
 
     /**
-     * Get id
+     * @var float
      *
-     * @return integer 
+     * @ORM\Column(name="peso_escurrido", type="decimal", length=255)
+     * @Type("double")
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $peso_escurrido;
 
-    /**
-     * Set sKU
-     *
-     * @param string $sKU
-     * @return Presentacion
-     */
-    public function setSKU($sKU)
-    {
-        $this->sKU = $sKU;
-    
-        return $this;
-    }
+
 
     /**
      * Get sKU
@@ -120,26 +116,71 @@ class Presentacion
     }
 
     /**
-     * Set dateCreate
+     * Set date_create
      *
-     * @param \DateTime $dateCreate
+     * @param \DateTime $date_create
      * @return Presentacion
      */
-    public function setDateCreate($dateCreate)
+    public function setDate_create($date_create)
     {
-        $this->dateCreate = $dateCreate;
+        $this->date_create = $date_create;
     
         return $this;
     }
 
     /**
-     * Get dateCreate
+     * Get date_create
      *
      * @return \DateTime 
      */
-    public function getDateCreate()
+    public function getPeso_neto()
     {
-        return $this->dateCreate;
+        return $this->peso_neto;
+    }
+
+     /**
+     * Set peso_neto
+     *
+     * @param \float $peso_neto
+     * @return Presentacion
+     */
+    public function setPeso_neto($peso_neto)
+    {
+        $this->peso_neto = $peso_neto;
+    
+        return $this;
+    }
+
+
+    /**
+     * Get peso_escurrido
+     *
+     * @return \DateTime 
+     */
+    public function getPeso_escurrido()
+    {
+        return $this->peso_escurrido;
+    }
+     /**
+     * Set peso_escurrido
+     *
+     * @param \float $peso_escurrido
+     * @return Presentacion
+     */
+    public function setPeso_escurrido($peso_escurrido)
+    {
+        $this->peso_escurrido = $peso_escurrido;
+    
+        return $this;
+    }
+    /**
+     * Get date_create
+     *
+     * @return \DateTime 
+     */
+    public function getDate_create()
+    {
+        return $this->date_create;
     }
 
     /**
@@ -148,21 +189,21 @@ class Presentacion
      * @param \DateTime $dateUpdate
      * @return Presentacion
      */
-    public function setDateUpdate($dateUpdate)
+    public function setDate_update($date_update)
     {
-        $this->dateUpdate = $dateUpdate;
+        $this->date_update = $date_update;
     
         return $this;
     }
 
     /**
-     * Get dateUpdate
+     * Get date_update
      *
      * @return \DateTime 
      */
-    public function getDateUpdate()
+    public function getDate_update()
     {
-        return $this->dateUpdate;
+        return $this->date_update;
     }
 
     /**
@@ -188,9 +229,6 @@ class Presentacion
         return $this->fraccionable;
     }
 
-
-
-
     /**
      * @ORM\ManyToOne(targetEntity="Material") 
      * @ORM\JoinColumn(name="material_id", referencedColumnName="id")
@@ -198,7 +236,7 @@ class Presentacion
      */
     protected $material;
 
-    public function setMaterial(Categoria $material)
+    public function setMaterial(Material $material)
     {
         $this->material = $material;
     }
@@ -230,16 +268,16 @@ class Presentacion
      * @ORM\JoinColumn(name="unidadDeMedida_id", referencedColumnName="id")
      * @Type("BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida")
      */
-    protected $unidadDeMedida;
+    protected $unidad_de_medida;
 
-    public function setUnidadDeMedida(UnidadDeMedida $unidadDeMedida)
+    public function setUnidad_de_medida(UnidadDeMedida $unidad_de_medida)
     {
-        $this->unidadDeMedida = $unidadDeMedida;
+        $this->unidad_de_medida = $unidad_de_medida;
     }
 
-    public function getUnidadDeMedida()
+    public function getUnidad_de_medida()
     {
-        return $this->unidadDeMedida;
+        return $this->unidad_de_medida;
     }
     /**
      * @ORM\ManyToOne(targetEntity="Producto") 

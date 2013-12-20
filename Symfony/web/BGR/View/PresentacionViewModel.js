@@ -21,13 +21,16 @@ function PresentacionViewModel() {
    self.step5 = ko.computed(function(){
         return self.step() == 5;
    });
+   self.backeable = ko.computed(function(){
+        return self.step() != 1  ;
+   });
 
 
    self.productos = ko.observableArray();
    self.lotes =  ko.mapping.fromJS([new Lote()]);
 
-   self.materiales = ko.observableArray();
-   self.medidas = ko.observableArray();
+   self.materiales = ko.mapping.fromJS([new Material()]);
+   self.medidas    = ko.mapping.fromJS([new UnidadMedida()]);
 
    self.selectedProductoId = ko.observable(null);
    self.selectedMedidaId = ko.observable(null);
@@ -49,12 +52,30 @@ function PresentacionViewModel() {
    });
 
    self.selectedProducto = function() {
-       var self = this;
+   //    var self = this;
        return ko.utils.arrayFirst(this.productos(), function(producto) {
            return self.selectedProductoId() == producto.id;
        });
    }.bind(this);
+   self.selectedLote = function() {
+  //    var self = this;
+       return ko.utils.arrayFirst(this.lotes(), function(lote) {
+           return self.selectedLoteId() == lote.id;
+       });
+   }.bind(this);
+   self.selectedMaterial = function() {
+   //    var self = this;
+       return ko.utils.arrayFirst(this.materiales(), function(material) {
+           return self.selectedMaterialId() == material.id;
+       });
+   }.bind(this);
 
+   self.selectedUnidad_de_medida = function() {
+      // var self = this;
+       return ko.utils.arrayFirst(this.medidas(), function(um) {
+           return self.selectedMedidaId() == um.id;
+       });
+   }.bind(this);
 
    self.apply = function(){
      ko.applyBindings(self);
@@ -75,6 +96,15 @@ function PresentacionViewModel() {
    self.save = function(){
     var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
     serializado.producto = self.selectedProducto();
+    serializado.lote = self.selectedLote();
+    serializado.lote.fecha_de_elaboracion= moment(serializado.lote.fecha_de_elaboracion).format('YYYY-MM-DD');
+    serializado.lote.fecha_de_vencimiento= moment(serializado.lote.fecha_de_vencimiento).format('YYYY-MM-DD');
+    serializado.date_create= moment().format('YYYY-MM-DD');
+    serializado.date_update= moment().format('YYYY-MM-DD');
+
+
+    serializado.material = self.selectedMaterial();
+    serializado.unidad_de_medida = self.selectedUnidad_de_medida();
   
 
 
@@ -100,7 +130,17 @@ function PresentacionViewModel() {
 
    self.update = function(){
       var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
-      serializado.producto = self.selectedProducto();
+    serializado.producto = self.selectedProducto();
+    serializado.lote = self.selectedLote();
+    serializado.lote.fecha_de_elaboracion= moment(serializado.lote.fecha_de_elaboracion).format('YYYY-MM-DD');
+    serializado.lote.fecha_de_vencimiento= moment(serializado.lote.fecha_de_vencimiento).format('YYYY-MM-DD');
+    serializado.date_create= moment().format('YYYY-MM-DD');
+    serializado.date_update= moment().format('YYYY-MM-DD');
+
+
+    serializado.material = self.selectedMaterial();
+    serializado.unidad_de_medida = self.selectedUnidad_de_medida();
+  
       var $myForm = $('#editPresentacionForm');
       if ($myForm[0].checkValidity()) {
           $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/update", {
@@ -138,11 +178,42 @@ function PresentacionViewModel() {
             type: "POST",
             data: {'data': JSON.stringify(producto)},
             success: function(result) {
-               ko.mapping.fromJS(result, self.lotes);
-               self.doNext()
+               self.lotes(result);
+               self.doNext(
+                  function(){
+                    self.selectedLoteId(self.selectedUnmapped.lote.id());
+                  }
+               );
             }
       });
    }
+
+  self.getMaterialesByProducto = function(producto){
+
+     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/getMaterialesByProducto", {
+            type: "POST",
+            data: {'data': JSON.stringify(producto)},
+            success: function(result) {
+               self.materiales(result);
+               self.doNext(
+                  function(){
+                    self.selectedMaterialId(self.selectedUnmapped.material.id());
+                  }
+                );
+            }
+      });
+
+  }
+  self.getMedidasByProducto = function(producto){
+       self.medidas(producto.unidad_de_medidas);
+
+       self.doNext(
+         function(){
+            self.selectedMedidaId(self.selectedUnmapped.unidad_de_medida.id());
+       });
+  }
+
+
 
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
@@ -160,8 +231,13 @@ function PresentacionViewModel() {
 
    self.editar = function(data){
       self.selectedProductoId(data.producto.id());
+
+      self.selectedMedidaId(data.unidad_de_medida.id());
+      self.selectedLoteId(data.lote.id());
+      self.selectedMaterialId(data.material.id());
+
       self.createNew(false);
-      self.step1(true);
+      self.step(1);
       self.selectedUnmapped = data;
       self.selected.producto(null);
       ko.mapping.fromJS(data, self.selected);
@@ -172,6 +248,10 @@ function PresentacionViewModel() {
    self.create = function(data){
 
       self.selectedProductoId(null);
+      self.selectedMedidaId(null);
+      self.selectedLoteId(null);
+      self.selectedMaterialId(null);
+
       self.createNew(true);
       self.step(1) ;
 
@@ -180,8 +260,9 @@ function PresentacionViewModel() {
       $('#editPresentacion').modal('show');
    }
 
-   self.doNext = function(){
+   self.doNext = function(callback){
     self.step(self.step()+1);
+    callback();
    }
    self.next = function(paso,data){
       
@@ -192,10 +273,16 @@ function PresentacionViewModel() {
          self.getLotesByProducto(self.selectedProducto());
          break;
       case "material":
-        alert("material");        
+         self.getMaterialesByProducto(self.selectedProducto());
+        break;
+      case "medida":
+         self.getMedidasByProducto(self.selectedProducto());
+        break;
+      case "form":
+         self.doNext();
         break;
       default:
-        alert("default");
+        alert("Error inesperado de inesperanza total");
       }
 
    }

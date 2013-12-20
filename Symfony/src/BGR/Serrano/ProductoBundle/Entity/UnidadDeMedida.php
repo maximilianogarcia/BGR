@@ -5,6 +5,7 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * UnidadDeMedida
@@ -60,6 +61,7 @@ class UnidadDeMedida
     /**
      * @ORM\ManyToMany(targetEntity="Producto", mappedBy="unidad_de_medidas")
      * @Type("ArrayCollection<BGR\Serrano\ProductoBundle\Entity\Producto>")
+     * @Exclude
      */
     private $productos;
 

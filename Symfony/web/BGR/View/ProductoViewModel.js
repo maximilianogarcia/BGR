@@ -6,7 +6,7 @@ function ProductoViewModel() {
    self.createNew = ko.observable(false);
    self.categorias = ko.observableArray();
 
-	self.allUnidadDeMedidas = ko.observableArray();
+	 self.allUnidadDeMedidas = ko.observableArray();
 
    self.selectedCategoriaId = ko.observable(1);
    
