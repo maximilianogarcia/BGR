@@ -162,8 +162,14 @@
                     <td data-bind="text: producto.name"></td>
                     <td data-bind="text: peso_neto"></td>
                     <td data-bind="text: peso_escurrido"></td>
-                    <td ><span class="glyphicon glyphicon-search"></span>
-</td>
+                    <td >
+                    <!-- ko if: fraccionable -->
+                      <span class='icon-ok'></span>
+                    <!-- /ko -->  
+                    <!-- ko ifnot: fraccionable -->
+                      <span class='icon-minus'></span>
+                    <!--/ko -->  
+                    </td>
                 </tr>     
             </tbody>
         </table>

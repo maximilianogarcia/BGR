@@ -36,7 +36,6 @@ function PresentacionViewModel() {
    self.selectedMedidaId = ko.observable(null);
    self.selectedLoteId = ko.observable(null);
    self.selectedMaterialId = ko.observable(null);
-
  
    self.hayProductoSeleccionado = ko.computed(function(){
      return self.selectedProductoId() != null;
