@@ -45,7 +45,8 @@ function ProductoViewModel() {
 
 		self.unidadesNotSelected = ko.mapping.fromJS(ko.toJS(self.allUnidadDeMedidas));
 		self.unidadesSelected = ko.mapping.fromJS(ko.toJS(data.unidad_de_medidas));
-		$.each(data.unidad_de_medidas(), function( index, value ) {
+		self.unidades = ko.mapping.fromJS(ko.toJS(data.unidad_de_medidas));
+		$.each(self.unidades(), function( index, value ) {
 
 			self.unidadesNotSelected.remove(self.containThisId(self.unidadesNotSelected(),value.id()));	
 		});
@@ -130,7 +131,7 @@ function ProductoViewModel() {
 
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
-     serializado.categoria(self.selectedCategoria);
+     serializado.categoria = self.selectedCategoria();
      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/delete", {
             data: {'data': serializado},
             type: "DELETE",

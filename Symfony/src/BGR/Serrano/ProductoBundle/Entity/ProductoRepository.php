@@ -26,44 +26,18 @@ class ProductoRepository extends EntityRepository
         }
         
         $producto->setUnidadDeMedidas($temporales);
-        
-	     
+
         $em->persist($producto);
         $em->flush();
     }
 
 	public function update($producto)
     {   
-        $em = $this->getEntityManager();
-        
-  /*    $producto->setCategoria($em->merge($producto->getCategoria()));
- 		  $temporales = new ArrayCollection();
-	      
-	     foreach($producto->getUnidadDeMedidas() as $unidadMedida){
-				$temporales->add($em->merge($unidadMedida));
-        }
-        
-         
-        	$logger = this->get('logger');
-			$logge->info();             
-        
-        */
-        
-	     $temporales = new ArrayCollection();
-	      
-	     foreach($producto->getUnidadDeMedidas() as $unidadMedida){
-	
-  			   $temporales->add($em->merge($unidadMedida));
-
-				$unidadMedida->addProducto($producto);
-				
-				$em->persist($em->merge($unidadMedida));
-        }        
-        
- 		  $producto->setUnidadDeMedidas($temporales);
- 		   
-        $em->persist($em->merge($producto));
-
+		  //TODO: persistir el manyToMany, por ahora se hace atraves de 
+		  // mapear la tabla intermedia.
+ 		  
+ 		  $em = $this->getEntityManager();	         
+		  $em->persist($em->merge($producto));
         $em->flush();
     }
 

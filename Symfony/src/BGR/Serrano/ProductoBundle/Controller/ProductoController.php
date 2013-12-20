@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use JMS\Serializer\SerializerBuilder;
 use BGR\Serrano\ProductoBundle\Entity\Producto as Producto;
+use BGR\Serrano\ProductoBundle\Entity\ProductoUnidadDeMedida as ProductoUnidadDeMedida;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -79,9 +80,6 @@ class ProductoController extends Controller
     public function updateAction()
     {
     
-        $logger = $this->get('logger');
-		$logger->info('request flechita'.$this->get('request')->request->get('data'));  
-
         $jsonData = $this->get('request')->request->get('data');
 
         $serializer =  SerializerBuilder::create()->build();
@@ -92,6 +90,47 @@ class ProductoController extends Controller
         
         $em->getRepository('BGRSerranoProductoBundle:Producto')->update($object);
 
+        /* manyToMany behavior -> refactor This -Begin */
+        $ObjectOnDB = $em->getRepository('BGRSerranoProductoBundle:Producto')->find($object->getId());
+         			
+		  $unidadesOnDB =  $ObjectOnDB->getUnidadDeMedidas();
+
+		  foreach($object->getUnidadDeMedidas() as $unidadToPersist){
+		  		$notExist = true;
+		  		foreach($unidadesOnDB as $unidadOnDB){
+		  			if($unidadToPersist->getId() == $unidadOnDB->getId())
+					{
+						$notExist = false;
+		  			}
+		  		}
+		  		if($notExist){
+
+		  			 $manualManyToMany = new ProductoUnidadDeMedida();
+		  	       $manualManyToMany->setProductoId($object->getId());
+					 $manualManyToMany->setUnidaddemedidaId($unidadToPersist->getId());
+		  			 $em->getRepository('BGRSerranoProductoBundle:ProductoUnidadDeMedida')->save($manualManyToMany);
+
+		  		}
+		  }
+
+		  foreach($unidadesOnDB as $unidadOnDB){
+		  		$notExist = true;
+		  		foreach($object->getUnidadDeMedidas() as $unidadToPersist){
+		  			if($unidadToPersist->getId() == $unidadOnDB->getId())
+					{
+						$notExist = false;
+		  			}
+		  		}
+		  		if($notExist){
+		  			 $manualManyToMany = new ProductoUnidadDeMedida();
+		  	       $manualManyToMany->setProductoId($object->getId());
+		    	    $manualManyToMany->setUnidaddemedidaId($unidadOnDB->getId());
+		  			 $em->getRepository('BGRSerranoProductoBundle:ProductoUnidadDeMedida')->delete($manualManyToMany);
+		  		}
+		  }
+        
+        /* manyToMany behavior -> refactor This -End */        
+        
         $response = new Response($serializer->serialize($object,'json'));
         
         $response->headers->set('Content-Type', 'application/json');
@@ -105,5 +144,4 @@ class ProductoController extends Controller
     public function getByIdAction()
     {
     }
-
 }
