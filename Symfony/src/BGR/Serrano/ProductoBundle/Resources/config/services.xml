@@ -4,17 +4,11 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
-    <parameters>
-        <parameter key="bgr_serrano_producto.example.class">BGR\Serrano\ProductoBundle\Example</parameter>
-    </parameters>
-
+  <parameters>
+    <parameter key="presentacion_service.class">BGR\Serrano\ProductoBundle\Service\PresentacionService</parameter>
+   </parameters>  
     <services>
-        <service id="bgr_serrano_producto.example" class="%bgr_serrano_producto.example.class%">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
-        </service>
-    </services>
-    -->
+	    <service id="presentacion_service" class="%presentacion_service.class%">
+	</service>
+	</services>
 </container>

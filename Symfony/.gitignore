@@ -1,1 +1,5 @@
 *.log
+/vendor
+*.settings
+*.project
+*.buildpath

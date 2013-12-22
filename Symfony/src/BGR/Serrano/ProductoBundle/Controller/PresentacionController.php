@@ -10,6 +10,9 @@ use JMS\Serializer\SerializerBuilder;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Doctrine\Common\Collections\ArrayCollection;
 use BGR\Serrano\ProductoBundle\Entity\Presentacion as Presentacion;
+use BGR\Serrano\ProductoBundle\Service\PresentacionService;
+
+
 
 class PresentacionController extends Controller
 {
@@ -19,8 +22,6 @@ class PresentacionController extends Controller
      */
     public function getAllAction()
     {
-
-        
         $em = $this->getDoctrine()->getManager();
         $data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findAll();
        
@@ -47,7 +48,11 @@ class PresentacionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $object->getLote()->setProducto($object->getProducto());
         $em->getRepository('BGRSerranoProductoBundle:Presentacion')->save($object);
+		
+        $servicio = $this->get('presentacion_service');
+        $servicio->crear_paquetes($em,$object);
 
+        
         $response = new Response($serializer->serialize($object,'json'));
         
         $response->headers->set('Content-Type', 'application/json');

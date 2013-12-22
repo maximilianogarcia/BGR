@@ -81,6 +81,9 @@ class Presentacion
     private $peso_escurrido;
 
 
+    private $cantidad_paquetes;
+
+   
 
     /**
      * Get sKU
@@ -296,5 +299,13 @@ class Presentacion
     {
         return $this->producto;
     }
+	public function getCantidadPaquetes() {
+		return $this->cantidad_paquetes;
+	}
+	public function setCantidadPaquetes($cantidad_paquetes) {
+		$this->cantidad_paquetes = $cantidad_paquetes;
+		return $this;
+	}
+	
 
 }
