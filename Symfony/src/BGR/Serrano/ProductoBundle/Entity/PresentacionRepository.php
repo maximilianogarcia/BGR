@@ -4,7 +4,6 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMapping;
-use BGR\Serrano\ProductoBundle\Entity\Stock;
 /**
  * PresentacionRepository
  *

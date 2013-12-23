@@ -87,13 +87,7 @@ class Presentacion
      */
     protected $cantidad_paquetes;
 
-    /**
-     * @var integer
-     *
-     * @Type("integer")
-     */
-    protected $stock;
-    
+
 
     /**
      * Get id
