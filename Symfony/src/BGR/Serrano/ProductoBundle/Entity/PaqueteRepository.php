@@ -3,6 +3,7 @@
 namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * PaqueteRepository
@@ -12,4 +13,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class PaqueteRepository extends EntityRepository
 {
+	public function findDisponiblesBy(Presentacion $presentacion)
+	{
+		$em = $this->getEntityManager();
+		$result = $em->createQuery("SELECT COUNT(l.id) FROM BGRSerranoProductoBundle:Paquete l
+            WHERE l.presentacion = :presentacion  AND l.estado =  'DISPONIBLE'"
+		)->setParameter('presentacion', $presentacion->getId())->getSingleScalarResult();
+	
+		return $result;
+	}
+
+
+
 }

@@ -22,7 +22,7 @@ class Presentacion
      * @ORM\GeneratedValue(strategy="AUTO")
      * @Type("integer")
      */
-    private $sKu;
+    private $id;
  
      /**
      * @var string
@@ -80,19 +80,29 @@ class Presentacion
      */
     private $peso_escurrido;
 
-
-    private $cantidad_paquetes;
-
-   
+    /**
+     * @var integer
+     *
+     * @Type("integer")
+     */
+    protected $cantidad_paquetes;
 
     /**
-     * Get sKU
+     * @var integer
+     *
+     * @Type("integer")
+     */
+    protected $stock;
+    
+
+    /**
+     * Get id
      *
      * @return string 
      */
-    public function getSKU()
+    public function getId()
     {
-        return $this->sKU;
+        return $this->id;
     }
 
     /**

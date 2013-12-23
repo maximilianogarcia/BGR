@@ -85,5 +85,43 @@ class PresentacionController extends Controller
     public function deleteAction()
     {
     }
+    /**
+     * @Route("/presentacion/getDisponibleStock")
+     * @Template()
+     */
+    public function getDisponibleStockAction()
+    {
+    	
+    	$jsonData = $this->get('request')->request->get('data');
+    	$serializer =  SerializerBuilder::create()->build();
+    	$object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Presentacion', 'json');
+    	$em = $this->getDoctrine()->getManager();
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Paquete')->findDisponiblesBy($object);
+    	
+    	$response = new Response($result);
 
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }
+    /**
+     * @Route("/presentacion/getStocksByProducto")
+     * @Template()
+     */
+    public function getStocksByProductoAction()
+    {
+    	 
+    	$jsonData = $this->get('request')->request->get('data');
+    	$serializer =  SerializerBuilder::create()->build();
+    	$object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Producto', 'json');
+    	$em = $this->getDoctrine()->getManager();
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findStocksByProducto($object);
+    	 
+    	
+    	$response = new Response($serializer->serialize($result,'json'));
+    
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }
+    
+    
 }

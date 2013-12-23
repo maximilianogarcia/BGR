@@ -1,7 +1,7 @@
 function Presentacion( ) {
 	this.id = ko.observable();
 	this.descripcion = ko.observable();
-	this.sKU = ko.observable();
+	this.id = ko.observable();
 	this.active = ko.observable(true);
     this.fraccionable = ko.observable(false);
 	this.date_create = ko.observable ();
@@ -12,4 +12,5 @@ function Presentacion( ) {
 	this.material = ko.observable();
 	this.peso_neto = ko.observable();
 	this.peso_escurrido = ko.observable();
+	this.cantidad_paquetes = ko.observable();
 }

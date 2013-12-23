@@ -110,7 +110,7 @@ function PresentacionViewModel() {
     var $myForm = $('#editPresentacionForm');
     if ($myForm[0].checkValidity()) {
      	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/save", {
-                data: {'data': JSON.stringify(serializado) },
+     		    data: {'data': JSON.stringify(ko.toJS(serializado)) },
                 type: "POST",
                 error: function(result){
                   alert("Ocurrio un error al salvar");
@@ -143,7 +143,7 @@ function PresentacionViewModel() {
       var $myForm = $('#editPresentacionForm');
       if ($myForm[0].checkValidity()) {
           $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/update", {
-                  data: {'data': JSON.stringify(serializado) },
+                  data: {'data': JSON.stringify(ko.toJS(serializado)) },
                   type: "PUT",
                   success: function(result) {
                     self.selectedUnmapped.name(result.name);

@@ -3,7 +3,8 @@
 namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\ORM\Query\ResultSetMapping;
+use BGR\Serrano\ProductoBundle\Entity\Stock;
 /**
  * PresentacionRepository
  *
@@ -33,5 +34,29 @@ class PresentacionRepository extends EntityRepository
         $em->persist($em->merge($presentacion));
         $em->flush();
     }
+    public function findStocksByProducto(Producto $producto)
+    {
+    	$em = $this->getEntityManager();
+    	 
+    	$rsm = new ResultSetMapping();
+    	
 
+    	$rsm->addEntityResult('BGR\Serrano\ProductoBundle\Entity\Presentacion', 's');
+    	$rsm->addFieldResult('s', 'id', 'id');
+    	$rsm->addFieldResult('s', 'descripcion', 'descripcion');
+    	$rsm->addMetaResult('s', 'lote', 'lote_id',true);
+    	$rsm->addScalarResult('stock', 'stock');
+    	 
+    
+    	$query = $em->createNativeQuery('
+		  SELECT p.* , COUNT( * ) as stock
+          FROM Presentacion p
+          JOIN Paquete pa ON ( pa.presentacion_id = p.id )
+		  WHERE p.producto_id = 1
+          GROUP BY pa.presentacion_id',$rsm);
+    	$query->setParameter(1,$producto->getId());
+    
+    	$result = $query->getResult(); 
+    	return $result;
+    }
 }
