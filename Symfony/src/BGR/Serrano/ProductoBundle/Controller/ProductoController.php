@@ -2,6 +2,8 @@
 
 namespace BGR\Serrano\ProductoBundle\Controller;
 
+
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -10,6 +12,7 @@ use BGR\Serrano\ProductoBundle\Entity\Producto as Producto;
 use BGR\Serrano\ProductoBundle\Entity\ProductoUnidadDeMedida as ProductoUnidadDeMedida;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\MappingException;
 
 class ProductoController extends Controller
 {
@@ -112,7 +115,7 @@ class ProductoController extends Controller
 
 		  		}
 		  }
-
+ 
 		  foreach($unidadesOnDB as $unidadOnDB){
 		  		$notExist = true;
 		  		foreach($object->getUnidadDeMedidas() as $unidadToPersist){
@@ -125,10 +128,14 @@ class ProductoController extends Controller
 		  			 $manualManyToMany = new ProductoUnidadDeMedida();
 		  	       $manualManyToMany->setProductoId($object->getId());
 		    	    $manualManyToMany->setUnidaddemedidaId($unidadOnDB->getId());
+					 //existe en presentacion		    	    
+					 
+		    	    if ($this->existOnPresentacion($manualManyToMany)){
+		    	    	throw MappingException::illegalInverseIdentifierAssocation('ProductoUnidadDeMedida JOIN Presentacion','producto_id, unidadDeMedida_id');
+		  			 }
 		  			 $em->getRepository('BGRSerranoProductoBundle:ProductoUnidadDeMedida')->delete($manualManyToMany);
 		  		}
-		  }
-        
+		  }        
         /* manyToMany behavior -> refactor This -End */        
         
         $response = new Response($serializer->serialize($object,'json'));
@@ -143,5 +150,18 @@ class ProductoController extends Controller
      */
     public function getByIdAction()
     {
+    }
+    
+    private function existOnPresentacion($pu){
+    	$em = $this->getDoctrine()->getManager();
+    	$presentaciones = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findAll();
+    	foreach($presentaciones as $presentacion){
+    		if( $pu->getProductoId() == $presentacion->getProducto()->getId() &&
+    		    $pu->getUnidaddemedidaId() == $presentacion->getUnidad_de_medida()->getId()){
+    		   return true;
+    		}
+    	}
+    	return false;
+    	
     }
 }

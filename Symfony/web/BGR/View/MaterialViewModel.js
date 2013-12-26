@@ -7,10 +7,14 @@ function MaterialViewModel() {
 
 
    self.apply = function(){
-     self.getAll(self.materiales);
  	   ko.applyBindings(self);
+ 	   self.getAll(self.mapMateriales); 	  
    }
 
+   self.mapMateriales =function(data){
+        ko.mapping.fromJS(data, self.materiales);
+   }
+   
    self.serialized = function(){
       return ko.mapping.toJSON(self.selected);
    }
