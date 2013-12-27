@@ -10,6 +10,11 @@
           display: none;
           visibility: hidden;
       }
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
+      }
       .margenArriba{
         margin-top: 1em;
       }
@@ -117,8 +122,9 @@
         <h3>Edicion de lotes</h3>
 
         <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
+<div class="grid">
 
-        <table class="table table-hover">
+        <table class="table table-hover ">
             <thead><tr><th>Descripcion</th><th>Elaboracion</th>
               <th>Vencimiento</th><th>Codigo</th></tr></thead>
             <tbody data-bind="foreach: lotes">
@@ -130,7 +136,7 @@
                 </tr>     
             </tbody>
         </table>
-
+</div>
       </div>
   </body>
 </html>

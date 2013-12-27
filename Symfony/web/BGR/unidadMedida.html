@@ -10,9 +10,10 @@
           display: none;
           visibility: hidden;
       }
-      .clickeable:hover{
-          background-color: gray;
-          color:white;
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
       }
       .margenArriba{
         margin-top: 1em;
@@ -62,6 +63,7 @@
 
 
         <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
+<div class="grid">
 
         <table class="table table-hover">
             <thead><tr><th>Nombre</th><th>Descripcion</th><th>Equivalencia</th></tr></thead>
@@ -73,6 +75,7 @@
                 </tr>     
             </tbody>
         </table>
+        </div>
      </div>
 
         <div class="modal fade" id="editUnity" style="display:none;">

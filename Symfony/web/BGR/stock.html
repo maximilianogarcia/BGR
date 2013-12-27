@@ -10,6 +10,11 @@
           display: none;
           visibility: hidden;
       }
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
+      }
       .margenArriba{
         margin-top: 1em;
       }
@@ -62,6 +67,8 @@
                    <select class="form-control" data-bind="options: productos, optionsText: 'name', 
                    optionsValue: 'id', value: selectedProductoId, optionsCaption:'Producto', click:$root.loadStocks"></select>
               </span>
+
+              <div class="grid">
              <table class="table table-hover">
                   <thead><tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Total de KG</th><th>Presentacion</th>
                   <th>lote</th><th>Fecha de elaboracion</th><th>fecha de vencimiento</th></tr></thead>
@@ -78,7 +85,7 @@
                       </tr>     
                   </tbody>
               </table>
-
+</div>
       </div>
   </body>
 </html>
