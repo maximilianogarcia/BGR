@@ -113,6 +113,9 @@ function ProductoViewModel() {
                     self.selectedUnmapped.categoria.descripcion(result.descripcion);
 						  self.selectedUnmapped.unidad_de_medidas(result.unidad_de_medidas);	
                     $('#editProduct').modal('hide');
+                  },
+                  error: function(result){
+                      alert("Ocurrio un error al salvar");
                   }
             });
       }else{

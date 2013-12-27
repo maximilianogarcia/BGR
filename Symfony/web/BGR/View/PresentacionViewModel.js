@@ -146,12 +146,12 @@ function PresentacionViewModel() {
                   data: {'data': JSON.stringify(ko.toJS(serializado)) },
                   type: "PUT",
                   success: function(result) {
-                    self.selectedUnmapped.name(result.name);
-                    self.selectedUnmapped.precio_venta(result.precio_venta);
-                    self.selectedUnmapped.precio_compra(result.precio_compra);
+                    //self.selectedUnmapped.name(result.name);
+                    self.selectedUnmapped.producto.precio_venta(result.producto.precio_venta);
+                    self.selectedUnmapped.producto.precio_compra(result.producto.precio_compra);
                     self.selectedUnmapped.producto.id(result.producto.id);
                     self.selectedUnmapped.producto.name(result.producto.name);
-                    self.selectedUnmapped.producto.descripcion(result.descripcion);
+                    self.selectedUnmapped.descripcion(result.descripcion);
 
                     $('#editPresentacion').modal('hide');
                   }

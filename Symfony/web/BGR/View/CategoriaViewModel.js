@@ -7,10 +7,13 @@ function CategoriaViewModel() {
 
 
    self.apply = function(){
-     self.getAll(self.categorias);
- 	   ko.applyBindings(self);
+     ko.applyBindings(self);
+     self.getAll(self.mapCategorias); 	   
    }
-
+   
+   self.mapCategorias =function(data){
+        ko.mapping.fromJS(data, self.categorias);
+   }
    
    self.serialized = function(){
       return ko.mapping.toJSON(self.selected);

@@ -7,8 +7,13 @@ function UnidadMedidaViewModel() {
 
 
    self.apply = function(){
-     self.getAll(self.unidadMedidas);
- 	  ko.applyBindings(self);
+     ko.applyBindings(self);
+     self.getAll(self.mapUnidadMedidas);
+    
+   }
+   
+   self.mapUnidadMedidas =function(data){
+        ko.mapping.fromJS(data, self.unidadMedidas);
    }
    
    self.serialized = function(){

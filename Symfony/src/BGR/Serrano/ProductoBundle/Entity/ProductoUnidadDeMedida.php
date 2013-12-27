@@ -5,12 +5,7 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Type;
 
-/**
- * ProductoUnidadDeMedida
- *
- * @ORM\Table(name="producto_unidad_de_medida")
- * @ORM\Entity(repositoryClass="BGR\Serrano\ProductoBundle\Entity\ProductoUnidadDeMedidaRepository")
- */
+
 class ProductoUnidadDeMedida
 {
 

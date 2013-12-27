@@ -23,12 +23,15 @@
     <script type='text/javascript'  src='View/ProductoViewModel.js'></script>
     <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
     <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
-
+    <script type='text/javascript'  src='lib/commonFunctions.js'></script>
+    
     <script type='text/javascript'>
        $(document).ready(function(){
             viewModel = new LoteViewModel();
             viewModel.apply();
        });
+       
+
     </script>
    
   </head>
@@ -56,10 +59,10 @@
                             class="input-block-level " 
                             placeholder="Descripci&oacute;n"> 
                       <label class="margenArriba">Fecha de Elaboracion</label>
-                      <input type="date"   required data-bind="value: selected.fecha_de_elaboracion" 
+                      <input type="date" onchange="closeMe(this)"  required data-bind="value: selected.fecha_de_elaboracion" 
                             class="input-block-level"> 
                       <label class="margenArriba">Fecha de vencimiento</label>
-                      <input type="date"   required data-bind="value: selected.fecha_de_vencimiento" 
+                      <input type="date" onchange="closeMe(this)"  required data-bind="value: selected.fecha_de_vencimiento" 
                             class="input-block-level"> 
                       <label class="margenArriba">Codigo</label>
                       <input   required data-bind="value: selected.codigo" 
