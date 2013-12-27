@@ -47,6 +47,15 @@ class ProductoRepository extends EntityRepository
         $em->remove($em->merge($producto));
         $em->flush();
     }
-
+    public function findByCategoria($categoria)
+    {
+        $em = $this->getEntityManager();
+        $result = $em->createQuery("SELECT l FROM BGRSerranoProductoBundle:Producto l   
+            WHERE l.categoria = :categoria"
+        )->setParameter('categoria', $categoria->getId())->getArrayResult();
+    
+        return $result;
+    }
+    
 
 }

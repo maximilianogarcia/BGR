@@ -139,6 +139,26 @@ class ProductoController extends Controller
     }
 
     /**
+     * @Route("/producto/getByCategoria")
+     */
+    public function getByCategoriaAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	 
+    	$jsonData = $this->get('request')->request->get('data');
+    	$serializer =  SerializerBuilder::create()->build();
+    	$object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Categoria', 'json');
+    	
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Producto')->findByCategoria($object);
+    	
+    	$response = new Response($serializer->serialize($result,'json'));
+    	$response->headers->set('Content-Type', 'application/json');
+    	
+    	return $response;
+    	
+    	
+    }
+    /**
      * @Route("/producto/getById")
      */
     public function getByIdAction()

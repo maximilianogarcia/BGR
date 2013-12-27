@@ -41,17 +41,33 @@ class PresentacionRepository extends EntityRepository
     	
 
     	$rsm->addEntityResult('BGR\Serrano\ProductoBundle\Entity\Presentacion', 's');
-    	$rsm->addFieldResult('s', 'id', 'id');
-    	$rsm->addFieldResult('s', 'descripcion', 'descripcion');
-    	$rsm->addMetaResult('s', 'lote', 'lote_id',true);
+    	$rsm->addScalarResult('id', 'id');
+    	$rsm->addScalarResult('presentacion', 'presentacion');
     	$rsm->addScalarResult('stock', 'stock');
+    	$rsm->addScalarResult('producto', 'producto');
+    	$rsm->addScalarResult('lote', 'lote');
+    	$rsm->addScalarResult('vencimiento', 'vencimiento');
+    	$rsm->addScalarResult('elaboracion', 'elaboracion');
+    	$rsm->addScalarResult('medida', 'medida');
     	 
     
     	$query = $em->createNativeQuery('
-		  SELECT p.* , COUNT( * ) as stock
+		  SELECT  
+    			COUNT( * ) as stock, 
+    			p.id as id,
+     			u.name as medida,
+     			p.descripcion as presentacion,
+    			pr.name as producto,
+    			lote.descripcion as lote,
+    			lote.fechaDeElaboracion as elaboracion,
+    			lote.fechaDeVencimiento as vencimiento
+    			
           FROM Presentacion p
           JOIN Paquete pa ON ( pa.presentacion_id = p.id )
-		  WHERE p.producto_id = 1
+    	  JOIN Producto pr on (p.producto_id = pr.id)
+       	  JOIN Lote lote on (p.lote_id = lote.id) 
+       	  JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) 			
+		  WHERE p.producto_id = ?
           GROUP BY pa.presentacion_id',$rsm);
     	$query->setParameter(1,$producto->getId());
     
