@@ -62,7 +62,7 @@ function StockViewModel() {
 		            type: "POST",
 		            data: {'data': JSON.stringify(self.selectedProducto())},
 		            success: function(result) {
-		               self.stocks(result);
+		            	ko.mapping.fromJS( result, self.stocks);
 		            }
 		      });
 		 }else{

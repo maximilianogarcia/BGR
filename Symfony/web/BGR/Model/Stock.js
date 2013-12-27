@@ -1,4 +1,5 @@
-function Stock(){ 
+function Stock(){
+	var self = this; 
     this.id = ko.observable();
 	this.stock = ko.observable();
 	this.presentacion = ko.observable ();
@@ -7,4 +8,6 @@ function Stock(){
 	this.elaboracion= ko.observable();
 	this.vencimiento= ko.observable();
 	this.medida= ko.observable();
+	this.peso= ko.observable();
+	this.kgTotal= ko.observable();
 }

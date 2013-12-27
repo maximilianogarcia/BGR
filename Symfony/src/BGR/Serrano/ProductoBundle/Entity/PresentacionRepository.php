@@ -49,6 +49,7 @@ class PresentacionRepository extends EntityRepository
     	$rsm->addScalarResult('vencimiento', 'vencimiento');
     	$rsm->addScalarResult('elaboracion', 'elaboracion');
     	$rsm->addScalarResult('medida', 'medida');
+    	$rsm->addScalarResult('kgTotal', 'kgTotal');
     	 
     
     	$query = $em->createNativeQuery('
@@ -57,6 +58,7 @@ class PresentacionRepository extends EntityRepository
     			p.id as id,
      			u.name as medida,
      			p.descripcion as presentacion,
+    			(p.peso_neto * COUNT( * ) )/ 1000 as kgTotal,
     			pr.name as producto,
     			lote.descripcion as lote,
     			lote.fechaDeElaboracion as elaboracion,

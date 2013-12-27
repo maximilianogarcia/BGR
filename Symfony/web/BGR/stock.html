@@ -52,7 +52,7 @@
         </div><!--/.nav-collapse -->
       </div>
 
-        <h3>Edicion de categorias</h3>
+        <h3>Consultar stock</h3>
 
               <span>
               <select class="form-control" data-bind="options: categorias, optionsText: 'name', 
@@ -60,16 +60,17 @@
               </span>
               <span>
                    <select class="form-control" data-bind="options: productos, optionsText: 'name', 
-                   optionsValue: 'id', value: selectedProductoId, optionsCaption:'Producto', click:$root.loadStocks" required></select>
+                   optionsValue: 'id', value: selectedProductoId, optionsCaption:'Producto', click:$root.loadStocks"></select>
               </span>
-              <table class="table table-hover">
-                  <thead><tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Presentacion</th>
+             <table class="table table-hover">
+                  <thead><tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Total de KG</th><th>Presentacion</th>
                   <th>lote</th><th>Fecha de elaboracion</th><th>fecha de vencimiento</th></tr></thead>
                   <tbody data-bind="foreach: stocks">
                       <tr>
                           <td data-bind="text: producto"></td>
                           <td data-bind="text: stock"></td>
                           <td data-bind="text: medida"></td>
+                          <td data-bind="text: kgTotal"></td>
                           <td data-bind="text: presentacion"></td>
                           <td data-bind="text: lote"></td>
                           <td data-bind="text: elaboracion"></td>
