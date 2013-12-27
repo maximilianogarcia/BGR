@@ -42,14 +42,18 @@ function ProductoViewModel() {
 	}    
    
 	self.chargeUnidades = function(data){
-
+	  
 		self.unidadesNotSelected = ko.mapping.fromJS(ko.toJS(self.allUnidadDeMedidas));
-		self.unidadesSelected = ko.mapping.fromJS(ko.toJS(data.unidad_de_medidas));
-		self.unidades = ko.mapping.fromJS(ko.toJS(data.unidad_de_medidas));
-		$.each(self.unidades(), function( index, value ) {
+		try{
+		   self.unidadesSelected = ko.mapping.fromJS(ko.toJS(data.unidad_de_medidas));
+		   self.unidades = ko.mapping.fromJS(ko.toJS(data.unidad_de_medidas));
+		   $.each(self.unidades(), function( index, value ) {
 
-			self.unidadesNotSelected.remove(self.containThisId(self.unidadesNotSelected(),value.id()));	
-		});
+			   self.unidadesNotSelected.remove(self.containThisId(self.unidadesNotSelected(),value.id()));	
+		   });
+		}catch(err){
+			return self.unidadesNotSelected();
+		}
 		return self.unidadesNotSelected();
 	}   
    
@@ -160,6 +164,7 @@ function ProductoViewModel() {
       self.selectedCategoriaId(0);
       self.createNew(true);
       self.selectedUnmapped = data;
+      self.notSelectedUnidadDeMedidas(self.chargeUnidades(data));
       ko.mapping.fromJS(new Producto, self.selected);
       $('#editProduct').modal('show');
    }
