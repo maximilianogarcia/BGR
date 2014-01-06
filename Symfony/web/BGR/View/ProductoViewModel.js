@@ -150,6 +150,7 @@ function ProductoViewModel() {
    }
 
    self.editar = function(data){
+	   
       self.selectedCategoriaId(data.categoria.id());
       self.createNew(false);
       self.selectedUnmapped = data;

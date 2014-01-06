@@ -32,6 +32,38 @@ class PresentacionController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+    /**
+     * @Route("/presentacion/getActives")
+     * @Template()
+     */
+    public function getActivesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findActives(true);
+       
+      
+        $serializer =  SerializerBuilder::create()->build();
+        $jsonContent = $serializer->serialize($data, 'json');
+        $response = new Response($jsonContent);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
+    /**
+     * @Route("/presentacion/getInactives")
+     * @Template()
+     */
+    public function getInactivesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findActives(false);
+       
+      
+        $serializer =  SerializerBuilder::create()->build();
+        $jsonContent = $serializer->serialize($data, 'json');
+        $response = new Response($jsonContent);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 
     /**
      * @Route("/presentacion/save")
@@ -122,5 +154,34 @@ class PresentacionController extends Controller
     	return $response;
     }
     
+    /**
+     * @Route("/presentacion/desactivar")
+     * @Template()
+     */
+    public function desactivarAction()
+    {
     
+    	$presentacionId = $this->get('request')->request->get('data');
+    	$serializer =  SerializerBuilder::create()->build();
+    	$em = $this->getDoctrine()->getManager();
+    	$result =$em->getRepository('BGRSerranoProductoBundle:Presentacion')->desactivar($presentacionId);
+    	$response = new Response($serializer->serialize($result,'json'));
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }   
+    /**
+     * @Route("/presentacion/activar")
+     * @Template()
+     */
+    public function activarAction()
+    {
+    
+    	$presentacionId = $this->get('request')->request->get('data');
+    	$serializer =  SerializerBuilder::create()->build();
+    	$em = $this->getDoctrine()->getManager();
+    	$result =$em->getRepository('BGRSerranoProductoBundle:Presentacion')->activar($presentacionId);
+    	$response = new Response($serializer->serialize($result,'json'));
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }   
 }

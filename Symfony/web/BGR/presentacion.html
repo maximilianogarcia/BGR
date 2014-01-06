@@ -18,6 +18,14 @@
       .margenArriba{
         margin-top: 1em;
       }
+      .desactivado{
+        backGround:#B8B8B8;
+        
+      }
+      .oculto{
+        display:none;
+        
+      }
     </style>
 
     <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
@@ -109,10 +117,15 @@
                             class="input-block-level " 
                             placeholder="Peso escurrido en gramos">
                      </label>
-                     <label class="margenArriba">Cantidad
+                     <label class="margenArriba"><span data-bind="text: $root.medidaName"> </span>
+                      <input    
+                            class="input-block-level " 
+                            placeholder="Cantidad">
+                     </label>
+                     <label class="margenArriba">Stock Disponible
                       <input   required data-bind="value: selected.cantidad_paquetes" 
                             class="input-block-level " 
-                            placeholder="Cantidad de paquetes">
+                            placeholder="Stock Disponible">
                      </label>
                       <input type="submit"  id="submitOculto" class="hide"/>
 
@@ -132,8 +145,12 @@
 
                 <button 
                   type="button" class="btn btn-danger" 
-                  data-bind="click: borrar">
-                  Eliminar presentacion</button>
+                  data-bind="click: desactivar, visible: selected.active">
+                  Desactivar presentacion</button>
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: activar, visible: !selected.active()">
+                  Activar presentacion</button>
                <!-- /ko -->
 
               </div>
@@ -163,13 +180,15 @@
         <h3>Edicion de presentaciones</h3>
 
         <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
+        <input type="button" data-bind="click: toggleActivos, visible: soloActivos" value="Mostrar Inactivos" class="btn btn-default"/>
+        <input type="button" data-bind="click: toggleActivos, visible: !soloActivos()" value="Mostrar activos" class="btn btn-default"/>
 <div class="grid">
 
         <table class="table table-hover">
             <thead><tr><th>Descripcion</th><th>Producto</th><th>Peso Neto</th>
               <th>Peso Escurrido</th><th>Fracionable</th></tr></thead>
             <tbody data-bind="foreach: presentaciones">
-                <tr data-bind="click: $root.editar" >
+                <tr data-bind="click: $root.editar , css: { desactivado: !active()  }"  >
                     <td data-bind="text: descripcion"></td>
                     <td data-bind="text: producto.name"></td>
                     <td data-bind="text: peso_neto"></td>

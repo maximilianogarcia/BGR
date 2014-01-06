@@ -4,6 +4,7 @@ function PresentacionViewModel() {
    self.presentaciones = ko.mapping.fromJS([new Presentacion()]);
    self.selected = ko.mapping.fromJS(new Presentacion());
    self.createNew = ko.observable(false);
+   self.soloActivos = ko.observable(true);
 
    self.step = ko.observable(1);
    self.step1 = ko.computed(function(){
@@ -67,7 +68,7 @@ function PresentacionViewModel() {
        return ko.utils.arrayFirst(this.materiales(), function(material) {
            return self.selectedMaterialId() == material.id;
        });
-   }.bind(this);
+   };
 
    self.selectedUnidad_de_medida = function() {
       // var self = this;
@@ -75,10 +76,25 @@ function PresentacionViewModel() {
            return self.selectedMedidaId() == um.id;
        });
    }.bind(this);
+   
+  self.medidaName = ko.computed(
+	function(){
+		
+		var result = ko.utils.arrayFirst(self.medidas(), function(um) {
+	           return self.selectedMedidaId() == um.id;
+	       });
+		var name= null
+		if(result){
+			name = result.name
+		};
+		return 'Cantidad de '+ name;
+	}
+  
+  )
 
    self.apply = function(){
      ko.applyBindings(self);
-     self.getAll();
+     self.getActives();
      var viewModelProducto = new ProductoViewModel();
      viewModelProducto.getAll(self.copiar);
    }
@@ -161,14 +177,23 @@ function PresentacionViewModel() {
       }
    }
 
-   self.getAll = function(){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/getAll", {
+   self.getActives = function(){
+     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/getActives", {
             type: "GET",
             success: function(result) {
                   ko.mapping.fromJS(result, self.presentaciones
               );
             }
       });
+   }
+   self.getInactives = function(){
+	   $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/getInactives", {
+		   type: "GET",
+		   success: function(result) {
+			   ko.mapping.fromJS(result, self.presentaciones
+			   );
+		   }
+	   });
    }
 
 
@@ -214,18 +239,29 @@ function PresentacionViewModel() {
 
 
 
-   self.borrar = function(data){
-     serializado=ko.mapping.toJSON(self.selected);
-     serializado.producto(self.selectedProducto);
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/delete", {
-            data: {'data': serializado},
-            type: "DELETE",
+   self.desactivar = function(data){
+   //  serializado=ko.mapping.toJSON(self.selected);
+     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/desactivar", {
+            data: {'data': self.selected.id()},
+            type: "PUT",
             success: function(result){
                $('#editPresentacion').modal('hide');
                self.presentaciones
           .remove(self.selectedUnmapped);
             }
       });
+   }
+   self.activar = function(data){
+	   //  serializado=ko.mapping.toJSON(self.selected);
+	   $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/activar", {
+		   data: {'data': self.selected.id()},
+		   type: "PUT",
+		   success: function(result){
+			   $('#editPresentacion').modal('hide');
+			   self.presentaciones
+			   .remove(self.selectedUnmapped);
+		   }
+	   });
    }
 
    self.editar = function(data){
@@ -286,7 +322,17 @@ function PresentacionViewModel() {
 
    }
    self.back = function(data){
-      self.step(self.step()-1);
+      return data.actuve() && self.soloActivos();
    }
+
+   self.toggleActivos= function(){
+	   self.soloActivos(!self.soloActivos());
+	   if(self.soloActivos()){
+		   self.getActives();
+	   }else{
+		   self.getInactives();
+	   }
+   }
+
 
 }

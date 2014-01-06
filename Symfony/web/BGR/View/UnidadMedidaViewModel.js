@@ -1,15 +1,28 @@
 function UnidadMedidaViewModel() {
-   self = this;
+   var self = this;
    self.selectedUnmapped = null;
    self.unidadMedidas = ko.mapping.fromJS([new UnidadMedida()]);
+   self.noDivisibles= ko.observableArray([new UnidadMedida()]);
    self.selected = ko.mapping.fromJS(new UnidadMedida());
    self.createNew = ko.observable(false);
+
+   self.selectedMedidaId = ko.observable(null);
+   self.hayMedidaSeleccionado = ko.computed(function(){
+	     return self.selectedMedidaId() != null;
+	   });
+   
+   self.selectedMedida = function() {
+	      // var self = this;
+	       return ko.utils.arrayFirst(this.noDivisibles(), function(um) {
+	           return self.selectedMedidaId() == um.id;
+	       });
+	   }.bind(this);
 
 
    self.apply = function(){
      ko.applyBindings(self);
      self.getAll(self.mapUnidadMedidas);
-    
+     self.getNoDivisibles(self.noDivisibles);    
    }
    
    self.mapUnidadMedidas =function(data){
@@ -20,8 +33,11 @@ function UnidadMedidaViewModel() {
       return ko.mapping.toJSON(self.selected);
    }
 
+
+   
    self.save = function(){
     var $myForm = $('#editUnityForm');
+    self.selected.deriva_de(self.selectedMedida());
     if ($myForm[0].checkValidity()) {
      	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/save", {
                 data: {'data': self.serialized() },         
@@ -42,6 +58,7 @@ function UnidadMedidaViewModel() {
 
    self.update = function(){
       var $myForm = $('#editUnityForm');
+      self.selected.deriva_de(self.selectedMedida());
       if ($myForm[0].checkValidity()) {
           $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/update", {
                   data: {'data': self.serialized() },         
@@ -58,6 +75,16 @@ function UnidadMedidaViewModel() {
       }
    }
 
+   self.getNoDivisibles = function(){
+	     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/getNoDivisibles", {
+	            type: "GET",
+	            success: function(result) { 
+	            	self.noDivisibles(result);
+	            }
+	      });
+    }
+   
+   
    self.getAll = function(destino){
      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/getAll", {
             type: "GET",
@@ -86,15 +113,20 @@ function UnidadMedidaViewModel() {
    }
 
    self.editar = function(data){
+      ko.mapping.fromJS(new UnidadMedida(), self.selected);
       self.createNew(false);
       self.selectedUnmapped = data;
+      if(data.deriva_de){
+         self.selectedMedidaId(data.deriva_de.id());
+      }
       ko.mapping.fromJS(data, self.selected);
       $('#editUnity').modal('show');
    }
 
    self.create = function(data){
       self.createNew(true);
-      ko.mapping.fromJS(new UnidadMedida, self.selected);
+      self.selectedMedidaId(null);
+      ko.mapping.fromJS(new UnidadMedida(), self.selected);
       self.selectedUnmapped = data;
       $('#editUnity').modal('show');
    }

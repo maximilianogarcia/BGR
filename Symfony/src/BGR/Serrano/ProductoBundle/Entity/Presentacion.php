@@ -57,9 +57,9 @@ class Presentacion
     private $date_update;
 
     /**
-     * @var string
+     * @var boolean
      *
-     * @ORM\Column(name="fraccionable", type="string", length=255)
+     * @ORM\Column(name="fraccionable", type="boolean")
      * @Type("boolean")
      */
     private $fraccionable;

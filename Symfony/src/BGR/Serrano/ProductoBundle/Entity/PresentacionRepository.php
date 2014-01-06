@@ -69,11 +69,57 @@ class PresentacionRepository extends EntityRepository
     	  JOIN Producto pr on (p.producto_id = pr.id)
        	  JOIN Lote lote on (p.lote_id = lote.id) 
        	  JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) 			
-		  WHERE p.producto_id = ?
+		  WHERE  p.producto_id = ? AND pa.estado= ?
           GROUP BY pa.presentacion_id',$rsm);
-    	$query->setParameter(1,$producto->getId());
+    	$query->setParameter(1,$producto->getId())->setParameter(2,"DISPONIBLE");
     
     	$result = $query->getResult(); 
     	return $result;
     }
+    
+    public function desactivar($presentacionId)
+    {
+    	 
+    	$em = $this->getEntityManager();
+        $p = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->find($presentacionId);
+    	$p->setActive(false);
+    	$em->persist($p);
+    	
+    	$conection = $em->getConnection();
+    	
+	    
+    	$count = $conection->executeUpdate('UPDATE Paquete SET estado = ? WHERE presentacion_id = ? AND estado = ?', 
+    			array('DESACTIVADO',$presentacionId,'DISPONIBLE'));
+    	
+      	$em->flush();
+      	return $p;
+    }
+    public function activar($presentacionId)
+    {
+    	 
+    	$em = $this->getEntityManager();
+        $p = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->find($presentacionId);
+    	$p->setActive(true);
+    	$em->persist($p);
+    	
+    	$conection = $em->getConnection();
+    	
+	    
+    	$count = $conection->executeUpdate('UPDATE Paquete SET estado = ? WHERE presentacion_id = ? AND estado = ?', 
+    			array('DISPONIBLE',$presentacionId,'DESACTIVADO'));
+    	
+      	$em->flush();
+      	return $p;
+    }
+    
+    public function findActives($data)
+    {
+    	$em = $this->getEntityManager();
+    	return $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findBy(
+    			array(
+    					'active' => $data
+    			)
+    	);
+    }
+    
 }

@@ -48,10 +48,19 @@ class UnidadDeMedida
      */
     protected $descripcion;
 
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="divisible", type="boolean")
+     * @Type("boolean")
+     */
+    protected $divisible;
+    
     /**
      * @var float
      *
-     * @ORM\Column(name="equivalencia", type="float")
+     * @ORM\Column(name="equivalencia", type="float", nullable=true)
      *
      * @Type("float")
      *
@@ -160,6 +169,15 @@ class UnidadDeMedida
     	
 
     /**
+     * @ORM\ManyToOne(targetEntity="UnidadDeMedida")
+     * @ORM\JoinColumn(name="$deriva_de_id", referencedColumnName="id", nullable=true)
+     * @Type("BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida")
+     */
+    protected $deriva_de;
+    
+    
+    
+    /**
      * Add productos
      *
      * @param \BGR\Serrano\ProductoBundle\Entity\Producto $productos
@@ -180,4 +198,20 @@ class UnidadDeMedida
     {
         $this->productos->removeElement($productos);
     }
+	public function getDivisible() {
+		return $this->divisible;
+	}
+	public function setDivisible($divisible) {
+		$this->divisible = $divisible;
+		return $this;
+	}
+	public function getDerivaDe() {
+		return $this->deriva_de;
+	}
+	public function setDerivaDe($deriva_de) {
+		$this->deriva_de = $deriva_de;
+		return $this;
+	}
+	
+	
 }

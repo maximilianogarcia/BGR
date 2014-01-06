@@ -26,6 +26,21 @@ class UnidadMedidaController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+    /**
+     * @Route("/unidadMedida/getNoDivisibles")
+     * @Template()
+     */
+    public function getNoDivisiblesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $data = $em->getRepository('BGRSerranoProductoBundle:UnidadDeMedida')->findNotDivisibles();
+
+        $serializer =  SerializerBuilder::create()->build();
+        $jsonContent = $serializer->serialize($data, 'json');
+        $response = new Response($jsonContent);
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 
 
     /**

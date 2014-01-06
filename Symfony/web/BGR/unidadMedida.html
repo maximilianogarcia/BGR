@@ -18,6 +18,12 @@
       .margenArriba{
         margin-top: 1em;
       }
+      #divisibleInput{
+      	margin-left:0px;
+      }
+      #divisibleSelect{
+      	margin-left:5px;
+      }
     </style>
 
     <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
@@ -89,12 +95,17 @@
                 <form action="#" id="editUnityForm" >
                  <label>Nombre</label>
                  <input required data-bind="value: selected.name" class="input-block-level" placeholder="Nombre"> 
-                    <label class="margenArriba">Descripcion</label>
+                    <label >Descripcion</label>
                     <input   required data-bind="value: selected.descripcion" 
                           class="input-block-level " 
                           placeholder="Descripci&oacute;n">
                     <label class="margenArriba">Equivalencia</label>
+						<label class="margenArriba"> Es divisivle
+                          <input type="checkbox" name="divisible"  data-bind="checked: selected.divisible" />
+                        </label>
+                    <!-- ko if: selected.divisible -->
 
+					<span class="span4" id="divisibleInput">
                     <input
                           id="equivalenciaInput"   
                           required data-bind="value: selected.equivalencia" 
@@ -104,6 +115,18 @@
                           data-content="Numero real con un '.' como separador" 
                           rel="popover" data-placement="bottom" 
                           data-original-title="Formato requerido:"/> 
+                    <input type="submit"  id="submitOculto" class="hide"/>
+                    </span>
+                    
+					<span class="span3" id="divisibleSelect">
+                        <select class="input-block-level form-control" data-bind="options: noDivisibles, optionsText: 'name', 
+                        optionsValue: 'id', value: selectedMedidaId, optionsCaption:'Deriva de'" ></select>
+                        <span class="icon-repeat"></span>
+                     </span>
+                    
+                     <!-- /ko -->
+                    <input type="submit"  id="submitOculto" class="hide"/>
+                    
                     <input type="submit"  id="submitOculto" class="hide"/>
 
                     <!-- ko if: createNew -->

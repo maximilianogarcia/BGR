@@ -13,25 +13,44 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class UnidadDeMedidaRepository extends EntityRepository
 {
-	public function save($unidadMedida)
+	public function save(UnidadDeMedida $unidadMedida)
     {   
         $em = $this->getEntityManager();
+        if(!$unidadMedida->getDivisible()){
+        	$unidadMedida->setEquivalencia(1);
+        }else{
+        	$unidadMedida->setDerivaDe($em->merge($unidadMedida->getDerivaDe()));
+        }
         $em->persist($unidadMedida);
         $em->flush();
     }
 
 
-    public function delete($unidadMedida)
+    public function delete(UnidadDeMedida $unidadMedida)
     {   
         $em = $this->getEntityManager();
         $em->remove($em->merge($unidadMedida));
         $em->flush();
     }
 
-    public function update($unidadMedida)
+    public function update(UnidadDeMedida $unidadMedida)
     {   
         $em = $this->getEntityManager();
+        if(!$unidadMedida->getDivisible()){
+        	$unidadMedida->setEquivalencia(1);
+        }else{
+        	$unidadMedida->setDerivaDe($em->merge($unidadMedida->getDerivaDe()));
+        }
         $em->persist($em->merge($unidadMedida));
         $em->flush();
+    }
+    public function findNotDivisibles()
+    {
+    	$em = $this->getEntityManager();
+        return $em->getRepository('BGRSerranoProductoBundle:UnidadDeMedida')->findBy(
+         	array(
+		       'divisible' => false
+	        )
+       );
     }
 }
