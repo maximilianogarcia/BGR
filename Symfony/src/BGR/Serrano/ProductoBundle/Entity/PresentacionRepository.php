@@ -71,7 +71,7 @@ class PresentacionRepository extends EntityRepository
        	  JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) 			
 		  WHERE  p.producto_id = ? AND pa.estado= ?
           GROUP BY pa.presentacion_id',$rsm);
-    	$query->setParameter(1,$producto->getId())->setParameter(2,"DISPONIBLE");
+    	$query->setParameter(1,$producto->getId());
     
     	$result = $query->getResult(); 
     	return $result;
@@ -121,5 +121,90 @@ class PresentacionRepository extends EntityRepository
     			)
     	);
     }
+      
+    public function findStocks()
+    {
+    	$em = $this->getEntityManager();
+    	 
+    	$rsm = new ResultSetMapping();    	
+
+    	$rsm->addEntityResult('BGR\Serrano\ProductoBundle\Entity\Presentacion', 's');
+    	$rsm->addScalarResult('id', 'id');
+    	$rsm->addScalarResult('presentacion', 'presentacion');
+    	$rsm->addScalarResult('stock', 'stock');
+    	$rsm->addScalarResult('producto', 'producto');
+    	$rsm->addScalarResult('lote', 'lote');
+    	$rsm->addScalarResult('vencimiento', 'vencimiento');
+    	$rsm->addScalarResult('elaboracion', 'elaboracion');
+    	$rsm->addScalarResult('medida', 'medida');
+    	$rsm->addScalarResult('kgTotal', 'kgTotal');
+    	 
     
+    	$query = $em->createNativeQuery('
+		  SELECT  
+    			COUNT( * ) as stock, 
+    			p.id as id,
+     			u.name as medida,
+     			p.descripcion as presentacion,
+    			(p.peso_neto * COUNT( * ) )/ 1000 as kgTotal,
+    			pr.name as producto,
+    			lote.descripcion as lote,
+    			lote.fechaDeElaboracion as elaboracion,
+    			lote.fechaDeVencimiento as vencimiento
+    			
+          FROM Presentacion p
+          JOIN Paquete pa ON ( pa.presentacion_id = p.id )
+    	  JOIN Producto pr on (p.producto_id = pr.id)
+       	  JOIN Lote lote on (p.lote_id = lote.id) 
+       	  JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) 			
+          GROUP BY pa.presentacion_id',$rsm);
+    
+    	$result = $query->getResult(); 
+    	return $result;
+    }
+    
+    public function findStocksByCategoria(Categoria $categoria)
+    {
+    	$em = $this->getEntityManager();
+    	 
+    	$rsm = new ResultSetMapping();
+    	
+
+    	$rsm->addEntityResult('BGR\Serrano\ProductoBundle\Entity\Presentacion', 's');
+    	$rsm->addScalarResult('id', 'id');
+    	$rsm->addScalarResult('presentacion', 'presentacion');
+    	$rsm->addScalarResult('stock', 'stock');
+    	$rsm->addScalarResult('producto', 'producto');
+    	$rsm->addScalarResult('lote', 'lote');
+    	$rsm->addScalarResult('vencimiento', 'vencimiento');
+    	$rsm->addScalarResult('elaboracion', 'elaboracion');
+    	$rsm->addScalarResult('medida', 'medida');
+    	$rsm->addScalarResult('kgTotal', 'kgTotal');
+    	 
+    
+    	$query = $em->createNativeQuery('
+		  SELECT  
+    			COUNT( * ) as stock, 
+    			p.id as id,
+     			u.name as medida,
+     			p.descripcion as presentacion,
+    			(p.peso_neto * COUNT( * ) )/ 1000 as kgTotal,
+    			pr.name as producto,
+    			lote.descripcion as lote,
+    			lote.fechaDeElaboracion as elaboracion,
+    			lote.fechaDeVencimiento as vencimiento
+    			
+          FROM Presentacion p
+          JOIN Paquete pa ON ( pa.presentacion_id = p.id )
+    	    JOIN Producto pr on (p.producto_id = pr.id)
+    	    JOIN Categoria cat on ( pr.categoria_id = cat.id)
+       	 JOIN Lote lote on (p.lote_id = lote.id) 
+       	 JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) 			
+		   WHERE cat.id = ?
+      GROUP BY pa.presentacion_id',$rsm);
+    	$query->setParameter(1,$categoria->getId());
+    
+    	$result = $query->getResult(); 
+    	return $result;
+    }
 }

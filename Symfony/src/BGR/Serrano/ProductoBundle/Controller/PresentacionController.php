@@ -32,38 +32,6 @@ class PresentacionController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
-    /**
-     * @Route("/presentacion/getActives")
-     * @Template()
-     */
-    public function getActivesAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findActives(true);
-       
-      
-        $serializer =  SerializerBuilder::create()->build();
-        $jsonContent = $serializer->serialize($data, 'json');
-        $response = new Response($jsonContent);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }
-    /**
-     * @Route("/presentacion/getInactives")
-     * @Template()
-     */
-    public function getInactivesAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findActives(false);
-       
-      
-        $serializer =  SerializerBuilder::create()->build();
-        $jsonContent = $serializer->serialize($data, 'json');
-        $response = new Response($jsonContent);
-        $response->headers->set('Content-Type', 'application/json');
-        return $response;
-    }
 
     /**
      * @Route("/presentacion/save")
@@ -184,4 +152,40 @@ class PresentacionController extends Controller
     	$response->headers->set('Content-Type', 'application/json');
     	return $response;
     }   
+   /**
+     * @Route("/presentacion/getStocks")
+     * @Template()
+     */
+    public function getStocksAction()
+    {
+
+    	$serializer =  SerializerBuilder::create()->build();
+    	$em = $this->getDoctrine()->getManager();
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findStocks();
+   	
+    	$response = new Response($serializer->serialize($result,'json'));
+    
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }
+    
+    /**
+     * @Route("/presentacion/getStocksByCategoria")
+     * @Template()
+     */
+    public function getStocksByCategoriaAction()
+    {
+    	 
+    	$jsonData = $this->get('request')->request->get('data');
+    	$serializer =  SerializerBuilder::create()->build();
+    	$object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Categoria', 'json');
+    	$em = $this->getDoctrine()->getManager();
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findStocksByCategoria($object);
+    	 
+    	
+    	$response = new Response($serializer->serialize($result,'json'));
+    
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }
 }
