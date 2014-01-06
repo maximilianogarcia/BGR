@@ -81,7 +81,7 @@ function StockViewModel() {
 		 if(self.hayProductoSeleccionado()){
 		     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/getStocksByProducto", {
 		            type: "POST",
-		            data: {'data': JSON.stringify(self.selectedProducto())},
+		            data: {'data': self.selectedProducto().id},
 		            success: function(result) {
 		            	ko.mapping.fromJS( result, self.stocks);
 		            }

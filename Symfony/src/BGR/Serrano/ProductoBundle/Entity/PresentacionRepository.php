@@ -33,7 +33,7 @@ class PresentacionRepository extends EntityRepository
         $em->persist($em->merge($presentacion));
         $em->flush();
     }
-    public function findStocksByProducto(Producto $producto)
+    public function findStocksByProducto($productoId)
     {
     	$em = $this->getEntityManager();
     	 
@@ -70,8 +70,7 @@ class PresentacionRepository extends EntityRepository
        	  JOIN Lote lote on (p.lote_id = lote.id) 
        	  JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) 			
 		  WHERE  p.producto_id = ? AND pa.estado= ?
-          GROUP BY pa.presentacion_id',$rsm);
-    	$query->setParameter(1,$producto->getId());
+          GROUP BY pa.presentacion_id',$rsm)->setParameter(1,$productoId)->setParameter(2,'DISPONIBLE');
     
     	$result = $query->getResult(); 
     	return $result;

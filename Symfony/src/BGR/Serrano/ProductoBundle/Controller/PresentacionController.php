@@ -109,11 +109,10 @@ class PresentacionController extends Controller
     public function getStocksByProductoAction()
     {
     	 
-    	$jsonData = $this->get('request')->request->get('data');
+    	$productoId = $this->get('request')->request->get('data');
     	$serializer =  SerializerBuilder::create()->build();
-    	$object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Producto', 'json');
     	$em = $this->getDoctrine()->getManager();
-    	$result = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findStocksByProducto($object);
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findStocksByProducto($productoId);
     	 
     	
     	$response = new Response($serializer->serialize($result,'json'));
@@ -188,4 +187,37 @@ class PresentacionController extends Controller
     	$response->headers->set('Content-Type', 'application/json');
     	return $response;
     }
+    
+    /**
+     * @Route("/presentacion/getActives")
+     * @Template()
+     */
+    public function getActivesAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findActives(true);
+    
+    	$serializer =  SerializerBuilder::create()->build();
+    	$jsonContent = $serializer->serialize($data, 'json');
+    	$response = new Response($jsonContent);
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }
+    /**
+     * @Route("/presentacion/getInactives")
+     * @Template()
+     */
+    public function getInactivesAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    	$data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findActives(false);
+    
+    	$serializer =  SerializerBuilder::create()->build();
+    	$jsonContent = $serializer->serialize($data, 'json');
+    	$response = new Response($jsonContent);
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }
+    
+    
 }
