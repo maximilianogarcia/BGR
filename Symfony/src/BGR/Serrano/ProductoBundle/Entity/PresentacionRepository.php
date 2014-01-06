@@ -155,8 +155,9 @@ class PresentacionRepository extends EntityRepository
           JOIN Paquete pa ON ( pa.presentacion_id = p.id )
     	  JOIN Producto pr on (p.producto_id = pr.id)
        	  JOIN Lote lote on (p.lote_id = lote.id) 
-       	  JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) 			
-          GROUP BY pa.presentacion_id',$rsm);
+       	  JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) 	
+          WHERE pa.estado= ?		
+          GROUP BY pa.presentacion_id',$rsm)->setParameter(1, "DISPONIBLE");
     
     	$result = $query->getResult(); 
     	return $result;
@@ -199,9 +200,8 @@ class PresentacionRepository extends EntityRepository
     	    JOIN Categoria cat on ( pr.categoria_id = cat.id)
        	 JOIN Lote lote on (p.lote_id = lote.id) 
        	 JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) 			
-		   WHERE cat.id = ?
-      GROUP BY pa.presentacion_id',$rsm);
-    	$query->setParameter(1,$categoria->getId());
+		   WHERE cat.id = ? AND pa.estado= ?
+      GROUP BY pa.presentacion_id',$rsm)->setParameter(1,$categoria->getId())->setParameter(2, "DISPONIBLE");
     
     	$result = $query->getResult(); 
     	return $result;

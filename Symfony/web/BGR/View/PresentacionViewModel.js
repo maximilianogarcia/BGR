@@ -264,22 +264,32 @@ function PresentacionViewModel() {
 	   });
    }
 
-   self.editar = function(data){
-      self.selectedProductoId(data.producto.id());
+   self.doEditar = function(data){
+ 	  $('#alertaFraccionable').modal('hide');
 
-      self.selectedMedidaId(data.unidad_de_medida.id());
-      self.selectedLoteId(data.lote.id());
-      self.selectedMaterialId(data.material.id());
-
-      self.createNew(false);
-      self.step(1);
-      self.selectedUnmapped = data;
-      self.selected.producto(null);
-      ko.mapping.fromJS(data, self.selected);
       $('#editPresentacion').modal('show');
    }
 
+   self.editar = function(data){
+       self.selectedProductoId(data.producto.id());
 
+       self.selectedMedidaId(data.unidad_de_medida.id());
+       self.selectedLoteId(data.lote.id());
+       self.selectedMaterialId(data.material.id());
+
+       self.createNew(false);
+       self.step(1);
+       self.selectedUnmapped = data;
+       self.selected.producto(null);
+       ko.mapping.fromJS(data, self.selected);
+      if(data.fraccionable()){
+
+    	  $('#alertaFraccionable').modal('show');
+      }else{
+    	  self.doEditar(data);
+      }
+   }
+   
    self.create = function(data){
 
       self.selectedProductoId(null);
