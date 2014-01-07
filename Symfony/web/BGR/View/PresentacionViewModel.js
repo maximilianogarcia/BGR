@@ -5,7 +5,8 @@ function PresentacionViewModel() {
    self.selected = ko.mapping.fromJS(new Presentacion());
    self.createNew = ko.observable(false);
    self.soloActivos = ko.observable(true);
-
+   self.paraFraccionar= ko.observable();
+   
    self.step = ko.observable(1);
    self.step1 = ko.computed(function(){
         return self.step() == 1;
@@ -212,6 +213,16 @@ function PresentacionViewModel() {
       });
    }
 
+  self.getStock = function(){
+	  $.ajax(BASE_REST_URL+"/paquete/getCantidadDisponibleByPresentacionId", {
+		  type: "POST",
+		  data: {'data': self.selected.id()},
+		  success: function(result) {
+			  self.paraFraccionar(result);
+		  }
+	  });
+  }
+
   self.getMaterialesByProducto = function(producto){
 
      $.ajax(BASE_REST_URL+"/material/getMaterialesByProducto", {
@@ -264,10 +275,19 @@ function PresentacionViewModel() {
 	   });
    }
 
-   self.doEditar = function(data){
- 	  $('#alertaFraccionable').modal('hide');
+   self.fraccionar = function(data){
+ 	  self.getStock();
 
-      $('#editPresentacion').modal('show');
+      $('#alertaFraccionable').modal('hide');
+
+
+   
+   }
+
+   self.doEditar = function(data){
+	   $('#alertaFraccionable').modal('hide');
+	   
+	   $('#editPresentacion').modal('show');
    }
 
    self.editar = function(data){
