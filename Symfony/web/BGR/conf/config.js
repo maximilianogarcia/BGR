@@ -1,0 +1,1 @@
+BASE_REST_URL="http://localhost/BGR/Symfony/web/app_dev.php/rest"

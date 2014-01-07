@@ -15,7 +15,7 @@ function StockViewModel() {
    }
    
 	self.getAllStocks = function(){
-		$.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/getStocks", {
+		$.ajax(BASE_REST_URL+"/presentacion/getStocks", {
 		      type: "GET",
 		      success: function(result) {
 		          ko.mapping.fromJS( result, self.allStocks);
@@ -55,7 +55,7 @@ function StockViewModel() {
 	   
 	 self.loadProductos = function(){
 		 if(self.hayCategoriaSeleccionada()){
-		     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/getByCategoria", {
+		     $.ajax(BASE_REST_URL+"/producto/getByCategoria", {
 		            type: "POST",
 		            data: {'data': JSON.stringify(self.selectedCategoria())},
 		            success: function(result) {
@@ -63,7 +63,7 @@ function StockViewModel() {
 		            }
 		      });
 		      
-		      $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/getStocksByCategoria", {
+		      $.ajax(BASE_REST_URL+"/presentacion/getStocksByCategoria", {
 		            type: "POST",
 		            data: {'data': JSON.stringify(self.selectedCategoria())},
 		            success: function(result) {
@@ -79,7 +79,7 @@ function StockViewModel() {
 	 
 	 self.loadStocks= function(){
 		 if(self.hayProductoSeleccionado()){
-		     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/getStocksByProducto", {
+		     $.ajax(BASE_REST_URL+"/presentacion/getStocksByProducto", {
 		            type: "POST",
 		            data: {'data': self.selectedProducto().id},
 		            success: function(result) {

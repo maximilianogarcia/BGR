@@ -125,7 +125,7 @@ function PresentacionViewModel() {
 
     var $myForm = $('#editPresentacionForm');
     if ($myForm[0].checkValidity()) {
-     	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/save", {
+     	  $.ajax(BASE_REST_URL+"/presentacion/save", {
      		    data: {'data': JSON.stringify(ko.toJS(serializado)) },
                 type: "POST",
                 error: function(result){
@@ -158,7 +158,7 @@ function PresentacionViewModel() {
   
       var $myForm = $('#editPresentacionForm');
       if ($myForm[0].checkValidity()) {
-          $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/update", {
+          $.ajax(BASE_REST_URL+"/presentacion/update", {
                   data: {'data': JSON.stringify(ko.toJS(serializado)) },
                   type: "PUT",
                   success: function(result) {
@@ -178,7 +178,7 @@ function PresentacionViewModel() {
    }
 
    self.getActives = function(){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/getActives", {
+     $.ajax(BASE_REST_URL+"/presentacion/getActives", {
             type: "GET",
             success: function(result) {
                   ko.mapping.fromJS(result, self.presentaciones
@@ -187,7 +187,7 @@ function PresentacionViewModel() {
       });
    }
    self.getInactives = function(){
-	   $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/getInactives", {
+	   $.ajax(BASE_REST_URL+"/presentacion/getInactives", {
 		   type: "GET",
 		   success: function(result) {
 			   ko.mapping.fromJS(result, self.presentaciones
@@ -198,7 +198,7 @@ function PresentacionViewModel() {
 
 
   self.getLotesByProducto = function(producto){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/lote/getLotesByProducto", {
+     $.ajax(BASE_REST_URL+"/lote/getLotesByProducto", {
             type: "POST",
             data: {'data': JSON.stringify(producto)},
             success: function(result) {
@@ -214,7 +214,7 @@ function PresentacionViewModel() {
 
   self.getMaterialesByProducto = function(producto){
 
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/getMaterialesByProducto", {
+     $.ajax(BASE_REST_URL+"/material/getMaterialesByProducto", {
             type: "POST",
             data: {'data': JSON.stringify(producto)},
             success: function(result) {
@@ -241,7 +241,7 @@ function PresentacionViewModel() {
 
    self.desactivar = function(data){
    //  serializado=ko.mapping.toJSON(self.selected);
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/desactivar", {
+     $.ajax(BASE_REST_URL+"/presentacion/desactivar", {
             data: {'data': self.selected.id()},
             type: "PUT",
             success: function(result){
@@ -253,7 +253,7 @@ function PresentacionViewModel() {
    }
    self.activar = function(data){
 	   //  serializado=ko.mapping.toJSON(self.selected);
-	   $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/presentacion/activar", {
+	   $.ajax(BASE_REST_URL+"/presentacion/activar", {
 		   data: {'data': self.selected.id()},
 		   type: "PUT",
 		   success: function(result){

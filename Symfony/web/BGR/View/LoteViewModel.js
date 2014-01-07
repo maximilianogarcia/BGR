@@ -50,7 +50,7 @@ function LoteViewModel() {
 
     var $myForm = $('#editLoteForm');
     if ($myForm[0].checkValidity()) {
-     	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/lote/save", {
+     	  $.ajax(BASE_REST_URL+"/lote/save", {
                 data: {'data': JSON.stringify(serializado) },
                 type: "POST",
                 error: function(result){
@@ -73,7 +73,7 @@ function LoteViewModel() {
       serializado.producto = self.selectedProducto();
       var $myForm = $('#editLoteForm');
       if ($myForm[0].checkValidity()) {
-          $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/lote/update", {
+          $.ajax(BASE_REST_URL+"/lote/update", {
                   data: {'data': JSON.stringify(serializado) },
                   type: "PUT",
                   success: function(result) {
@@ -93,7 +93,7 @@ function LoteViewModel() {
    }
 
    self.getAll = function(){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/lote/getAll", {
+     $.ajax(BASE_REST_URL+"/lote/getAll", {
             type: "GET",
             success: function(result) {
                   ko.mapping.fromJS(result, self.lotes
@@ -105,7 +105,7 @@ function LoteViewModel() {
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
      serializado.producto(self.selectedProducto);
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/lote/delete", {
+     $.ajax(BASE_REST_URL+"/lote/delete", {
             data: {'data': serializado},
             type: "DELETE",
             success: function(result){

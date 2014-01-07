@@ -39,7 +39,7 @@ function UnidadMedidaViewModel() {
     var $myForm = $('#editUnityForm');
     self.selected.deriva_de(self.selectedMedida());
     if ($myForm[0].checkValidity()) {
-     	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/save", {
+     	  $.ajax(BASE_REST_URL+"/unidadMedida/save", {
                 data: {'data': self.serialized() },         
                 type: "POST",
                 error: function(result){
@@ -60,7 +60,7 @@ function UnidadMedidaViewModel() {
       var $myForm = $('#editUnityForm');
       self.selected.deriva_de(self.selectedMedida());
       if ($myForm[0].checkValidity()) {
-          $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/update", {
+          $.ajax(BASE_REST_URL+"/unidadMedida/update", {
                   data: {'data': self.serialized() },         
                   type: "PUT",
                   success: function(result) {
@@ -76,7 +76,7 @@ function UnidadMedidaViewModel() {
    }
 
    self.getNoDivisibles = function(){
-	     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/getNoDivisibles", {
+	     $.ajax(BASE_REST_URL+"/unidadMedida/getNoDivisibles", {
 	            type: "GET",
 	            success: function(result) { 
 	            	self.noDivisibles(result);
@@ -86,7 +86,7 @@ function UnidadMedidaViewModel() {
    
    
    self.getAll = function(destino){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/getAll", {
+     $.ajax(BASE_REST_URL+"/unidadMedida/getAll", {
             type: "GET",
             success: function(result) { 
             //  self.map(result, destino)
@@ -102,7 +102,7 @@ function UnidadMedidaViewModel() {
 
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/unidadMedida/delete", {
+     $.ajax(BASE_REST_URL+"/unidadMedida/delete", {
             data: {'data': serializado},         
             type: "DELETE",
             success: function(result) { 

@@ -26,7 +26,7 @@ function MaterialViewModel() {
    self.save = function(){
     var $myForm = $('#editMaterialForm');
     if ($myForm[0].checkValidity()) {
-     	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/save", {
+     	  $.ajax(BASE_REST_URL+"/material/save", {
                 data: {'data': self.serialized() },         
                 type: "POST",
                 error: function(result){
@@ -46,7 +46,7 @@ function MaterialViewModel() {
    self.update = function(){
       var $myForm = $('#editMaterialForm');
       if ($myForm[0].checkValidity()) {
-          $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/update", {
+          $.ajax(BASE_REST_URL+"/material/update", {
                   data: {'data': self.serialized() },         
                   type: "PUT",
                   success: function(result) {
@@ -66,7 +66,7 @@ function MaterialViewModel() {
    }
 
    self.getAll = function(callback){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/getAll", {
+     $.ajax(BASE_REST_URL+"/material/getAll", {
             type: "GET",
             success: function(result) { 
                   callback(result);
@@ -76,7 +76,7 @@ function MaterialViewModel() {
 
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/material/delete", {
+     $.ajax(BASE_REST_URL+"/material/delete", {
             data: {'data': serializado},         
             type: "DELETE",
             success: function(result) { 

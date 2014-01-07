@@ -26,7 +26,7 @@ function CategoriaViewModel() {
    self.save = function(){
     var $myForm = $('#editCategoryForm');
     if ($myForm[0].checkValidity()) {
-     	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/categoria/save", {
+     	  $.ajax(BASE_REST_URL+"/categoria/save", {
                 data: {'data': self.serialized() },         
                 type: "POST",
                 error: function(result){
@@ -46,7 +46,7 @@ function CategoriaViewModel() {
    self.update = function(){
       var $myForm = $('#editCategoryForm');
       if ($myForm[0].checkValidity()) {
-          $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/categoria/update", {
+          $.ajax(BASE_REST_URL+"/categoria/update", {
                   data: {'data': self.serialized() },         
                   type: "PUT",
                   success: function(result) {
@@ -61,7 +61,7 @@ function CategoriaViewModel() {
    }
 
    self.getAll = function(callback){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/categoria/getAll", {
+     $.ajax(BASE_REST_URL+"/categoria/getAll", {
             type: "GET",
             success: function(result) { 
                   callback(result);
@@ -71,7 +71,7 @@ function CategoriaViewModel() {
 
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/categoria/delete", {
+     $.ajax(BASE_REST_URL+"/categoria/delete", {
             data: {'data': serializado},         
             type: "DELETE",
             success: function(result) { 

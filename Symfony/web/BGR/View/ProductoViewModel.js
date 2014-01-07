@@ -82,7 +82,7 @@ function ProductoViewModel() {
 
     var $myForm = $('#editProductForm');
     if ($myForm[0].checkValidity()) {
-     	  $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/save", {
+     	  $.ajax(BASE_REST_URL+"/producto/save", {
                 data: {'data': JSON.stringify(serializado) },
                 type: "POST",
                 error: function(result){
@@ -105,7 +105,7 @@ function ProductoViewModel() {
       serializado.unidad_de_medidas = ko.toJS(self.selected.unidad_de_medidas());
       var $myForm = $('#editProductForm');
       if ($myForm[0].checkValidity()) {
-          $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/update", {
+          $.ajax(BASE_REST_URL+"/producto/update", {
                   data: {'data': JSON.stringify(serializado) },
                   type: "PUT",
                   success: function(result) {
@@ -128,7 +128,7 @@ function ProductoViewModel() {
    }
 
    self.getAll = function(callback){
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/getAll", {
+     $.ajax(BASE_REST_URL+"/producto/getAll", {
             type: "GET",
             success: function(result) {
                   callback(result);
@@ -139,7 +139,7 @@ function ProductoViewModel() {
    self.borrar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
      serializado.categoria = self.selectedCategoria();
-     $.ajax("http://localhost/BGR/Symfony/web/app_dev.php/rest/producto/delete", {
+     $.ajax(BASE_REST_URL+"/producto/delete", {
             data: {'data': serializado},
             type: "DELETE",
             success: function(result){
