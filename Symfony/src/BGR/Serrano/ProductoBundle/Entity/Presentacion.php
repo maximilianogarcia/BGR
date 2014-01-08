@@ -86,8 +86,13 @@ class Presentacion
      * @Type("integer")
      */
     protected $cantidad_paquetes;
-
-
+    
+    /**
+     * @var integer
+     * @ORM\Column(name="cantidad", type="decimal", length=255)
+     * @Type("integer")
+     */
+    protected $cantidad;
 
     /**
      * Get id
@@ -308,6 +313,14 @@ class Presentacion
 	}
 	public function setCantidadPaquetes($cantidad_paquetes) {
 		$this->cantidad_paquetes = $cantidad_paquetes;
+		return $this;
+	}
+	
+	public function getCantidad() {
+		return $this->cantidad;
+	}
+	public function setCantidad($cantidad) {
+		$this->cantidad = $cantidad;
 		return $this;
 	}
 	

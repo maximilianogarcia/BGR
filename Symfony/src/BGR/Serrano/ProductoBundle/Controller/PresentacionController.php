@@ -195,8 +195,7 @@ class PresentacionController extends Controller
     public function getActivesAction()
     {
     	$em = $this->getDoctrine()->getManager();
-    	$data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findActives(true);
-    
+    	$data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findActives(true);      
     	$serializer =  SerializerBuilder::create()->build();
     	$jsonContent = $serializer->serialize($data, 'json');
     	$response = new Response($jsonContent);

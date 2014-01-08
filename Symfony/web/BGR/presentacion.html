@@ -6,6 +6,17 @@
     <link href="bootstrap/css/navbar.css" rel="stylesheet">
 
     <style>
+      .spanRight{
+       	float: right;
+      }       
+      .spanLeft{
+      	float: left;
+			margin-right: 33%;
+			margin-left: 0;
+      } 
+      .spanCenter{
+			margin-left: 50%;      
+      }
       .hide{
           display: none;
           visibility: hidden;
@@ -121,17 +132,50 @@
                      <label class="margenArriba"><span data-bind="text: $root.medidaName"> </span>
                       <input    
                             class="input-block-level " 
-                            placeholder="Cantidad">
+                            placeholder="Cantidad" data-bind="value: selected.cantidad" >
                      </label>
                      <label class="margenArriba">Stock Disponible
                       <input   required data-bind="value: selected.cantidad_paquetes" 
                             class="input-block-level " 
                             placeholder="Stock Disponible">
                      </label>
-                      <input type="submit"  id="submitOculto" class="hide"/>
-
-                   </form>
-                  </div>
+                     <input type="submit"  id="submitOculto" class="hide"/>
+						</div>
+                 <div id="step6" data-bind="visible: step6">
+                      <label>Descripcion</label>
+                      <input   required data-bind="value: selected.descripcion" 
+                            class="input-block-level " 
+                            placeholder="Descripci&oacute;n"> 
+                      <label class=" checkbox margenArriba">Fraccionable
+                       <input type="checkbox" data-bind="checked: selected.fraccionable" /> 
+                      </label>
+                      
+                      <label class="margenArriba">Peso neto
+                      <input   required data-bind="value: selected.peso_neto" 
+                            class="input-block-level " 
+                            placeholder="Peso Neto en gramos">
+                     </label>
+                     <label class="margenArriba">Peso escurrido
+                      <input   required data-bind="value: selected.peso_escurrido" 
+                            class="input-block-level " 
+                            placeholder="Peso escurrido en gramos">
+                     </label>
+                     <label class="margenArriba"><span data-bind="text: $root.medidaName"> </span>
+                      <input    
+                            class="input-block-level " 
+                            placeholder="Cantidad" data-bind="value: selected.cantidad" >
+                     </label>
+                     <label class="margenArriba">paquetes a fraccionar
+                     <span class="spanLeft">0</span> <span class="spanRight" data-bind="'text': paraFraccionarSelected" ></span>      
+                     <input type="range" min="0" required data-bind="'value': paraFraccionar, 'attr':{ 'max': paraFraccionarSelected }" 
+                            class="input-block-level " 
+                            placeholder="Stock Disponible">                             
+                     </label>
+                     <span class="spanCenter" data-bind="'text': paraFraccionar" ></span>
+                     <input type="submit"  id="submitOculto" class="hide"/>
+						</div>						
+                </form>
+                  
               </div>
               <div class="modal-footer">
                 <input type="button" data-bind="click: back,visible: backeable" value="Atras" class="btn btn-primary"/>

@@ -5,7 +5,8 @@ function PresentacionViewModel() {
    self.selected = ko.mapping.fromJS(new Presentacion());
    self.createNew = ko.observable(false);
    self.soloActivos = ko.observable(true);
-   self.paraFraccionar= ko.observable();
+   self.paraFraccionarSelected= ko.observable();
+   self.paraFraccionar = ko.observable();
    
    self.step = ko.observable(1);
    self.step1 = ko.computed(function(){
@@ -22,6 +23,9 @@ function PresentacionViewModel() {
    });
    self.step5 = ko.computed(function(){
         return self.step() == 5;
+   });
+   self.step6 = ko.computed(function(){
+        return self.step() == 6;
    });
    self.backeable = ko.computed(function(){
         return self.step() != 1  ;
@@ -121,7 +125,7 @@ function PresentacionViewModel() {
 
     serializado.material = self.selectedMaterial();
     serializado.unidad_de_medida = self.selectedUnidad_de_medida();
-  
+  	 	
 
 
     var $myForm = $('#editPresentacionForm');
@@ -218,6 +222,7 @@ function PresentacionViewModel() {
 		  type: "POST",
 		  data: {'data': self.selected.id()},
 		  success: function(result) {
+			  self.paraFraccionarSelected(result);
 			  self.paraFraccionar(result);
 		  }
 	  });
@@ -277,10 +282,17 @@ function PresentacionViewModel() {
 
    self.fraccionar = function(data){
  	  self.getStock();
-
-      $('#alertaFraccionable').modal('hide');
-
-
+      $('#alertaFraccionable').modal('hide');      
+      self.selectedMedidaId(self.selected.unidad_de_medida().id());      
+      self.createNew(false);
+      self.medidas(ko.toJS(self.selected.producto().unidad_de_medidas));
+      self.selectedMedidaId(self.selected.unidad_de_medida().id());
+      self.selectedUnmapped = data;
+      ko.mapping.fromJS(data, self.selected);
+      self.step(6);
+       
+      
+	  $('#editPresentacion').modal('show');
    
    }
 

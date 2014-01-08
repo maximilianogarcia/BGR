@@ -13,4 +13,5 @@ function Presentacion( ) {
 	this.peso_neto = ko.observable();
 	this.peso_escurrido = ko.observable();
 	this.cantidad_paquetes = ko.observable();
+	this.cantidad = ko.observable();
 }
