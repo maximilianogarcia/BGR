@@ -281,7 +281,7 @@ function PresentacionViewModel() {
    }
 
    self.fraccionar = function(data){
- 	  self.getStock();
+ 	   self.getStock();
       $('#alertaFraccionable').modal('hide');      
       self.selectedMedidaId(self.selected.unidad_de_medida().id());      
       self.createNew(false);
@@ -289,9 +289,7 @@ function PresentacionViewModel() {
       self.selectedMedidaId(self.selected.unidad_de_medida().id());
       self.selectedUnmapped = data;
       ko.mapping.fromJS(data, self.selected);
-      self.step(6);
-       
-      
+      self.step(6);      
 	  $('#editPresentacion').modal('show');
    
    }
@@ -302,13 +300,12 @@ function PresentacionViewModel() {
 	   $('#editPresentacion').modal('show');
    }
 
-   self.editar = function(data){
+   self.editar = function(data){   	 
        self.selectedProductoId(data.producto.id());
-
        self.selectedMedidaId(data.unidad_de_medida.id());
        self.selectedLoteId(data.lote.id());
        self.selectedMaterialId(data.material.id());
-
+       
        self.createNew(false);
        self.step(1);
        self.selectedUnmapped = data;

@@ -12,7 +12,6 @@
       .spanLeft{
       	float: left;
 			margin-right: 33%;
-			margin-left: 0;
       } 
       .spanCenter{
 			margin-left: 50%;      
@@ -120,22 +119,22 @@
                       </label>
                       
                       <label class="margenArriba">Peso neto
-                      <input   required data-bind="value: selected.peso_neto" 
+                      <input type="number"  min="1"  required data-bind="value: selected.peso_neto" 
                             class="input-block-level " 
                             placeholder="Peso Neto en gramos">
                      </label>
                      <label class="margenArriba">Peso escurrido
-                      <input   required data-bind="value: selected.peso_escurrido" 
+                      <input type="number"  min="0"  required data-bind="value: selected.peso_escurrido" 
                             class="input-block-level " 
                             placeholder="Peso escurrido en gramos">
                      </label>
                      <label class="margenArriba"><span data-bind="text: $root.medidaName"> </span>
-                      <input    
+                      <input type="number"  min="1"   
                             class="input-block-level " 
                             placeholder="Cantidad" data-bind="value: selected.cantidad" >
                      </label>
                      <label class="margenArriba">Stock Disponible
-                      <input   required data-bind="value: selected.cantidad_paquetes" 
+                      <input type="number"  min="1" required data-bind=" value: selected.cantidad_paquetes , enable: createNew" 
                             class="input-block-level " 
                             placeholder="Stock Disponible">
                      </label>
@@ -151,19 +150,19 @@
                       </label>
                       
                       <label class="margenArriba">Peso neto
-                      <input   required data-bind="value: selected.peso_neto" 
+                      <input type="number"  min="1"  required data-bind="value: selected.peso_neto" 
                             class="input-block-level " 
                             placeholder="Peso Neto en gramos">
                      </label>
                      <label class="margenArriba">Peso escurrido
-                      <input   required data-bind="value: selected.peso_escurrido" 
+                      <input type="number"  min="0"  required data-bind="value: selected.peso_escurrido" 
                             class="input-block-level " 
                             placeholder="Peso escurrido en gramos">
                      </label>
                      <label class="margenArriba"><span data-bind="text: $root.medidaName"> </span>
-                      <input    
-                            class="input-block-level " 
-                            placeholder="Cantidad" data-bind="value: selected.cantidad" >
+                      <input type="number"  min="1"    
+                             class="input-block-level " 
+                             placeholder="Cantidad" data-bind="value: selected.cantidad" >
                      </label>
                      <label class="margenArriba">paquetes a fraccionar
                      <span class="spanLeft">0</span> <span class="spanRight" data-bind="'text': paraFraccionarSelected" ></span>      
