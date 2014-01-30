@@ -39,7 +39,16 @@ class MaterialController extends Controller
         $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Material', 'json');
 
         $em = $this->getDoctrine()->getManager();
-        $em->getRepository('BGRSerranoProductoBundle:Material')->delete($object);
+        
+		  try{
+		  	  $em->getRepository('BGRSerranoProductoBundle:Material')->delete($object);
+			} catch (\Doctrine\DBAL\DBALException $e) {
+  			  $response = new Response();
+			  $response->setContent('No se puede eliminar un material con productos relacionados');
+			  $response->setStatusCode(500);
+			  $response->headers->set('Content-Type', 'text/html');	
+			  return $response;	
+			}
 
         return new Response($jsonData);
     }

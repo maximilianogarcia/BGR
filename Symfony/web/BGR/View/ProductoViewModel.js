@@ -118,8 +118,8 @@ function ProductoViewModel() {
 						  self.selectedUnmapped.unidad_de_medidas(result.unidad_de_medidas);	
                     $('#editProduct').modal('hide');
                   },
-                  error: function(result){
-                      alert("Ocurrio un error al salvar");
+                  error: function(error){
+                      alert(error.responseText);
                   }
             });
       }else{
@@ -145,6 +145,9 @@ function ProductoViewModel() {
             success: function(result){
                $('#editProduct').modal('hide');
                self.productos.remove(self.selectedUnmapped);
+            },
+            error: function(error){
+					alert(error.responseText);            
             }
       });
    }

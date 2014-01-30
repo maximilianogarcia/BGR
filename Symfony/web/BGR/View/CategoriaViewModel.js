@@ -77,6 +77,9 @@ function CategoriaViewModel() {
             success: function(result) { 
                $('#editCategory').modal('hide');
                self.categorias.remove(self.selectedUnmapped); 
+            },
+            error: function(error){
+					alert(error.responseText);            
             }
       });
    }

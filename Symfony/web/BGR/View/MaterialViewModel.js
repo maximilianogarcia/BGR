@@ -82,7 +82,10 @@ function MaterialViewModel() {
             success: function(result) { 
                $('#editMaterial').modal('hide');
                self.materiales.remove(self.selectedUnmapped); 
-            }
+            },
+			   error: function(error){
+				  alert(error.responseText);			   
+			   }
       });
    }
 

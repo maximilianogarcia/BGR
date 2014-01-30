@@ -320,18 +320,11 @@ function PresentacionViewModel() {
    }
    
    self.create = function(data){
-
-      self.selectedProductoId(null);
-      self.selectedMedidaId(null);
-      self.selectedLoteId(null);
-      self.selectedMaterialId(null);
-
-      self.createNew(true);
-      self.step(1) ;
-
+      self.selectedCategoriaId(0);
       self.selectedUnmapped = data;
-      ko.mapping.fromJS(new Presentacion, self.selected);
-      $('#editPresentacion').modal('show');
+      self.notSelectedUnidadDeMedidas(self.chargeUnidades(data));
+      ko.mapping.fromJS(new Producto, self.selected);
+      $('#editProduct').modal('show');
    }
 
    self.doNext = function(callback){

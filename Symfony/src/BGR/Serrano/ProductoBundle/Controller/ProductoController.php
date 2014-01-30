@@ -69,7 +69,15 @@ class ProductoController extends Controller
         $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Producto', 'json');
 
         $em = $this->getDoctrine()->getManager();
-        $em->getRepository('BGRSerranoProductoBundle:Producto')->delete($object);
+        try{
+        		$em->getRepository('BGRSerranoProductoBundle:Producto')->delete($object);
+        }catch(\Doctrine\DBAL\DBALException $e){
+     			$response = new Response();
+  				$response->setContent('No se puede eliminar un producto existente en una presentacion');
+  				$response->setStatusCode(500);
+  				$response->headers->set('Content-Type', 'text/html');	
+			  	return $response;		
+        }
 
         return new Response($jsonData);
     }
@@ -131,7 +139,11 @@ class ProductoController extends Controller
 					 //existe en presentacion		    	    
 					 
 		    	    if ($this->existOnPresentacion($manualManyToMany)){
-		    	    	throw MappingException::illegalInverseIdentifierAssocation('ProductoUnidadDeMedida JOIN Presentacion','producto_id, unidadDeMedida_id');
+	  						$response = new Response();
+			  				$response->setContent('No puede existir un producto sin unidades de medida relacionadas');
+			  				$response->setStatusCode(500);
+			  				$response->headers->set('Content-Type', 'text/html');	
+			  				return $response;			    	   		    	    	
 		  			 }
 		  			 $em->getRepository('BGRSerranoProductoBundle:ProductoUnidadDeMedida')->delete($manualManyToMany);
 		  		}

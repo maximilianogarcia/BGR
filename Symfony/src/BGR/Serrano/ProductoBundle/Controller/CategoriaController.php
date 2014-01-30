@@ -94,7 +94,16 @@ class CategoriaController extends Controller
         $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Categoria', 'json');
 
         $em = $this->getDoctrine()->getManager();
-        $em->getRepository('BGRSerranoProductoBundle:Categoria')->delete($object);
+		  try{	
+	        $em->getRepository('BGRSerranoProductoBundle:Categoria')->delete($object);
+        }catch(\Doctrine\DBAL\DBALException $e){
+     			$response = new Response();
+  				$response->setContent('No se puede eliminar una categoria ya relacionada con un producto');
+  				$response->setStatusCode(500);
+  				$response->headers->set('Content-Type', 'text/html');	
+			  	return $response;		
+        }
+
 
         return new Response($jsonData);
     }

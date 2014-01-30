@@ -102,16 +102,17 @@ function LoteViewModel() {
       });
    }
 
-   self.borrar = function(data){
+   self.desactivar = function(data){
      serializado=ko.mapping.toJSON(self.selected);
-     serializado.producto(self.selectedProducto);
-     $.ajax(BASE_REST_URL+"/lote/delete", {
-            data: {'data': serializado},
+     $.ajax(BASE_REST_URL+"/lote/desactivar", {
+            data: {'data': serializado.id},
             type: "DELETE",
             success: function(result){
                $('#editLote').modal('hide');
-               self.lotes
-          .remove(self.selectedUnmapped);
+               self.lotes.remove(self.selectedUnmapped);               
+            },
+            error: function(error){
+					alert(error.responseText);            
             }
       });
    }

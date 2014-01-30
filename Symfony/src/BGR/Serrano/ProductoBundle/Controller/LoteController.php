@@ -119,5 +119,35 @@ class LoteController extends Controller
         $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
+    
+   /**
+    * @Route("/lote/desactivar")
+    * @Template()
+    */
+    public function desactivarAction()
+    {
+
+		$response = new Response();
+		$response->setContent('Aun no implementado');
+		$response->setStatusCode(500);
+		$response->headers->set('Content-Type', 'text/html');	
+		return $response;			    	   	
+		
+  	   $loteId = $this->get('request')->request->get('data');  	   
+    	$serializer =  SerializerBuilder::create()->build();
+    	$em = $this->getDoctrine()->getManager();
+    	
+		    	
+    	
+    	$lote = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Lote', 'json');
+		
+		foreach($lote->getPresentaciones() as $presentacion){	
+			$result =$em->getRepository('BGRSerranoProductoBundle:Presentacion')->desactivar($presentacionId);
+		}
+    	
+    	$response = new Response($serializer->serialize($result,'json'));
+    	$response->headers->set('Content-Type', 'application/json');
+
+    }
 
 }
