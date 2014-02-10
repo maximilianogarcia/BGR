@@ -10,6 +10,7 @@ use JMS\Serializer\SerializerBuilder;
 use Symfony\Component\HttpFoundation\Response as Response;
 use Doctrine\Common\Collections\ArrayCollection;
 use BGR\Serrano\ProductoBundle\Entity\Presentacion as Presentacion;
+use BGR\Serrano\ProductoBundle\Entity\Remanente as Remanente;
 use BGR\Serrano\ProductoBundle\Service\PresentacionService;
 
 
@@ -58,6 +59,58 @@ class PresentacionController extends Controller
 
         return $response;
     }
+
+   /**
+    * @Route("/presentacion/saveFraccion")
+    * @Template()
+    */
+    public function saveFraccionAction()
+    {
+        $jsonData = $this->get('request')->request->get('data');
+        $cantidad_original = $this->get('request')->request->get('cantidad_original');
+        $paquete_id = $this->get('request')->request->get('paquete');
+
+        $serializer =  SerializerBuilder::create()->build();
+
+        $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Presentacion', 'json');
+
+		  //calculo la cantidad de paquetes a crear
+		  $cant_ =  floor($cantidad_original / $object->getCantidad());
+		  $object->setCantidadPaquetes($cant_);
+
+        $em = $this->getDoctrine()->getManager();
+        $object->getLote()->setProducto($object->getProducto());
+        $em->getRepository('BGRSerranoProductoBundle:Presentacion')->save($object);
+
+        $servicio = $this->get('presentacion_service');
+        $servicio->crear_paquetes($em,$object);
+
+        //cambiar estado del paquete
+        $em->getRepository('BGRSerranoProductoBundle:Paquete')->desactivar($paquete_id);        
+         
+        //guardar remanente
+		  $cant_ =  $cantidad_original % $object->getCantidad();
+		  
+		  $remanente = $em->getRepository('BGRSerranoProductoBundle:Remanente')
+		  ->findOneBy(array('producto'=>$object->getProducto()));
+		  
+		  if($remanente == null){
+		    $remanente = new Remanente();
+		    $remanente->setProducto($object->getProducto());
+		    $remanente->setCantidad(0);
+		  }
+		  
+		  $remanente->setCantidad($remanente->getCantidad()+$cant_);		  
+		  		  
+		  $em->getRepository('BGRSerranoProductoBundle:Remanente')->save($remanente);
+
+        $response = new Response($serializer->serialize($object,'json'));        
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+    }
+
+
 
     /**
      * @Route("/presentacion/update")
@@ -211,6 +264,33 @@ class PresentacionController extends Controller
     	$em = $this->getDoctrine()->getManager();
     	$data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findActives(false);
     
+    	$serializer =  SerializerBuilder::create()->build();
+    	$jsonContent = $serializer->serialize($data, 'json');
+    	$response = new Response($jsonContent);
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }
+    
+    /**
+     * @Route("/presentacion/getPaqueteById")
+     * @Template()
+     */
+    public function getPaqueteByIdAction()
+    {
+    	$presentacion_id = $this->get('request')->request->get('presentacion');
+    	$paquete_id = $this->get('request')->request->get('paquete');
+    	
+    	$em = $this->getDoctrine()->getManager();
+    	$data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findPaquete($presentacion_id,$paquete_id);
+
+	   if(count($data) == 0 ) {
+  			$response = new Response();
+			$response->setContent("El paquete no pertenece a la presentacion");
+			$response->setStatusCode(500);
+			$response->headers->set('Content-Type', 'text/html');	
+			return $response;	
+      }
+
     	$serializer =  SerializerBuilder::create()->build();
     	$jsonContent = $serializer->serialize($data, 'json');
     	$response = new Response($jsonContent);

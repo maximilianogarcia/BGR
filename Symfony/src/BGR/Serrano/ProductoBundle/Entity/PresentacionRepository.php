@@ -206,4 +206,26 @@ class PresentacionRepository extends EntityRepository
     	$result = $query->getResult(); 
     	return $result;
     }
+    
+    
+    public function findPaquete($presentacion_id, $paquete_id)
+    {
+   	 
+     $em = $this->getEntityManager();
+
+    	$rsm = new ResultSetMapping();
+    	$rsm->addScalarResult('result', 'result');
+  
+    	$query = $em->createNativeQuery('
+		  SELECT  
+    			COUNT( * ) as result 
+          FROM Presentacion p
+          JOIN Paquete pa ON ( pa.presentacion_id = p.id )
+         WHERE p.id = ? AND pa.estado= ? AND pa.id = ?
+      GROUP BY pa.presentacion_id',$rsm)->setParameter(1,$presentacion_id)->setParameter(2, "DISPONIBLE")->setParameter(3,$paquete_id);
+    
+    	$result = $query->getResult(); 
+    	return $result;
+    }
+    
 }
