@@ -23,7 +23,15 @@ class PaqueteRepository extends EntityRepository
 		return $result;
 	}
 
-	
-
+	public function desactivar($paqueteId)
+   {    	 
+    	$em = $this->getEntityManager();
+      $p = $em->getRepository('BGRSerranoProductoBundle:Paquete')->find($paqueteId);
+    	$p->setEstado('FRACCIONADO');
+    	$em->persist($p);
+    	$conection = $em->getConnection();
+     	$em->flush();
+     	return $p;
+   }
 
 }

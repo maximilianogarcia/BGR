@@ -139,42 +139,8 @@
                             placeholder="Stock Disponible">
                      </label>
                      <input type="submit"  id="submitOculto" class="hide"/>
-						</div>
-                 <div id="step6" data-bind="visible: step6">
-                      <label>Descripcion</label>
-                      <input   required data-bind="value: selected.descripcion" 
-                            class="input-block-level " 
-                            placeholder="Descripci&oacute;n"> 
-                      <label class=" checkbox margenArriba">Fraccionable
-                       <input type="checkbox" data-bind="checked: selected.fraccionable" /> 
-                      </label>
-                      
-                      <label class="margenArriba">Peso neto
-                      <input type="number"  min="1"  required data-bind="value: selected.peso_neto" 
-                            class="input-block-level " 
-                            placeholder="Peso Neto en gramos">
-                     </label>
-                     <label class="margenArriba">Peso escurrido
-                      <input type="number"  min="0"  required data-bind="value: selected.peso_escurrido" 
-                            class="input-block-level " 
-                            placeholder="Peso escurrido en gramos">
-                     </label>
-                     <label class="margenArriba"><span data-bind="text: $root.medidaName"> </span>
-                      <input type="number"  min="1"    
-                             class="input-block-level " 
-                             placeholder="Cantidad" data-bind="value: selected.cantidad" >
-                     </label>
-                     <label class="margenArriba">paquetes a fraccionar
-                     <span class="spanLeft">0</span> <span class="spanRight" data-bind="'text': paraFraccionarSelected" ></span>      
-                     <input type="range" min="0" required data-bind="'value': paraFraccionar, 'attr':{ 'max': paraFraccionarSelected }" 
-                            class="input-block-level " 
-                            placeholder="Stock Disponible">                             
-                     </label>
-                     <span class="spanCenter" data-bind="'text': paraFraccionar" ></span>
-                     <input type="submit"  id="submitOculto" class="hide"/>
-						</div>						
-                </form>
-                  
+						</div>		
+                </form> 
               </div>
               <div class="modal-footer">
                 <input type="button" data-bind="click: back,visible: backeable" value="Atras" class="btn btn-primary"/>
@@ -202,6 +168,72 @@
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
+        <div class="modal fade" id="fraccionarPresentacion" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Fraccionar presentaci&oacute;n</h4>
+              </div>
+              <div class="modal-body">
+                                
+                 <form action="#" id="createPresentacionForm" >
+                     <div id="createStep1" data-bind="visible: createStep1">
+                     	<input type="number" data-bind="value: selectedPaqueteId "  required="required" class="input-block-level " placeholder="Ingrese codigo del paquete..."/>
+          
+                        <input 
+                  			type="button" data-bind="click: function(data, event) { nextFraccionar('form', data, event) },
+                  			enable: hayPaqueteParaFraccionar" value="siguiente" class="btn btn-primary margenArriba"/>    
+                       
+                		</div>
+                		
+                		<div id="createStep2" data-bind="visible: createStep2">
+                      <label>Descripcion</label>
+                      <input   required data-bind="value: selected.descripcion" 
+                            class="input-block-level " 
+                            placeholder="Descripci&oacute;n"> 
+                      <label class=" checkbox margenArriba">Fraccionable
+                       <input type="checkbox" data-bind="checked: selected.fraccionable" /> 
+                      </label>
+                      
+                      <label class="margenArriba">Peso neto
+                      <input type="number"  min="1"  required data-bind="value: selected.peso_neto" 
+                            class="input-block-level " 
+                            placeholder="Peso Neto en gramos">
+                     </label>
+                     <label class="margenArriba">Peso escurrido
+                      <input type="number"  min="0"  required data-bind="value: selected.peso_escurrido" 
+                            class="input-block-level " 
+                            placeholder="Peso escurrido en gramos">
+                     </label>
+                     <label class="margenArriba"><span data-bind="text: $root.medidaName"> </span>
+                     <span data-bind="text: selected.cantidad">
+                     
+                     </span>
+                     <input type="number"  min="1"    
+                             class="input-block-level " 
+                             placeholder="Nueva Cantidad" data-bind="value: cantidad_fraccionada , 'attr': { 'max': selected.cantidad  }" >
+                     </label>
+                     <input type="button" data-bind="click: saveFraccion,visible: createStep2" value="Guardar" class="btn btn-primary"/> 
+                     <input type="submit"  id="submitFraccion" class="hide"/>
+						</div>	
+                 
+                 </form>         
+              
+              </div>
+              <div class="modal-footer">
+                <input type="button" data-bind="click: back,visible: backeable" value="Atras" class="btn btn-primary"/>
+                <!-- ko if: createNew -->
+                <input type="button" data-bind="click: save,visible: step5" value="crear" class="btn btn-primary"/>
+                <!-- /ko -->
+                <!-- ko ifnot: createNew -->
+                <input type="button" data-bind="click: update,visible: step5" value="Guardar" class="btn btn-primary"/> 
+                <!-- /ko -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal fraccionarPresentacion -->
 
 
     <div class="container">
