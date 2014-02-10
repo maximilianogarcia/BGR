@@ -351,10 +351,9 @@ function PresentacionViewModel() {
       default:
         alert("Error inesperado de inesperanza total");
       }
-
    }
    self.back = function(data){
-      return data.actuve() && self.soloActivos();
+      return data.active() && self.soloActivos();
    }
 
    self.toggleActivos= function(){

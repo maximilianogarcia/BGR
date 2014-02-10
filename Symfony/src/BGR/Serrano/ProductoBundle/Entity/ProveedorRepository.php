@@ -3,6 +3,7 @@
 namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * ProveedorRepository
@@ -12,4 +13,24 @@ use Doctrine\ORM\EntityRepository;
  */
 class ProveedorRepository extends EntityRepository
 {
+	public function findByProductoId($producto_id)
+	{
+	
+		$em = $this->getEntityManager();
+	
+		$rsm = new ResultSetMapping();
+			
+	
+		$rsm->addScalarResult('id', 'id');
+		$rsm->addScalarResult('name', 'name');	
+	
+		$query = $em->createNativeQuery("
+			  SELECT   pr.*
+	          FROM Proveedor pr
+	          JOIN producto_proveedor pp ON ( pp.proveedor_id = pr.id )
+			  WHERE  pp.producto_id = ?",$rsm)->setParameter(1,$producto_id);
+	
+		$result = $query->getResult();
+		return $result;
+	}
 }

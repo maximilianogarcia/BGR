@@ -53,13 +53,13 @@ class Lote
     protected $fecha_de_vencimiento;
 
     /**
-     * @var string
+     * @var double
      *
-     * @Type("string")
+     * @Type("float")
      *
-     * @ORM\Column(name="codigo", type="string", length=255)
+     * @ORM\Column(name="precio_compra", type="decimal")
      */
-    protected $codigo;
+    protected $precio_compra;
 
 
     /**
@@ -141,28 +141,7 @@ class Lote
         return $this->$fecha_de_vencimiento;
     }
 
-    /**
-     * Set codigo
-     *
-     * @param string $codigo
-     * @return Lote
-     */
-    public function setCodigo($codigo)
-    {
-        $this->codigo = $codigo;
-    
-        return $this;
-    }
-
-    /**
-     * Get codigo
-     *
-     * @return string 
-     */
-    public function getCodigo()
-    {
-        return $this->codigo;
-    }
+   
 
 
     /**
@@ -173,6 +152,15 @@ class Lote
      */
     protected $producto;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Proveedor")
+     * @ORM\JoinColumn(name="proveedor_id", referencedColumnName="id")
+     * @Type("BGR\Serrano\ProductoBundle\Entity\Proveedor")
+     *
+     */
+    protected $proveedor;
+    
+    
     public function setProducto(Producto $producto)
     {
         $this->producto = $producto;
@@ -182,6 +170,22 @@ class Lote
     {
         return $this->producto;
     }
+	public function getPrecioCompra() {
+		return $this->precio_compra;
+	}
+	public function setPrecioCompra( $precio_compra) {
+		$this->precio_compra = $precio_compra;
+		return $this;
+	}
+	public function getProveedor() {
+		return $this->proveedor;
+	}
+	public function setProveedor($proveedor) {
+		$this->proveedor = $proveedor;
+		return $this;
+	}
+	
+	
 
 
 

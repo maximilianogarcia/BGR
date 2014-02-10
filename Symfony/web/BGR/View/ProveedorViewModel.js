@@ -22,7 +22,19 @@ function ProveedorViewModel() {
 		      });
 		   
 	   }
-
+	   
+	   self.getProveedoresByProductoId = function(producto_id, destino){
+		   
+		     $.ajax(BASE_REST_URL+"/proveedor/getProveedoresByProductoId", {
+		            data:  {'data':producto_id},
+		            type: "PUT",
+		            success: function(result){
+			              destino(result);
+		            }
+		      });
+		   
+	   }
+	   
 	   self.saveRelation = function(proveedor,destino){
 		   
 		     $.ajax(BASE_REST_URL+"/proveedor/saveRelation", {

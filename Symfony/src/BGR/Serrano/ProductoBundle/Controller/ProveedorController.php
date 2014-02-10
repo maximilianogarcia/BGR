@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\Serializer\SerializerBuilder;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class ProveedorController extends Controller
 {
@@ -83,5 +84,22 @@ class ProveedorController extends Controller
     	$response->headers->set('Content-Type', 'application/json');
     	return $response;
     }
-    
+    /**
+     * @Route("/proveedor/getProveedoresByProductoId")
+     * @Template()
+     */
+    public function getProveedoresByProductoIdAction()
+    {
+    	$producto_id = $this->get('request')->request->get('data');
+    	$em = $this->getDoctrine()->getManager();
+    	$data = $em->getRepository('BGRSerranoProductoBundle:Proveedor')->findByProductoId($producto_id);
+    	
+    	$serializer =  SerializerBuilder::create()->build();
+    	$jsonContent = $serializer->serialize($data, 'json');
+    	
+    	$response = new Response($jsonContent);
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+
+    }   
 }

@@ -24,8 +24,11 @@
     <script type='text/javascript'  src='lib/knockout.mapping-latest.js'></script>
     <script type='text/javascript'  src='Model/Lote.js'></script>
     <script type='text/javascript'  src='Model/Producto.js'></script>
+    <script type='text/javascript'  src='Model/Proveedor.js'></script>
+    <script type='text/javascript'  src='Model/ProductoProveedor.js'></script>
     <script type='text/javascript'  src='View/LoteViewModel.js'></script>
     <script type='text/javascript'  src='View/ProductoViewModel.js'></script>
+    <script type='text/javascript'  src='View/ProveedorViewModel.js'></script>
     <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
     <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
     <script type='text/javascript'  src='lib/commonFunctions.js'></script>
@@ -57,9 +60,16 @@
                       <select class="input-block-level form-control" data-bind="options: productos, optionsText: 'name', 
                      optionsValue: 'id', value: selectedProductoId," size="10" required></select>
                     </label>
-                  <input type="button" data-bind="click: next,enable: hayProductoSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                  <input type="button" data-bind="click: function(data, event) { next('proveedor', data, event) },enable: hayProductoSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
                 </div>
                 <div id="step2" data-bind="visible: step2">
+                    <label class="margenArriba"> Proveedor 
+                      <select class="input-block-level form-control" data-bind="options: proveedores, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedProveedorId," size="10" required></select>
+                    </label>
+                  <input type="button" data-bind="click: function(data, event) { next('form', data, event) },enable: hayProveedorSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+                <div id="step3" data-bind="visible: step3">
                       <label>Descripcion</label>
                       <input   required data-bind="value: selected.descripcion" 
                             class="input-block-level " 
@@ -70,22 +80,22 @@
                       <label class="margenArriba">Fecha de vencimiento</label>
                       <input type="date" onchange="closeMe(this)"  required data-bind="value: selected.fecha_de_vencimiento" 
                             class="input-block-level"> 
-                      <label class="margenArriba">Codigo</label>
-                      <input   required data-bind="value: selected.codigo" 
+                      <label class="margenArriba">Precio de compra</label>
+                      <input   required data-bind="value: selected.precio_compra" 
                             class="input-block-level " 
-                            placeholder="Codigo"> 
+                            placeholder="Precio de compra"> 
                       <input type="submit"  id="submitOculto" class="hide"/>
 
                    </form>
                   </div>
               </div>
               <div class="modal-footer">
-                <input type="button" data-bind="click: back,visible: step2" value="Atras" class="btn btn-primary"/>
+                <input type="button" data-bind="click: back,visible: !step1()" value="Atras" class="btn btn-primary"/>
                 <!-- ko if: createNew -->
-                <input type="button" data-bind="click: save,visible: step2" value="crear" class="btn btn-primary"/>
+                <input type="button" data-bind="click: save,visible: step3" value="crear" class="btn btn-primary"/>
                 <!-- /ko -->
                 <!-- ko ifnot: createNew -->
-                <input type="button" data-bind="click: update,visible: step2" value="Guardar" class="btn btn-primary"/> 
+                <input type="button" data-bind="click: update,visible: step3" value="Guardar" class="btn btn-primary"/> 
                 <!-- /ko -->
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <!-- ko ifnot: createNew -->
@@ -127,13 +137,13 @@
 
         <table class="table table-hover ">
             <thead><tr><th>Descripcion</th><th>Elaboracion</th>
-              <th>Vencimiento</th><th>Codigo</th></tr></thead>
+              <th>Vencimiento</th><th>Precio de compra</th></tr></thead>
             <tbody data-bind="foreach: lotes">
                 <tr data-bind="click: $root.editar" >
                     <td data-bind="text: descripcion"></td>
                     <td data-bind="text: fecha_de_elaboracion"></td>
                     <td data-bind="text: fecha_de_vencimiento"></td>
-                    <td data-bind="text: codigo"></td>
+                    <td data-bind="text: precio_compra"></td>
                 </tr>     
             </tbody>
         </table>
