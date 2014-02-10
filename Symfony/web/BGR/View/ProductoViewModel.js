@@ -6,12 +6,17 @@ function ProductoViewModel() {
    self.createNew = ko.observable(false);
    self.categorias = ko.observableArray();
 
-	 self.allUnidadDeMedidas = ko.observableArray();
+   self.allUnidadDeMedidas = ko.observableArray();
+   self.allProveedores= ko.observableArray();
 
    self.selectedCategoriaId = ko.observable(1);
    
    self.unidadesNotSelected = ko.observableArray();
+   self.proveedoresNotSelected = ko.observableArray();
 
+   self.productoProveedor= ko.mapping.fromJS([new ProductoProveedor()]);
+   
+   
    self.selectedCategoria = function() {
        var self = this;
        return ko.utils.arrayFirst(this.categorias(), function(categoria) {
@@ -20,15 +25,21 @@ function ProductoViewModel() {
    }.bind(this);
 
    self.notSelectedUnidadDeMedidas = ko.observableArray();
+   self.notSelectedProveedores= ko.observableArray();
 
+   
    self.apply = function(){
      ko.applyBindings(self);
      self.getAll(self.mapProductos);
      var viewModelCategoria = new CategoriaViewModel();
      var viewModelUnidadMedida = new UnidadMedidaViewModel();
+     var viewModelProveedores = new ProveedorViewModel();
 
+     
      viewModelCategoria.getAll(self.copiar);
      viewModelUnidadMedida.getAll(self.copiarUnidadMedida);
+     viewModelProveedores.getAll(self.copiarProveedores)
+     
    }
 
 	self.containThisId = function(array,id){
@@ -56,7 +67,29 @@ function ProductoViewModel() {
 		}
 		return self.unidadesNotSelected();
 	}   
-   
+
+	
+	
+	
+	self.chargeProveedores = function(data){
+		  
+		self.proveedoresNotSelected = ko.mapping.fromJS(ko.toJS(self.allProveedores));
+		try{
+		   self.proveedoresSelected = ko.mapping.fromJS(ko.toJS(data.proveedores));
+		   self.proveedores = ko.mapping.fromJS(ko.toJS(data.proveedores));
+		   $.each(self.proveedores(), function( index, value ) {
+
+			   self.proveedoresNotSelected.remove(self.containThisId(self.proveedoresNotSelected(),value.id()));	
+		   });
+		}catch(err){
+			return self.proveedoresNotSelected();
+		}
+		return self.proveedoresNotSelected();
+	}   
+	
+	
+	
+	
    self.serialized = function(){
       return ko.mapping.toJSON(self.selected);
    }
@@ -73,6 +106,13 @@ function ProductoViewModel() {
         self.allUnidadDeMedidas(destino);
    }
 
+   self.copiarProveedores=function(destino){
+       self.allProveedores(destino);
+  }
+ 
+   self.mapProductosProveedores=function(data){
+	   ko.mapping.fromJS(data, self.productoProveedor);
+  }   
 
    self.save = function(){
     var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
@@ -103,20 +143,25 @@ function ProductoViewModel() {
       var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
       serializado.categoria = self.selectedCategoria();
       serializado.unidad_de_medidas = ko.toJS(self.selected.unidad_de_medidas());
+      serializado.proveedores = ko.toJS(self.selected.proveedores());
+
+      
+      
       var $myForm = $('#editProductForm');
       if ($myForm[0].checkValidity()) {
           $.ajax(BASE_REST_URL+"/producto/update", {
                   data: {'data': JSON.stringify(serializado) },
                   type: "PUT",
                   success: function(result) {
-                    self.selectedUnmapped.name(result.name);
-                    self.selectedUnmapped.precio_venta(result.precio_venta);
-                    self.selectedUnmapped.precio_compra(result.precio_compra);
-                    self.selectedUnmapped.categoria.id(result.categoria.id);
-                    self.selectedUnmapped.categoria.name(result.categoria.name);
-                    self.selectedUnmapped.categoria.descripcion(result.descripcion);
-						  self.selectedUnmapped.unidad_de_medidas(result.unidad_de_medidas);	
-                    $('#editProduct').modal('hide');
+                  self.selectedUnmapped.name(result.name);
+                  self.selectedUnmapped.categoria.id(result.categoria.id);
+                  self.selectedUnmapped.categoria.name(result.categoria.name);
+                  self.selectedUnmapped.categoria.descripcion(result.descripcion);
+
+                  self.selectedUnmapped.unidad_de_medidas(result.unidad_de_medidas);	
+				  self.selectedUnmapped.proveedores(result.proveedores);	
+	  
+				  $('#editProduct').modal('hide');
                   },
                   error: function(error){
                       alert(error.responseText);
@@ -159,6 +204,8 @@ function ProductoViewModel() {
       self.selectedUnmapped = data;
       self.selected.categoria(null);
       self.notSelectedUnidadDeMedidas(self.chargeUnidades(data));
+      self.notSelectedProveedores(self.chargeProveedores(data));
+
       ko.mapping.fromJS(data, self.selected);
       $('#editProduct').modal('show');
    }
@@ -169,6 +216,7 @@ function ProductoViewModel() {
       self.createNew(true);
       self.selectedUnmapped = data;
       self.notSelectedUnidadDeMedidas(self.chargeUnidades(data));
+      self.notSelectedProveedores(self.chargeProveedores(data));
       ko.mapping.fromJS(new Producto, self.selected);
       $('#editProduct').modal('show');
    }
@@ -182,5 +230,30 @@ function ProductoViewModel() {
 		self.selected.unidad_de_medidas.remove(data);
 		self.notSelectedUnidadDeMedidas.push(data);  
    }
+
+   self.selectProveedor = function(data){   	
+		self.notSelectedProveedores.remove(data);
+		self.selected.proveedores.push(data);
+  }
+   self.unSelectProveedor = function(data){
+		self.selected.proveedores.remove(data);
+		self.notSelectedProveedores.push(data);  
+  }
+
+   self.editPrecios = function(data){
+	      var viewModelProveedores = new ProveedorViewModel();
+	      viewModelProveedores.getAllProductoRelations(self.selected.id(),self.mapProductosProveedores);
+	      $('#editProduct').modal('hide');
+	      $('#editPrecioReposicion').modal('show');
+  }
+   self.savePrecio = function(data){
+	      var viewModelProveedores = new ProveedorViewModel();
+	      viewModelProveedores.saveRelation(data, self.desactivarBotonSavePrecio);
+   }
+   
+   self.desactivarBotonSavePrecio = function(){
+	   
+   }
+   
 
 }

@@ -34,22 +34,6 @@ class Producto
      */
     protected $name;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="precioVenta", type="decimal")
-     * @Type("double")
-     */
-    protected $precioVenta;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="precioCompra", type="decimal")
-     * @Type("double")
-     */
-    protected $precioCompra;
-
 
     /**
      * Get id
@@ -147,7 +131,17 @@ class Producto
     {
         $this->categoria = $categoria;
     }
- 
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Proveedor", inversedBy="productos")
+     * @ORM\JoinTable(name="producto_proveedor")
+     *
+     * @Type("ArrayCollection<BGR\Serrano\ProductoBundle\Entity\Proveedor>")
+     *
+     */
+    protected $proveedores;
+    
+    
     /**
      * @ORM\ManyToMany(targetEntity="UnidadDeMedida", inversedBy="productos")
 	  * @ORM\JoinTable(name="producto_unidad_de_medida")
@@ -237,4 +231,12 @@ class Producto
     {
         return $this->lotes;
     }
+	public function getProveedores() {
+		return $this->proveedores;
+	}
+	public function setProveedores($proveedores) {
+		$this->proveedores = $proveedores;
+		return $this;
+	}
+	
 }
