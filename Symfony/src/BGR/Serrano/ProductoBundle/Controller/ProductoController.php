@@ -13,6 +13,7 @@ use BGR\Serrano\ProductoBundle\Entity\ProductoUnidadDeMedida as ProductoUnidadDe
 use Symfony\Component\HttpFoundation\Response as Response;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping\MappingException;
+use BGR\Serrano\ProductoBundle\Entity\ProductoProveedor;
 
 class ProductoController extends Controller
 {
@@ -147,7 +148,72 @@ class ProductoController extends Controller
 		  			 }
 		  			 $em->getRepository('BGRSerranoProductoBundle:ProductoUnidadDeMedida')->delete($manualManyToMany);
 		  		}
-		  }        
+		  }   
+
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  $proveedoresOnDB =  $ObjectOnDB->getProveedores();
+		  
+		  foreach($object->getProveedores() as $proveedorToPersist){
+		  	$notExist = true;
+		  	foreach($proveedoresOnDB as $proveedorOnDB){
+		  		if($proveedorToPersist->getId() == $proveedorOnDB->getId())
+		  		{
+		  			$notExist = false;
+		  		}
+		  	}
+		  	if($notExist){
+		  
+		  		$manualManyToManyProveedor = new ProductoProveedor();
+		  		$manualManyToManyProveedor->setProductoId($object->getId());
+		  		$manualManyToManyProveedor->setProveedorId($proveedorToPersist->getId());
+		  		$em->getRepository('BGRSerranoProductoBundle:ProductoProveedor')->save($manualManyToManyProveedor);
+		  
+		  	}
+		  }
+		  
+		  foreach($proveedoresOnDB as $proveedorOnDB){
+		  	$notExist = true;
+		  	foreach($object->getProveedores() as $proveedorToPersist){
+		  		if($proveedorToPersist->getId() == $proveedorOnDB->getId())
+		  		{
+		  			$notExist = false;
+		  		}
+		  	}
+		  	if($notExist){
+		  		$manualManyToManyProveedor = new ProductoProveedor();
+		  		$manualManyToManyProveedor->setProductoId($object->getId());
+		  		$manualManyToManyProveedor->setProveedorId($proveedorOnDB->getId());
+		  		//existe en presentacion
+		  
+		  		if ($this->existOnPresentacionProveedor($manualManyToManyProveedor)){
+		  			throw MappingException::illegalInverseIdentifierAssocation('ProductoUnidadDeMedida JOIN Presentacion','producto_id, unidadDeMedida_id');
+		  		}
+		  		$em->getRepository('BGRSerranoProductoBundle:ProductoProveedor')->delete($manualManyToManyProveedor);
+		  	}
+		  }
+		  
+		  
         /* manyToMany behavior -> refactor This -End */        
         
         $response = new Response($serializer->serialize($object,'json'));
@@ -185,7 +251,7 @@ class ProductoController extends Controller
     }
     
     private function existOnPresentacion($pu){
-    	$em = $this->getDoctrine()->getManager();
+   	$em = $this->getDoctrine()->getManager();
     	$presentaciones = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findAll();
     	foreach($presentaciones as $presentacion){
     		if( $pu->getProductoId() == $presentacion->getProducto()->getId() &&
@@ -195,5 +261,19 @@ class ProductoController extends Controller
     	}
     	return false;
     	
+    }
+    
+    
+    private function existOnPresentacionProveedor($pu){
+   /* 	$em = $this->getDoctrine()->getManager();
+    	$presentaciones = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findAll();
+    	foreach($presentaciones as $presentacion){
+    		if( $pu->getProductoId() == $presentacion->getProducto()->getId() &&
+    		$pu->getUnidaddemedidaId() == $presentacion->getUnidad_de_medida()->getId()){
+    			return true;
+    		}
+    	}*/
+    	return false;
+    	 
     }
 }

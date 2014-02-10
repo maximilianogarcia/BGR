@@ -24,10 +24,12 @@
     <script type='text/javascript'  src='Model/Producto.js'></script>
     <script type='text/javascript'  src='Model/Categoria.js'></script>
     <script type='text/javascript'  src='Model/UnidadMedida.js'></script> 
+    <script type='text/javascript'  src='Model/ProductoProveedor.js'></script> 
 
     <script type='text/javascript'  src='View/ProductoViewModel.js'></script>
     <script type='text/javascript'  src='View/CategoriaViewModel.js'></script>
     <script type='text/javascript'  src='View/UnidadMedidaViewModel.js'></script>
+    <script type='text/javascript'  src='View/ProveedorViewModel.js'></script>
     <script type='text/javascript'  src='conf/config.js'></script>
     
     
@@ -47,6 +49,47 @@
   </head>
   <body>
 
+
+
+
+
+
+
+
+
+
+
+
+       <div class="modal fade" id="editPrecioReposicion" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title">Editar Precios de reposicion</h4>
+                <h4 data-bind="text: selected.name" ></h3>
+                
+              </div>
+              <div class="modal-body">
+                  <span class="span3" ><h4>Proveedor</h4></span>
+	              <span class="span3" ><h4>Precio de reposici&oacute;n</h4></span>
+              
+                 <div data-bind="foreach: $root.productoProveedor">
+		            <form data-bind="attr: { id: 'precioForm' + proveedor_id() }">
+		                    <span class="span3" data-bind="text: name"></span>
+		                    <input class="span3" data-bind="value: precio_reposicion"></input>
+		                    <input type="button" data-bind="click: $root.savePrecio" value="Guardar" class="btn btn-primary "/>
+		            </form>
+		        </div>
+              </div>
+              <div class="modal-footer">
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+
+
        <div class="modal fade" id="editProduct" style="display: none;">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -60,53 +103,63 @@
                        <input required data-bind="value: selected.name" 
                        class="input-block-level" placeholder="Nombre del producto"> 
                     </label>
-                    <label class="margenArriba">Precio de venta
-                        <input   required data-bind="value: selected.precio_venta" 
-                        class="input-block-level " 
-                        placeholder="Precio de venta">
-                    </label>
-                    <label class="margenArriba">Precio de Compra
-                    <input   required data-bind="value: selected.precio_compra" 
-                             class="input-block-level " 
-                             placeholder="Precio de compra"> 
-                             </label>
 
                     <label class="margenArriba"> Categoria
                       <select class="input-block-level form-control" data-bind="options: categorias, optionsText: 'name', 
                      optionsValue: 'id', value: selectedCategoriaId, optionsCaption:'Seleccione'" required></select>
                     </label>
-                    <!-- ko if: createNew -->
-
-                    <input type="button" data-bind="click: save" value="crear" class="btn btn-primary margenArriba"/>
-
-                    <!-- /ko -->
-                    <!-- ko ifnot: createNew -->
-
-                    <input type="button" data-bind="click: update" value="Guardar" class="btn btn-primary margenArriba"/>      
-                    <!-- /ko -->
                     <input type="submit"  id="submitOculto" class="hide"/>
-                
-   	
-       				  <select data-bind="foreach: selected.unidad_de_medidas" multiple="false">
-						  		<option data-bind="text: name, click: $root.unSelectUnidad "></option>
-						  </select>	
-						  
-						  <select data-bind="foreach: notSelectedUnidadDeMedidas" multiple="false">
-						  		<option data-bind="text: name, click: $root.selectUnidad "></option>
-						  </select>	
-        		
-                 </form>
+                    <label>Unidades de medida
+   					<div>
+	       			    <select class="form-control" data-bind="foreach: selected.unidad_de_medidas" multiple="false">
+							  		<option data-bind="text: name, click: $root.unSelectUnidad "></option>
+						</select>	
+							  
+						<select class="form-control" data-bind="foreach: notSelectedUnidadDeMedidas" multiple="false">
+							  		<option data-bind="text: name, click: $root.selectUnidad "></option>
+						</select>	
+					</div>
+					</label>
 
+					<label>Proveedores
+   					<div>
+	       			    <select class="form-control" data-bind="foreach: selected.proveedores" multiple="false">
+							  		<option data-bind="text: name, click: $root.unSelectProveedor "></option>
+						</select>	
+							  
+						<select class="form-control" data-bind="foreach: notSelectedProveedores" multiple="false">
+							  		<option data-bind="text: name, click: $root.selectProveedor "></option>
+						</select>	
+					</div>
+					</label>
+
+
+
+                 </form>
+                <!-- ko ifnot: createNew -->
+
+                    <input type="button" data-bind="click: editPrecios" value="Editar Precios" class="btn btn-primary "/>
+
+                    <!-- /ko -->
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <!-- ko ifnot: createNew -->
+                    <!-- ko if: createNew -->
+
+                    <input type="button" data-bind="click: save" value="Crear" class="btn btn-primary "/>
+
+                    <!-- /ko -->
+        		
+                    <!-- ko ifnot: createNew -->
+
+                    <input type="button" data-bind="click: update" value="Guardar" class="btn btn-primary "/>      
+                 
 
                 <button 
                   type="button" class="btn btn-danger" 
                   data-bind="click: borrar">
                   Eliminar producto</button>
                <!-- /ko -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
               </div>
             </div><!-- /.modal-content -->
@@ -135,12 +188,10 @@
         <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
 
         <table class="table table-hover">
-            <thead><tr><th>Nombre</th><th>Precio de Compra</th><th>Precio de Venta</th><th>categoria</th></tr></thead>
+            <thead><tr><th>Nombre</th><th>categoria</th></tr></thead>
             <tbody data-bind="foreach: productos">
                 <tr data-bind="click: $root.editar">
                     <td data-bind="text: name"></td>
-                    <td data-bind="text: precio_compra"></td>
-                    <td data-bind="text: precio_venta"></td>
                     <td data-bind="text: categoria.name"></td>
                 </tr>     
             </tbody>

@@ -14,19 +14,25 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ProductoRepository extends EntityRepository
 {
 
-	public function save($producto)
+	public function save(Producto $producto)
     {   
         $em = $this->getEntityManager();
 	    $producto->setCategoria($em->merge($producto->getCategoria()));
 	    
-	    $temporales = new ArrayCollection();
-	      
+	    $umTemporales = new ArrayCollection();
+	    $prtemporales = new ArrayCollection();
+	     
 	    foreach($producto->getUnidadDeMedidas() as $unidadMedida){
-				$temporales->add($em->merge($unidadMedida));
+				$umTemporales->add($em->merge($unidadMedida));
+        }
+
+        foreach($producto->getProveedores() as $proveedor){
+        	$prtemporales->add($em->merge($proveedor));
         }
         
-        $producto->setUnidadDeMedidas($temporales);
-
+        $producto->setUnidadDeMedidas($umTemporales);
+        $producto->setProveedores($prtemporales);
+        
         $em->persist($producto);
         $em->flush();
     }
