@@ -35,7 +35,7 @@ class ProductoProveedor
      * @ORM\Column(name="precio_reposicion", type="decimal",options={"default" = 0})
 	 * @Type("double")
      */
-    private $precio_reposicion;
+    private $precio_reposicion = 0;
 	public function getProductoId() {
 		return $this->producto_id;
 	}

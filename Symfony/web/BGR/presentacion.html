@@ -42,12 +42,15 @@
     <script type='text/javascript'  src='lib/knockout.mapping-latest.js'></script>
     <script type='text/javascript'  src='lib/moment.min.js'></script>
     <script type='text/javascript'  src='Model/Producto.js'></script>
+    <script type='text/javascript'  src='Model/ProductoProveedor.js'></script>
     <script type='text/javascript'  src='Model/Lote.js'></script>
+    <script type='text/javascript'  src='Model/Proveedor.js'></script>
     <script type='text/javascript'  src='Model/Presentacion.js'></script>
     <script type='text/javascript'  src='Model/Material.js'></script>
     <script type='text/javascript'  src='Model/UnidadMedida.js'></script>
     <script type='text/javascript'  src='View/LoteViewModel.js'></script>
     <script type='text/javascript'  src='View/UnidadMedidaViewModel.js'></script>
+    <script type='text/javascript'  src='View/ProveedorViewModel.js'></script>
     <script type='text/javascript'  src='View/PresentacionViewModel.js'></script>
     <script type='text/javascript'  src='View/ProductoViewModel.js'></script>
     <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
@@ -85,11 +88,12 @@
 
                 <div id="step2" data-bind="visible: step2">
                     <label class="margenArriba"> Lote 
-                      <select class="input-block-level form-control" data-bind="options: lotes, optionsText: 'codigo', 
-                     optionsValue: 'id', value: selectedLoteId" size="10" required></select>
+                      <select class="input-block-level form-control" data-bind="options: lotes, optionsText: 'fecha_de_vencimiento', 
+                     optionsValue: 'id', value: selectedLoteId" size="10" ></select>
                     </label>
                   <input type="button" data-bind="click: function(data, event) { next('material', data, event) },
                   enable: hayLoteSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                  <input class="btn margenArriba" type="button" data-bind="click: saltarLote, disable: hayLoteSeleccionado" value="Omitir por ahora"/>  
                 </div>
                 
                 <div id="step3" data-bind="visible: step3">
@@ -106,17 +110,29 @@
                       <select class="input-block-level form-control" data-bind="options: medidas, optionsText: 'name', 
                      optionsValue: 'id', value: selectedMedidaId," size="10" required></select>
                     </label>
+                  <input type="button" data-bind="click: function(data, event) { next('proveedor', data, event) },
+                  enable: hayMedidaSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+               <div id="step5" data-bind="visible: step5">
+                    <label class="margenArriba"> Proveedores
+                      <select class="input-block-level form-control" data-bind="options: proveedores, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedProveedorId," size="10" required></select>
+                    </label>
                   <input type="button" data-bind="click: function(data, event) { next('form', data, event) },
                   enable: hayMedidaSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
                 </div>
-                <div id="step5" data-bind="visible: step5">
+
+                <div id="step6" data-bind="visible: step6">
                       <label>Descripcion</label>
                       <input   required data-bind="value: selected.descripcion" 
                             class="input-block-level " 
-                            placeholder="Descripci&oacute;n"> 
+                            placeholder="Descripci&oacute;n">
+
                       <label class=" checkbox margenArriba">Fraccionable
                        <input type="checkbox" data-bind="checked: selected.fraccionable" /> 
                       </label>
+                      
+
                       
                       <label class="margenArriba">Peso neto
                       <input type="number"  min="1"  required data-bind="value: selected.peso_neto" 
@@ -124,7 +140,7 @@
                             placeholder="Peso Neto en gramos">
                      </label>
                      <label class="margenArriba">Peso escurrido
-                      <input type="number"  min="0"  required data-bind="value: selected.peso_escurrido" 
+                      <input type="number"  min="0" data-bind="value: selected.peso_escurrido" 
                             class="input-block-level " 
                             placeholder="Peso escurrido en gramos">
                      </label>
@@ -145,10 +161,10 @@
               <div class="modal-footer">
                 <input type="button" data-bind="click: back,visible: backeable" value="Atras" class="btn btn-primary"/>
                 <!-- ko if: createNew -->
-                <input type="button" data-bind="click: save,visible: step5" value="crear" class="btn btn-primary"/>
+                <input type="button" data-bind="click: save,visible: step6" value="crear" class="btn btn-primary"/>
                 <!-- /ko -->
                 <!-- ko ifnot: createNew -->
-                <input type="button" data-bind="click: update,visible: step5" value="Guardar" class="btn btn-primary"/> 
+                <input type="button" data-bind="click: update,visible: step6" value="Guardar" class="btn btn-primary"/> 
                 <!-- /ko -->
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <!-- ko ifnot: createNew -->
@@ -224,10 +240,10 @@
               <div class="modal-footer">
                 <input type="button" data-bind="click: back,visible: backeable" value="Atras" class="btn btn-primary"/>
                 <!-- ko if: createNew -->
-                <input type="button" data-bind="click: save,visible: step5" value="crear" class="btn btn-primary"/>
+                <input type="button" data-bind="click: save,visible: step6" value="crear" class="btn btn-primary"/>
                 <!-- /ko -->
                 <!-- ko ifnot: createNew -->
-                <input type="button" data-bind="click: update,visible: step5" value="Guardar" class="btn btn-primary"/> 
+                <input type="button" data-bind="click: update,visible: step6" value="Guardar" class="btn btn-primary"/> 
                 <!-- /ko -->
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               </div>
@@ -261,12 +277,13 @@
 <div class="grid">
 
         <table class="table table-hover">
-            <thead><tr><th>Descripcion</th><th>Producto</th><th>Peso Neto</th>
+            <thead><tr><th>Descripcion</th><th>Producto</th><th>Proveedor</th><th>Peso Neto</th>
               <th>Peso Escurrido</th><th>Fracionable</th></tr></thead>
             <tbody data-bind="foreach: presentaciones">
                 <tr data-bind="click: $root.editar , css: { desactivado: !active()  }"  >
                     <td data-bind="text: descripcion"></td>
                     <td data-bind="text: producto.name"></td>
+                    <td data-bind="text: proveedor.name"></td>
                     <td data-bind="text: peso_neto"></td>
                     <td data-bind="text: peso_escurrido"></td>
                     <td >

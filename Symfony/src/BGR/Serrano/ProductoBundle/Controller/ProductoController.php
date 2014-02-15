@@ -187,6 +187,7 @@ class ProductoController extends Controller
 		  		$manualManyToManyProveedor = new ProductoProveedor();
 		  		$manualManyToManyProveedor->setProductoId($object->getId());
 		  		$manualManyToManyProveedor->setProveedorId($proveedorToPersist->getId());
+		  		$manualManyToManyProveedor->setPrecioReposicion(0);
 		  		$em->getRepository('BGRSerranoProductoBundle:ProductoProveedor')->save($manualManyToManyProveedor);
 		  
 		  	}
@@ -230,11 +231,10 @@ class ProductoController extends Controller
     {
     	$em = $this->getDoctrine()->getManager();
     	 
-    	$jsonData = $this->get('request')->request->get('data');
+    	$categoriaId = $this->get('request')->request->get('data');
     	$serializer =  SerializerBuilder::create()->build();
-    	$object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Categoria', 'json');
     	
-    	$result = $em->getRepository('BGRSerranoProductoBundle:Producto')->findByCategoria($object);
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Producto')->findByCategoria($categoriaId);
     	
     	$response = new Response($serializer->serialize($result,'json'));
     	$response->headers->set('Content-Type', 'application/json');
@@ -276,4 +276,45 @@ class ProductoController extends Controller
     	return false;
     	 
     }
+    
+    
+    
+    /**
+     * @Route("/producto/getRemanenteByProducto")
+     */
+    public function getRemanenteAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$productoId = $this->get('request')->request->get('data');
+    	$serializer =  SerializerBuilder::create()->build();
+    	 
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Producto')->findRemanente($productoId);
+    	 
+    	$response = new Response($serializer->serialize($result,'json'));
+    	$response->headers->set('Content-Type', 'application/json');
+    	 
+    	return $response;
+    	 
+    	 
+    }
+    /**
+     * @Route("/producto/getAllRemanentes")
+     */
+    public function getAllRemanentesAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$serializer =  SerializerBuilder::create()->build();
+    
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Producto')->getAllRemanentes();
+    
+    	$response = new Response($serializer->serialize($result,'json'));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    
+    
+    }
+    
 }

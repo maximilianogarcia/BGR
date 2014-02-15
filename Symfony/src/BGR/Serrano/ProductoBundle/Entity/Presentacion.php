@@ -9,11 +9,12 @@ use JMS\Serializer\Annotation\Exclude;
 /**
  * Presentacion
  *
- * @ORM\Table()
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="search_idx", columns={"descripcion"})})
  * @ORM\Entity(repositoryClass="BGR\Serrano\ProductoBundle\Entity\PresentacionRepository")
  */
 class Presentacion
-{
+{    const DEFAULT_CERO = 0;
+	
     /**
      * @var integer
      *
@@ -75,10 +76,10 @@ class Presentacion
     /**
      * @var float
      *
-     * @ORM\Column(name="peso_escurrido", type="decimal", length=255)
+     * @ORM\Column(name="peso_escurrido", type="decimal", nullable=true, length=255)
      * @Type("double")
      */
-    private $peso_escurrido;
+    private $peso_escurrido = self::DEFAULT_CERO;
 
     /**
      * @var integer
@@ -88,11 +89,11 @@ class Presentacion
     protected $cantidad_paquetes;
     
     /**
-     * @var integer
+     * @var float
      * @ORM\Column(name="cantidad", type="decimal", length=255)
      * @Type("integer")
      */
-    protected $cantidad;
+    protected $cantidad;    
 
     /**
      * Get id
@@ -248,6 +249,13 @@ class Presentacion
      */
     protected $material;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Proveedor")
+     * @ORM\JoinColumn(name="proveedor_id", referencedColumnName="id")
+     * @Type("BGR\Serrano\ProductoBundle\Entity\Proveedor")
+     */
+    protected $proveedor;
+    
     public function setMaterial(Material $material)
     {
         $this->material = $material;
@@ -323,6 +331,14 @@ class Presentacion
 		$this->cantidad = $cantidad;
 		return $this;
 	}
+	public function getProveedor() {
+		return $this->proveedor;
+	}
+	public function setProveedor($proveedor) {
+		$this->proveedor = $proveedor;
+		return $this;
+	}
+	
 	
 
 }

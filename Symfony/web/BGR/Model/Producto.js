@@ -4,5 +4,6 @@ function Producto( ) {
 	this.categoria = ko.observable();
 	this.unidad_de_medidas = ko.observableArray();
 	this.proveedores = ko.observableArray();
+	this.actualizador_precio = ko.observableArray();
 
 }

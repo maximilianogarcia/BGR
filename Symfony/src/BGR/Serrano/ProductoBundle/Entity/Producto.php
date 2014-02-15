@@ -33,7 +33,13 @@ class Producto
      * @Type("string")
      */
     protected $name;
-
+    
+    /**
+     * @var float
+     * @ORM\Column(name="actualizador_precio", type="decimal")
+     * @Type("double")
+     */
+    protected $actualizador_precio;
 
     /**
      * Get id
@@ -66,52 +72,6 @@ class Producto
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set precioVenta
-     *
-     * @param float $precioVenta
-     * @return Producto
-     */
-    public function setPrecioVenta($precioVenta)
-    {
-        $this->precioVenta = $precioVenta;
-    
-        return $this;
-    }
-
-    /**
-     * Get precioVenta
-     *
-     * @return float 
-     */
-    public function getPrecioVenta()
-    {
-        return $this->precioVenta;
-    }
-
-    /**
-     * Set precioCompra
-     *
-     * @param float $precioCompra
-     * @return Producto
-     */
-    public function setPrecioCompra($precioCompra)
-    {
-        $this->precioCompra = $precioCompra;
-    
-        return $this;
-    }
-
-    /**
-     * Get precioCompra
-     *
-     * @return float 
-     */
-    public function getPrecioCompra()
-    {
-        return $this->precioCompra;
     }
 
     /**

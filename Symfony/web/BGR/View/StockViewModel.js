@@ -57,7 +57,7 @@ function StockViewModel() {
 		 if(self.hayCategoriaSeleccionada()){
 		     $.ajax(BASE_REST_URL+"/producto/getByCategoria", {
 		            type: "POST",
-		            data: {'data': JSON.stringify(self.selectedCategoria())},
+		            data: {'data': self.selectedCategoriaId()},
 		            success: function(result) {
 		               self.productos(result);
 		            }

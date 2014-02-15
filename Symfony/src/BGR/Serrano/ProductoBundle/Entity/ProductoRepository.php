@@ -4,6 +4,7 @@ namespace BGR\Serrano\ProductoBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 /**
  * ProductoRepository
@@ -58,10 +59,66 @@ class ProductoRepository extends EntityRepository
         $em = $this->getEntityManager();
         $result = $em->createQuery("SELECT l FROM BGRSerranoProductoBundle:Producto l   
             WHERE l.categoria = :categoria"
-        )->setParameter('categoria', $categoria->getId())->getArrayResult();
+        )->setParameter('categoria', $categoria)->getArrayResult();
     
         return $result;
     }
     
+    public function findRemanente($productoId)
+    {
+	$em = $this->getEntityManager();
+    	 
+    	$rsm = new ResultSetMapping();
+    	
 
+    	$rsm->addScalarResult('remanente_id', 'remanente_id');
+    	$rsm->addScalarResult('cantidad', 'cantidad');
+    	$rsm->addScalarResult('producto_name', 'producto_name');
+    	$rsm->addScalarResult('producto_id', 'producto_id');
+    	 
+    	 
+    
+    	$query = $em->createNativeQuery('
+		  SELECT  
+    			r.id as remanente_id,
+				r.cantidad as cantidad,
+    			p.name as producto_name,
+    			p.id as producto_id
+    			
+          FROM Producto p
+    	  JOIN Remanente r ON(r.producto_id = p.id)		
+		  WHERE  p.id = ? 
+          ',$rsm)->setParameter(1,$productoId);
+    
+    	$result = $query->getResult(); 
+    	return $result;
+    }
+    public function getAllRemanentes()
+    {
+    	$em = $this->getEntityManager();
+    
+    	$rsm = new ResultSetMapping();
+    	 
+    
+    	$rsm->addScalarResult('remanente_id', 'remanente_id');
+    	$rsm->addScalarResult('cantidad', 'cantidad');
+    	$rsm->addScalarResult('producto_name', 'producto_name');
+    	$rsm->addScalarResult('producto_id', 'producto_id');
+    
+    
+    
+    	$query = $em->createNativeQuery('
+		  SELECT
+    			r.id as remanente_id,
+				r.cantidad as cantidad,
+    			p.name as producto_name,
+    			p.id as producto_id
+    
+          FROM Producto p
+    	  JOIN Remanente r ON(r.producto_id = p.id)
+          ',$rsm);
+    
+    	$result = $query->getResult();
+    	return $result;
+    }  
 }

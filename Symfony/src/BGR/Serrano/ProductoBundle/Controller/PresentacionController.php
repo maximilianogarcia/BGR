@@ -47,7 +47,10 @@ class PresentacionController extends Controller
         $object = $serializer->deserialize($jsonData, 'BGR\Serrano\ProductoBundle\Entity\Presentacion', 'json');
 
         $em = $this->getDoctrine()->getManager();
-        $object->getLote()->setProducto($object->getProducto());
+        if($object->getLote() != null){
+        	$object->getLote()->setProducto($object->getProducto());
+        }
+        	
         $em->getRepository('BGRSerranoProductoBundle:Presentacion')->save($object);
 
         $servicio = $this->get('presentacion_service');

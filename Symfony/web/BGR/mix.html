@@ -6,51 +6,76 @@
     <link href="bootstrap/css/navbar.css" rel="stylesheet">
 
     <style>
+
       .hide{
           display: none;
           visibility: hidden;
       }
-
       .margenArriba{
         margin-top: 1em;
       }
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
+      }
+
     </style>
 
     <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
     <script type='text/javascript'  src='lib/knockout.mapping-latest.js'></script>
-    <script type='text/javascript'  src='conf/config.js'></script>
-    
-    <script type='text/javascript'  src='Model/Producto.js'></script>
+    <script type='text/javascript'  src='lib/Utils.js'></script>
     <script type='text/javascript'  src='Model/Categoria.js'></script>
-    <script type='text/javascript'  src='Model/UnidadMedida.js'></script> 
- 	 <script type='text/javascript'  src='Model/Categoria.js'></script>    
-    
+    <script type='text/javascript'  src='Model/Producto.js'></script>
+    <script type='text/javascript'  src='View/CategoriaViewModel.js'></script>
+    <script type='text/javascript'  src='View/MixViewModel.js'></script>
     <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
     <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
-	 	
-    <script type='text/javascript'  src='View/ProductoViewModel.js'></script>
-    <script type='text/javascript'  src='View/CategoriaViewModel.js'></script>
-    <script type='text/javascript'  src='View/UnidadMedidaViewModel.js'></script>
-	 <script type='text/javascript'  src='View/MixViewModel.js'></script>
+    <script type='text/javascript'  src='conf/config.js'></script>
 
     <script type='text/javascript'>
        $(document).ready(function(){
-
             viewModel = new MixViewModel();
             viewModel.apply();
-
        });
-
     </script>
    
   </head>
- <body>
+  <body>
 
+        <div class="modal fade" id="editMix" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Seleccionar Mix</h4>
+              </div>
+              <div class="modal-body">
+              
+              		<div class="span3">
+	               		<select class="span3"  data-bind="options: allProductos, selectedOptions: selectedProductos, optionsText: 'name'" size="10" multiple="true"></select>
+	               	</div>
+	               	<div class="span3">
+	               		<p>Productos Seleccionados</p>
+		               	<ul  class="unstyled" data-bind="foreach: selectedProductos">
+						    <li data-bind="text: name"/>
+						</ul>
+             		</div>
+             
+              </div>
+              <div class="modal-footer">
+                      <input type="button" value="Cancelar"  class="btn btn-default"/>
+                      <input type="button" value="Siguiente" data-bind="click:getRemanentesPorProductos" class="btn btn-primary"/>
+               </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    <div class="container">
       <div class="navbar navbar-default" role="navigation">
         
         <div class="navbar-collapse in collapse" style="height: auto;">
            <ul class="nav navbar-nav">
-            <li ><a href="categoria.html">Categorias</a></li>
+            <li><a href="categoria.html">Categorias</a></li>
             <li><a href="unidadMedida.html">Unidades de medida</a></li>
             <li><a href="producto.html">Productos</a></li>
             <li><a href="lote.html">Lotes</a></li>
@@ -59,84 +84,27 @@
             <li class="active"><a href="#">Mixes</a></li>
             <li><a href="stock.html">Stock</a></li>
           </ul>
-        </div>
+        </div><!--/.nav-collapse -->
       </div>
 
-      <h3>Creacion de mix</h3>
-      <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
-
-
-		<div class="modal fade" id="createMix" style="display: none;">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Crear Producto</h4>
-              </div>
-              <div class="modal-body">
-                <form action="#" id="editProductForm" >
-                <div id="step1" data-bind="visible: step1">
-                    <label class="margenArriba"> Productos 
-                    </label>
-       				  <select data-bind="foreach: selectedProductos" multiple="false">
-						  		<option data-bind="text: name, click: $root.selectProducto "></option>
-						  </select>
-                      
-                    <select data-bind="foreach: notSelectedProductos" multiple="false">
-						  		<option data-bind="text: name, click: $root.unSelectProducto "></option>
-						  </select>
-						  
-                  <input 
-                  type="button" data-bind="click: function(data, event) { next('lote', data, event) },
-                  " value="siguiente" multiple class="btn btn-primary margenArriba"/>
-                </div>
-                <div id="step2" data-bind="visible: step2">
-                  <label>Nombre
-                       <input required data-bind="value: selected.name" 
-                       class="input-block-level" placeholder="Nombre del producto"> 
-                    </label>
-                    <label class="margenArriba">Precio de venta
-                        <input   required data-bind="value: selected.precio_venta" 
-                        class="input-block-level " 
-                        placeholder="Precio de venta">
-                    </label>
-                    <label class="margenArriba">Precio de Compra
-                    <input   required data-bind="value: selected.precio_compra" 
-                             class="input-block-level " 
-                             placeholder="Precio de compra"> 
-                             </label>
-
-                    <label class="margenArriba"> Categoria
-                      <select class="input-block-level form-control" data-bind="options: categorias, optionsText: 'name', 
-                     optionsValue: 'id', value: selectedCategoriaId, optionsCaption:'Seleccione'" required></select>
-                    </label>
-
-
-                    <input type="button" data-bind="click: save" value="crear" class="btn btn-primary margenArriba"/>
-                    <input type="button" data-bind="click: update" value="Guardar" class="btn btn-primary margenArriba"/>      
-                    <input type="submit"  id="submitOculto" class="hide"/>
-                   	
-       				  <select data-bind="foreach: selected.unidad_de_medidas" multiple="false">
-						  		<option data-bind="text: name, click: $root.unSelectUnidad "></option>
-						  </select>	
-						  
-						  <select data-bind="foreach: notSelectedUnidadDeMedidas" multiple="false">
-						  		<option data-bind="text: name, click: $root.selectUnidad "></option>
-						  </select>	
-                </div> 
-                </form>
-                  
-              </div>
-              <div class="modal-footer">
-                <input type="button" data-bind="click: back,visible: backeable" value="Atras" class="btn btn-primary"/>
-                <input type="button" data-bind="click: save,visible: step2" value="crear" class="btn btn-primary"/>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-
+        <h3>Mix de productos</h3>
+        <input type="button" value="Seleccionar productos" data-bind="click: seleccionarProductos" class="btn btn-default"/>
+			<div class="container">
+				<div class="span3">		        
+						<div class="grid">
+						      <h4>Remanentes</h4>
+				              <table class="table table-hover">
+				                  <thead><tr><th>Producto</th><th>Cantidad</th></tr></thead>
+				                  <tbody data-bind="foreach: remanentes">
+				                      <tr data-bind="click: $root.editar" >
+				                          <td data-bind="text: producto_name"></td>
+				                          <td data-bind="text: cantidad"></td>
+				                      </tr>     
+				                  </tbody>
+				              </table>
+				      </div>
+				</div>
+				</div>
       </div>
   </body>
-  </html>
+</html>

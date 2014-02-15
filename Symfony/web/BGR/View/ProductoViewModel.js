@@ -2,6 +2,7 @@ function ProductoViewModel() {
    var self = this;
    self.selectedUnmapped = null;
    self.productos = ko.mapping.fromJS([new Producto()]);
+   self.productosByCategoria = ko.observableArray();
    self.selected = ko.mapping.fromJS(new Producto());
    self.createNew = ko.observable(false);
    self.categorias = ko.observableArray();
@@ -16,7 +17,9 @@ function ProductoViewModel() {
 
    self.productoProveedor= ko.mapping.fromJS([new ProductoProveedor()]);
    
-   
+   self.hayCategoriaSeleccionada = ko.computed(function(){
+	     return self.selectedCategoriaId() != null;
+   });
    self.selectedCategoria = function() {
        var self = this;
        return ko.utils.arrayFirst(this.categorias(), function(categoria) {
@@ -24,6 +27,19 @@ function ProductoViewModel() {
        });
    }.bind(this);
 
+   self.loadProductoByCategoria = function() {
+		 if(self.hayCategoriaSeleccionada()){
+		     $.ajax(BASE_REST_URL+"/producto/getByCategoria", {
+		            type: "POST",
+		            data: {'data': self.selectedCategoriaId()},
+		            success: function(result) {
+		               self.productosByCategoria(result);
+		            }
+		      });
+		 }
+   }
+
+   
    self.notSelectedUnidadDeMedidas = ko.observableArray();
    self.notSelectedProveedores= ko.observableArray();
 
@@ -153,7 +169,8 @@ function ProductoViewModel() {
                   data: {'data': JSON.stringify(serializado) },
                   type: "PUT",
                   success: function(result) {
-                  self.selectedUnmapped.name(result.name);
+                      self.selectedUnmapped.name(result.name);
+                      self.selectedUnmapped.actualizador_precio(result.actualizador_precio);
                   self.selectedUnmapped.categoria.id(result.categoria.id);
                   self.selectedUnmapped.categoria.name(result.categoria.name);
                   self.selectedUnmapped.categoria.descripcion(result.descripcion);

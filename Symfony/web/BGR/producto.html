@@ -99,15 +99,24 @@
               </div>
               <div class="modal-body">
                 <form action="#" id="editProductForm" >
-                    <label>Nombre
-                       <input required data-bind="value: selected.name" 
-                       class="input-block-level" placeholder="Nombre del producto"> 
-                    </label>
 
                     <label class="margenArriba"> Categoria
                       <select class="input-block-level form-control" data-bind="options: categorias, optionsText: 'name', 
-                     optionsValue: 'id', value: selectedCategoriaId, optionsCaption:'Seleccione'" required></select>
+                     optionsValue: 'id', value: selectedCategoriaId, optionsCaption:'Seleccione', click:loadProductoByCategoria" required></select>
                     </label>
+                    <label>Nombre
+                       <input list="productosXcategoria" required data-bind="value: selected.name" 
+                       class="input-block-level" placeholder="Nombre del producto"> 
+						<datalist id="productosXcategoria" data-bind="foreach: productosByCategoria">
+						  <option data-bind="value:name">
+						</datalist>
+
+                    </label>
+                    
+                   <label>Porcentaje para actualizaci&oacute;n de precio</label>
+                      <input   required data-bind="value: selected.actualizador_precio" 
+                               class="input-block-level " 
+                               placeholder="Porcentaje para actualizaci&oacute;n de precio"> 
                     <input type="submit"  id="submitOculto" class="hide"/>
                     <label>Unidades de medida
    					<div>

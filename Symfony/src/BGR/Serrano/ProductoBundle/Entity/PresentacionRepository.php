@@ -12,11 +12,16 @@ use Doctrine\ORM\Query\ResultSetMapping;
  */
 class PresentacionRepository extends EntityRepository
 {
+
+    
     public function save($presentacion)
     {   
         $em = $this->getEntityManager();
 	    $presentacion->setProducto($em->merge($presentacion->getProducto()));
-	    $presentacion->setLote($em->merge($presentacion->getLote()));
+
+	    if($presentacion->getLote() != null){
+	    	$presentacion->setLote($em->merge($presentacion->getLote()));
+	    }
 	    $presentacion->setMaterial($em->merge($presentacion->getMaterial()));
 	    $presentacion->setUnidad_de_medida($em->merge($presentacion->getUnidad_de_medida()));
         $em->persist($presentacion);

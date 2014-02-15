@@ -31,8 +31,11 @@ function PresentacionViewModel() {
         return self.step() == 4;
    });
    self.step5 = ko.computed(function(){
-        return self.step() == 5;
-   });
+       return self.step() == 5;
+  });   
+   self.step6 = ko.computed(function(){
+      return self.step() == 6;
+  });
 
    self.backeable = ko.computed(function(){
         return self.step() != 1  ;
@@ -52,19 +55,27 @@ function PresentacionViewModel() {
    self.materiales = ko.mapping.fromJS([new Material()]);
    self.medidas    = ko.mapping.fromJS([new UnidadMedida()]);
 
+   self.proveedores    = ko.mapping.fromJS([new Proveedor()]);
+  
+   
    self.selectedProductoId = ko.observable(null);
    self.selectedMedidaId = ko.observable(null);
    self.selectedLoteId = ko.observable(null);
    self.selectedMaterialId = ko.observable(null);
+   self.selectedProveedorId = ko.observable(null);
 
-	self.selectedPaqueteId = ko.observable(null);   
+   self.selectedPaqueteId = ko.observable(null);   
 
    self.hayPaqueteParaFraccionar = ko.computed(function(){
-     return (self.selectedPaqueteId() != null && self.selectedPaqueteId().length > 0 );
-   });
+	     return (self.selectedPaqueteId() != null && self.selectedPaqueteId().length > 0 );
+	   });
+   
    
    self.hayProductoSeleccionado = ko.computed(function(){
-     return self.selectedProductoId() != null;
+	     return self.selectedProductoId() != null;
+   });
+   self.hayProveedorSeleccionado = ko.computed(function(){
+	     return self.selectedProveedorId() != null;
    });
    self.hayLoteSeleccionado = ko.computed(function(){
      return self.selectedLoteId() != null;
@@ -81,6 +92,12 @@ function PresentacionViewModel() {
        return ko.utils.arrayFirst(this.productos(), function(producto) {
            return self.selectedProductoId() == producto.id;
        });
+   }.bind(this);
+   self.selectedProveedor = function() {
+	   //    var self = this;
+	       return ko.utils.arrayFirst(this.proveedores(), function(proveedor) {
+	           return self.selectedProveedorId() == proveedor.id;
+	       });
    }.bind(this);
    self.selectedLote = function() {
   //    var self = this;
@@ -136,14 +153,19 @@ function PresentacionViewModel() {
    self.save = function(){
     var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
     serializado.producto = self.selectedProducto();
+    serializado.proveedor = self.selectedProveedor();
     serializado.lote = self.selectedLote();
-    serializado.lote.fecha_de_elaboracion= moment(serializado.lote.fecha_de_elaboracion).format('YYYY-MM-DD');
-    serializado.lote.fecha_de_vencimiento= moment(serializado.lote.fecha_de_vencimiento).format('YYYY-MM-DD');
+    if(serializado.lote){
+	    serializado.lote.fecha_de_elaboracion= moment(serializado.lote.fecha_de_elaboracion).format('YYYY-MM-DD');
+	    serializado.lote.fecha_de_vencimiento= moment(serializado.lote.fecha_de_vencimiento).format('YYYY-MM-DD');
+    }
     serializado.date_create= moment().format('YYYY-MM-DD');
     serializado.date_update= moment().format('YYYY-MM-DD');
 
 
     serializado.material = self.selectedMaterial();
+    serializado.proveedor = self.selectedProveedor();
+
     serializado.unidad_de_medida = self.selectedUnidad_de_medida();
   	 	
 
@@ -209,6 +231,7 @@ function PresentacionViewModel() {
       var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
     serializado.producto = self.selectedProducto();
     serializado.lote = self.selectedLote();
+    serializado.proveedor = self.selectedProveedor();
     serializado.lote.fecha_de_elaboracion= moment(serializado.lote.fecha_de_elaboracion).format('YYYY-MM-DD');
     serializado.lote.fecha_de_vencimiento= moment(serializado.lote.fecha_de_vencimiento).format('YYYY-MM-DD');
     serializado.date_create= moment().format('YYYY-MM-DD');
@@ -216,6 +239,7 @@ function PresentacionViewModel() {
 
 
     serializado.material = self.selectedMaterial();
+    serializado.proveedor = self.selectedProveedor();
     serializado.unidad_de_medida = self.selectedUnidad_de_medida();
   
       var $myForm = $('#editPresentacionForm');
@@ -225,8 +249,6 @@ function PresentacionViewModel() {
                   type: "PUT",
                   success: function(result) {
                     //self.selectedUnmapped.name(result.name);
-                    self.selectedUnmapped.producto.precio_venta(result.producto.precio_venta);
-                    self.selectedUnmapped.producto.precio_compra(result.producto.precio_compra);
                     self.selectedUnmapped.producto.id(result.producto.id);
                     self.selectedUnmapped.producto.name(result.producto.name);
                     self.selectedUnmapped.descripcion(result.descripcion);
@@ -301,6 +323,23 @@ function PresentacionViewModel() {
       });
 
   }
+  self.getProveedoresByProductoId = function(producto_id,destino){
+
+	     $.ajax(BASE_REST_URL+"/proveedor/getProveedoresByProductoId", {
+	            type: "POST",
+	            data: {'data': producto_id},
+	            success: function(result) {
+	               self.proveedores(result);
+	               self.doNext(
+	                  function(){
+	                    self.selectedProveedorId(self.selectedUnmapped.proveedor.id());
+	                  }
+	                );
+	            }
+	      });
+
+	  }
+  
   self.getMedidasByProducto = function(producto){
        self.medidas(producto.unidad_de_medidas);
 
@@ -362,7 +401,12 @@ function PresentacionViewModel() {
    self.editar = function(data){   	 
        self.selectedProductoId(data.producto.id());
        self.selectedMedidaId(data.unidad_de_medida.id());
-       self.selectedLoteId(data.lote.id());
+       try {
+           self.selectedLoteId(data.lote.id());
+
+		} catch (e) {
+			// TODO: handle exception
+		}
        self.selectedMaterialId(data.material.id());
        
        self.createNew(false);
@@ -384,6 +428,7 @@ function PresentacionViewModel() {
       self.selectedMedidaId(null);
       self.selectedLoteId(null);
       self.selectedMaterialId(null);
+      self.selectedProveedorId(null);
 
       self.createNew(true);
       self.step(1) ;
@@ -419,9 +464,10 @@ function PresentacionViewModel() {
 	
 	self.setFraccionamiento = function(data){
 		
-      self.selectedLoteId(self.selected.lote().id());
-      self.selectedMaterialId(self.selected.material().id());
-      
+       self.selectedLoteId(self.selected.lote().id());
+       self.selectedMaterialId(self.selected.material().id());
+       self.selectedProveedorId(self.selected.proveedor().id());
+
   		self.selectedMedidaId(self.selected.unidad_de_medida().id());
   		self.medidas(ko.toJS(self.selected.producto().unidad_de_medidas));
   		self.createNew(false);
@@ -455,8 +501,11 @@ function PresentacionViewModel() {
          self.getMaterialesByProducto(self.selectedProducto());
         break;
       case "medida":
-         self.getMedidasByProducto(self.selectedProducto());
-        break;
+          self.getMedidasByProducto(self.selectedProducto());
+         break;      
+      case "proveedor":
+         self.getProveedoresByProductoId(self.selectedProducto().id);
+         break;
       case "form":
          self.doNext();
         break;
@@ -480,5 +529,9 @@ function PresentacionViewModel() {
 	   }
    }
 
-
+   self.saltarLote= function(data){
+	   self.getMaterialesByProducto(self.selectedProducto());
+   }   
+   self.doNothing= function(){
+   }
 }
