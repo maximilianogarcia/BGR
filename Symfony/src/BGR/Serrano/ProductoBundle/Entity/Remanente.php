@@ -36,6 +36,13 @@ class Remanente
  	  * @Type("double")
      */
     private $cantidad;
+    
+   /**
+     * @ORM\ManyToOne(targetEntity="UnidadDeMedida") 
+     * @ORM\JoinColumn(name="unidadDeMedida_id", referencedColumnName="id")
+     * @Type("BGR\Serrano\ProductoBundle\Entity\UnidadDeMedida")
+     */
+    protected $unidad_de_medida;
 
 
     /**
@@ -92,5 +99,28 @@ class Remanente
     public function getCantidad()
     {
         return $this->cantidad;
+    }
+    
+    /**
+     * Set UnidadDeMedida
+     *
+     * @param UnidadDeMedida $unidad_de_medida
+     * @return Remanente
+     */
+    public function setUnidadDeMedida(UnidadDeMedida $unidad_de_medida)
+    {
+        $this->unidad_de_medida = $unidad_de_medida;
+    
+        return $this;
+    }
+
+    /**
+     * Get unidad_de_medida
+     *
+     * @return UnidadDeMedida 
+     */
+    public function getUnidadDeMedida()
+    {
+        return $this->unidad_de_medida;
     }
 }

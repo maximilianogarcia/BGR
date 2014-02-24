@@ -214,7 +214,7 @@ function PresentacionViewModel() {
                   alert("Ocurrio un error al salvar");
                 },
                 success: function(result) { 
-                  $('#createPresentacionForm').modal('hide');
+                  $('#fraccionarPresentacion').modal('hide');
                   self.presentaciones.push(ko.mapping.fromJS(result)); 
                 }
         });

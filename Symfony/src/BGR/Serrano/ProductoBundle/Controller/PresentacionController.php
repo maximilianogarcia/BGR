@@ -103,6 +103,7 @@ class PresentacionController extends Controller
 		    $remanente->setCantidad(0);
 		  }
 		  
+		  $remanente->setUnidadDeMedida($object->getUnidad_de_medida());
 		  $remanente->setCantidad($remanente->getCantidad()+$cant_);		  
 		  		  
 		  $em->getRepository('BGRSerranoProductoBundle:Remanente')->save($remanente);
