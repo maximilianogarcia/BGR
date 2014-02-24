@@ -298,6 +298,32 @@ class ProductoController extends Controller
     	 
     	 
     }
+    
+    
+    /**
+     * @Route("/producto/getRemanentesByProductos")
+     */
+    public function getRemanenteByProductosAction()
+    {
+    	$em = $this->getDoctrine()->getManager();
+    
+    	$jsonData = $this->get('request')->request->get('data');
+    	$serializer =  SerializerBuilder::create()->build();
+
+    	$object = $serializer->deserialize($jsonData, 'ArrayCollection', 'json');
+    	 
+    	$logger = $this->get('logger');
+
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Producto')->getRemanentesParaUnaListaDeProductos($object);
+    	
+    	$response = new Response($serializer->serialize($result,'json'));
+    	$response->headers->set('Content-Type', 'application/json');
+    
+    	return $response;
+    
+    }
+    
+    
     /**
      * @Route("/producto/getAllRemanentes")
      */

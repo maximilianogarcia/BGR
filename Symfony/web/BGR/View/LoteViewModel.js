@@ -99,7 +99,7 @@ function LoteViewModel() {
       if ($myForm[0].checkValidity()) {
           $.ajax(BASE_REST_URL+"/lote/update", {
                   data: {'data': JSON.stringify(serializado) },
-                  type: "PUT",
+                  type: "POST",
                   success: function(result) {
                     self.selectedUnmapped.precio_compra(result.precio_compra);
                     self.selectedUnmapped.producto.id(result.producto.id);
@@ -129,7 +129,7 @@ function LoteViewModel() {
      serializado=ko.mapping.toJSON(self.selected);
      $.ajax(BASE_REST_URL+"/lote/desactivar", {
             data: {'data': serializado.id},
-            type: "DELETE",
+            type: "POST",
             success: function(result){
                $('#editLote').modal('hide');
                self.lotes.remove(self.selectedUnmapped);               

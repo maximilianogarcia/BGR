@@ -9,8 +9,9 @@ function Utils(){
 	      });
 	}
 	
-	self.doPost = function(callback,path){
+	self.doPost = function(pData, callback,path){
 	     $.ajax(BASE_REST_URL+path, {
+	    	   data: {'data': pData},
 	           type: "POST",
 		            success: function(result) {
 	                callback(result);

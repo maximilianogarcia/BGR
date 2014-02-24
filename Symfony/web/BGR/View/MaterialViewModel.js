@@ -48,7 +48,7 @@ function MaterialViewModel() {
       if ($myForm[0].checkValidity()) {
           $.ajax(BASE_REST_URL+"/material/update", {
                   data: {'data': self.serialized() },         
-                  type: "PUT",
+                  type: "POST",
                   success: function(result) {
                     self.selectedUnmapped.name(result.name);
                     self.selectedUnmapped.descripcion(result.descripcion);
@@ -78,7 +78,7 @@ function MaterialViewModel() {
      serializado=ko.mapping.toJSON(self.selected);
      $.ajax(BASE_REST_URL+"/material/delete", {
             data: {'data': serializado},         
-            type: "DELETE",
+            type: "POST",
             success: function(result) { 
                $('#editMaterial').modal('hide');
                self.materiales.remove(self.selectedUnmapped); 

@@ -17,7 +17,7 @@ function MixViewModel() {
 		   for ( var i = 0; i< self.selectedProductos().length; i++) {
 			   productosTmp.push(self.selectedProductos()[i].id);
 		   }	   
-		   self.utils.doPost(self.doGetRemanentesByProductos,"/producto/getRemanenteByProductos");
+		   self.utils.doPost(JSON.stringify(productosTmp), self.doGetRemanentesByProductos,"/producto/getRemanentesByProductos");
 	   }
 
 	   self.doGetRemanentesByProductos = function(data){

@@ -48,7 +48,7 @@ function CategoriaViewModel() {
       if ($myForm[0].checkValidity()) {
           $.ajax(BASE_REST_URL+"/categoria/update", {
                   data: {'data': self.serialized() },         
-                  type: "PUT",
+                  type: "POST",
                   success: function(result) {
                     self.selectedUnmapped.name(result.name);
                     self.selectedUnmapped.descripcion(result.descripcion);
@@ -73,7 +73,7 @@ function CategoriaViewModel() {
      serializado=ko.mapping.toJSON(self.selected);
      $.ajax(BASE_REST_URL+"/categoria/delete", {
             data: {'data': serializado},         
-            type: "DELETE",
+            type: "POST",
             success: function(result) { 
                $('#editCategory').modal('hide');
                self.categorias.remove(self.selectedUnmapped); 

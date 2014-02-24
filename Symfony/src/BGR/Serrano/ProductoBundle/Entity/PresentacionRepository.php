@@ -22,6 +22,8 @@ class PresentacionRepository extends EntityRepository
 	    if($presentacion->getLote() != null){
 	    	$presentacion->setLote($em->merge($presentacion->getLote()));
 	    }
+	    $presentacion->setProveedor($em->merge($presentacion->getProveedor()));
+	     
 	    $presentacion->setMaterial($em->merge($presentacion->getMaterial()));
 	    $presentacion->setUnidad_de_medida($em->merge($presentacion->getUnidad_de_medida()));
         $em->persist($presentacion);

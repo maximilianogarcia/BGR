@@ -167,7 +167,7 @@ function ProductoViewModel() {
       if ($myForm[0].checkValidity()) {
           $.ajax(BASE_REST_URL+"/producto/update", {
                   data: {'data': JSON.stringify(serializado) },
-                  type: "PUT",
+                  type: "POST",
                   success: function(result) {
                       self.selectedUnmapped.name(result.name);
                       self.selectedUnmapped.actualizador_precio(result.actualizador_precio);
@@ -203,7 +203,7 @@ function ProductoViewModel() {
      serializado.categoria = self.selectedCategoria();
      $.ajax(BASE_REST_URL+"/producto/delete", {
             data: {'data': serializado},
-            type: "DELETE",
+            type: "POST",
             success: function(result){
                $('#editProduct').modal('hide');
                self.productos.remove(self.selectedUnmapped);

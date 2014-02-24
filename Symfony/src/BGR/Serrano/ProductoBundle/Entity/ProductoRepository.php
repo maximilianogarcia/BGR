@@ -120,5 +120,19 @@ class ProductoRepository extends EntityRepository
     
     	$result = $query->getResult();
     	return $result;
-    }  
+    }
+
+    public function getRemanentesParaUnaListaDeProductos($listaDeIds)
+    {
+    	$em = $this->getEntityManager();
+    
+    	$rsm = new ResultSetMapping();
+    
+    	$result = new ArrayCollection();
+    	foreach ($listaDeIds as $unId){
+			$tmp=$em->getRepository('BGRSerranoProductoBundle:Remanente')->find($unId);   
+			$result->add($tmp);
+    	}
+    	return $result;
+    }
 }

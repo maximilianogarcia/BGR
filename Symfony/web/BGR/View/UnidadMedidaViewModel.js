@@ -62,7 +62,7 @@ function UnidadMedidaViewModel() {
       if ($myForm[0].checkValidity()) {
           $.ajax(BASE_REST_URL+"/unidadMedida/update", {
                   data: {'data': self.serialized() },         
-                  type: "PUT",
+                  type: "POST",
                   success: function(result) {
                     self.selectedUnmapped.name(result.name);
                     self.selectedUnmapped.descripcion(result.descripcion);
@@ -104,7 +104,7 @@ function UnidadMedidaViewModel() {
      serializado=ko.mapping.toJSON(self.selected);
      $.ajax(BASE_REST_URL+"/unidadMedida/delete", {
             data: {'data': serializado},         
-            type: "DELETE",
+            type: "POST",
             success: function(result) { 
                $('#editUnity').modal('hide');
                self.unidadMedidas.remove(self.selectedUnmapped); 

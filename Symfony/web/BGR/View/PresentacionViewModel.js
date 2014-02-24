@@ -355,7 +355,7 @@ function PresentacionViewModel() {
    //  serializado=ko.mapping.toJSON(self.selected);
      $.ajax(BASE_REST_URL+"/presentacion/desactivar", {
             data: {'data': self.selected.id()},
-            type: "PUT",
+            type: "POST",
             success: function(result){
                $('#editPresentacion').modal('hide');
                self.presentaciones
@@ -367,7 +367,7 @@ function PresentacionViewModel() {
 	   //  serializado=ko.mapping.toJSON(self.selected);
 	   $.ajax(BASE_REST_URL+"/presentacion/activar", {
 		   data: {'data': self.selected.id()},
-		   type: "PUT",
+		   type: "POST",
 		   success: function(result){
 			   $('#editPresentacion').modal('hide');
 			   self.presentaciones

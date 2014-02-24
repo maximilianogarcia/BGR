@@ -13,7 +13,7 @@ function ProveedorViewModel() {
 		   
 		     $.ajax(BASE_REST_URL+"/proveedor/getAllProductoRelations", {
 		            data: {'data': producto_id},
-		            type: "PUT",
+		            type: "POST",
 
 		            success: function(result){
 			              destino(result);

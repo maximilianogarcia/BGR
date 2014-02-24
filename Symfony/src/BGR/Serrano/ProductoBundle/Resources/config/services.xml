@@ -6,9 +6,10 @@
 
   <parameters>
     <parameter key="presentacion_service.class">BGR\Serrano\ProductoBundle\Service\PresentacionService</parameter>
+    <parameter key="producto_service.class">BGR\Serrano\ProductoBundle\Service\ProductoService</parameter>
    </parameters>  
     <services>
-	    <service id="presentacion_service" class="%presentacion_service.class%">
-	</service>
+	    <service id="presentacion_service" class="%presentacion_service.class%"></service>
+	    <service id="producto_service" class="%producto_service.class%"></service>
 	</services>
 </container>
