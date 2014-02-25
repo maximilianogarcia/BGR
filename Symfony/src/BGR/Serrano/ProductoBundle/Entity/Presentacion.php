@@ -93,7 +93,15 @@ class Presentacion
      * @ORM\Column(name="cantidad", type="decimal", length=255)
      * @Type("integer")
      */
-    protected $cantidad;    
+    protected $cantidad; 
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="message", type="string", length=150)
+     * @Type("string")
+     */
+    private $message;
 
     /**
      * Get id
@@ -339,6 +347,28 @@ class Presentacion
 		return $this;
 	}
 	
+	 /**
+     * Set message
+     *
+     * @param string $message
+     * @return Presentacion
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+    
+        return $this;
+    }
+
+    /**
+     * Get message
+     *
+     * @return string 
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
 	
 
 }

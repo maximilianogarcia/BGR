@@ -7,6 +7,12 @@ function PresentacionViewModel() {
    self.soloActivos = ko.observable(true);
    self.paraFraccionarSelected= ko.observable();
    self.paraFraccionar = ko.observable();
+	self.messageDesactivar = ko.observable();   
+
+	self.messageDesactivarOn = ko.computed(function(){
+	     return (self.messageDesactivar() != null && self.messageDesactivar().length > 0 );
+	});
+   
    
    self.stock = ko.observable();
    self.cantidad_fraccionada = ko.observable();
@@ -354,10 +360,13 @@ function PresentacionViewModel() {
    self.desactivar = function(data){
    //  serializado=ko.mapping.toJSON(self.selected);
      $.ajax(BASE_REST_URL+"/presentacion/desactivar", {
-            data: {'data': self.selected.id()},
+            data: {'data': self.selected.id(), 'message': data.messageDesactivar()},
             type: "POST",
+            error: function(result){
+               alert("Ocurrio un error al salvar");
+            },
             success: function(result){
-               $('#editPresentacion').modal('hide');
+               $('#desactivarPresentacion').modal('hide');
                self.presentaciones
           .remove(self.selectedUnmapped);
             }
@@ -366,10 +375,13 @@ function PresentacionViewModel() {
    self.activar = function(data){
 	   //  serializado=ko.mapping.toJSON(self.selected);
 	   $.ajax(BASE_REST_URL+"/presentacion/activar", {
-		   data: {'data': self.selected.id()},
+		   data: {'data': self.selected.id(),'message': data.messageDesactivar()},
 		   type: "POST",
+         error: function(result){
+            alert("Ocurrio un error al salvar");
+         },		   
 		   success: function(result){
-			   $('#editPresentacion').modal('hide');
+			   $('#desactivarPresentacion').modal('hide');
 			   self.presentaciones
 			   .remove(self.selectedUnmapped);
 		   }
@@ -534,4 +546,11 @@ function PresentacionViewModel() {
    }   
    self.doNothing= function(){
    }
+   
+   self.showdesactivar = function(){
+   	self.messageDesactivar(null);
+   	$('#editPresentacion').modal('hide');
+   	$('#desactivarPresentacion').modal('show');
+   }
+   
 }

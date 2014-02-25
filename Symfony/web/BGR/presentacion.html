@@ -171,11 +171,11 @@
 
                 <button 
                   type="button" class="btn btn-danger" 
-                  data-bind="click: desactivar, visible: selected.active">
+                  data-bind="click: showdesactivar, visible: selected.active">
                   Desactivar presentacion</button>
                 <button 
                   type="button" class="btn btn-danger" 
-                  data-bind="click: activar, visible: !selected.active()">
+                  data-bind="click: showdesactivar, visible: !selected.active()">
                   Activar presentacion</button>
                <!-- /ko -->
 
@@ -183,6 +183,35 @@
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+        
+       <div class="modal fade" id="desactivarPresentacion" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Desactivar presentaci&oacute;n</h4>
+              </div>
+              <div class="modal-body">
+              		<form action="#" id="desactivarPresentacionForm" >
+              		 	<input type="text" data-bind="value: messageDesactivar"> </input>
+              		</form>
+              </div>
+              <div class="modal-footer">
+               <!-- ko ifnot: createNew -->
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: desactivar, visible: selected.active, enable:messageDesactivarOn">
+                  Desactivar presentacion</button>
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: activar, visible: !selected.active(), enable:messageDesactivarOn">
+                  Activar presentacion</button>
+               <!-- /ko --> 
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal desactivarPresentacion -->
 
         <div class="modal fade" id="fraccionarPresentacion" style="display: none;">
           <div class="modal-dialog">

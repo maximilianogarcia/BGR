@@ -88,8 +88,8 @@ class PresentacionController extends Controller
         $servicio = $this->get('presentacion_service');
         $servicio->crear_paquetes($em,$object);
 
-        //cambiar estado del paquete
-        $em->getRepository('BGRSerranoProductoBundle:Paquete')->desactivar($paquete_id);        
+        //cambiar estado del paquete a fraccionado
+        $em->getRepository('BGRSerranoProductoBundle:Paquete')->fraccionar($paquete_id);        
          
         //guardar remanente
 		  $cant_ =  $cantidad_original % $object->getCantidad();
@@ -186,9 +186,10 @@ class PresentacionController extends Controller
     {
     
     	$presentacionId = $this->get('request')->request->get('data');
+    	$message = $this->get('request')->request->get('message');
     	$serializer =  SerializerBuilder::create()->build();
     	$em = $this->getDoctrine()->getManager();
-    	$result =$em->getRepository('BGRSerranoProductoBundle:Presentacion')->desactivar($presentacionId);
+    	$result =$em->getRepository('BGRSerranoProductoBundle:Presentacion')->desactivar($presentacionId,$message);
     	$response = new Response($serializer->serialize($result,'json'));
     	$response->headers->set('Content-Type', 'application/json');
     	return $response;
@@ -201,9 +202,11 @@ class PresentacionController extends Controller
     {
     
     	$presentacionId = $this->get('request')->request->get('data');
+    	$message = $this->get('request')->request->get('message');
+    	
     	$serializer =  SerializerBuilder::create()->build();
     	$em = $this->getDoctrine()->getManager();
-    	$result =$em->getRepository('BGRSerranoProductoBundle:Presentacion')->activar($presentacionId);
+    	$result =$em->getRepository('BGRSerranoProductoBundle:Presentacion')->activar($presentacionId,$message);
     	$response = new Response($serializer->serialize($result,'json'));
     	$response->headers->set('Content-Type', 'application/json');
     	return $response;

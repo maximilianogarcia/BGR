@@ -83,12 +83,13 @@ class PresentacionRepository extends EntityRepository
     	return $result;
     }
     
-    public function desactivar($presentacionId)
+    public function desactivar($presentacionId,$message)
     {
     	 
     	$em = $this->getEntityManager();
         $p = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->find($presentacionId);
     	$p->setActive(false);
+    	$p->setMessage($message);
     	$em->persist($p);
     	
     	$conection = $em->getConnection();
@@ -100,12 +101,13 @@ class PresentacionRepository extends EntityRepository
       	$em->flush();
       	return $p;
     }
-    public function activar($presentacionId)
+    public function activar($presentacionId,$message)
     {
     	 
     	$em = $this->getEntityManager();
         $p = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->find($presentacionId);
     	$p->setActive(true);
+    	$p->setMessage($message);
     	$em->persist($p);
     	
     	$conection = $em->getConnection();
