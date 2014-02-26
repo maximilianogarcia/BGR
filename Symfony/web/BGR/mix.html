@@ -11,6 +11,10 @@
           display: none;
           visibility: hidden;
       }
+      .error{
+          display:block;
+		  color:red;
+      }
       .margenArriba{
         margin-top: 1em;
       }
@@ -19,7 +23,6 @@
         min-height:150px ;
         height: 60%;
       }
-
     </style>
 
     <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
@@ -50,7 +53,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Seleccionar Mix</h4>
               </div>
-              <div class="modal-body">
+              <div class="modal-body" data-bind="">
               
               		<div class="span3">
 	               		<select class="span3"  data-bind="options: allProductos, selectedOptions: selectedProductos, optionsText: 'name'" size="10" multiple="true"></select>
@@ -90,21 +93,39 @@
         <h3>Mix de productos</h3>
         <input type="button" value="Seleccionar productos" data-bind="click: seleccionarProductos" class="btn btn-default"/>
 			<div class="container">
-				<div class="span3">		        
-						<div class="grid">
-						      <h4>Remanentes</h4>
-				              <table class="table table-hover">
-				                  <thead><tr><th>Producto</th><th>Cantidad</th></tr></thead>
-				                  <tbody data-bind="foreach: remanentes">
-				                      <tr data-bind="click: $root.editar" >
-				                          <td data-bind="text: producto_name"></td>
-				                          <td data-bind="text: cantidad"></td>
-				                      </tr>     
-				                  </tbody>
-				              </table>
-				      </div>
+				<div data-bind="visible: step1">
+					<div class="span6">
+						<h5>Mixear desde paquetes cerrados</h5>   
+						  <div data-bind="foreach: selectedProductos" id="deRemanentes">
+	                         <label data-bind="text: name"></label> 
+	                         <label data-bind="attr: { id: 'messageValidar' + id }" class="hide" > El Paquete No Pertenece al producto</label>
+	                         <input  data-bind="attr: { id: 'utilizarPaquete' + id }" class="input-block-level" min="0" class="input-block-level" placeholder="Nro. de paquete"> 
+					      </div>
+					</div>				
+						
+					<div class="span5">
+					      <h5>Mixear desde remanentes</h5>     
+	               		      <select data-bind="options: remanentes, selectedOptions: remanentesAgregados, optionsText:'producto_name'"  size="10" multiple="true"></select>
+					</div>			
+					
+						
 				</div>
+				
+				
+				 <div data-bind="visible: step2">
+
+					
+					
+					
+					
+					
+					
+							
 				</div>
+				<div class="span8 margenArriba" >
+					<input class="btn btn-primary" type="button" value="Siguiente" data-bind="click: validateAndNext"/>
+				</div>
+			</div>
       </div>
   </body>
 </html>

@@ -293,7 +293,7 @@ class PresentacionController extends Controller
 	   if(count($data) == 0 ) {
   			$response = new Response();
 			$response->setContent("El paquete no pertenece a la presentacion");
-			$response->setStatusCode(500);
+			$response->setStatusCode(408);
 			$response->headers->set('Content-Type', 'text/html');	
 			return $response;	
       }

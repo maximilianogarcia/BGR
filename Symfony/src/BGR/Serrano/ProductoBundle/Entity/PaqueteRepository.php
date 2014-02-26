@@ -34,4 +34,20 @@ class PaqueteRepository extends EntityRepository
      	return $p;
    }
 
+   
+   public function validarPaqueteProducto($paqueteId, $productoId)
+   {
+   	$em = $this->getEntityManager();
+
+   	$paquete=$em->getRepository('BGRSerranoProductoBundle:Paquete')->find($paqueteId);
+   	if($paquete ==null || $paquete->getEstado() != "DISPONIBLE"){
+   		return false;
+   	}
+   	
+   	$presentacion= $em->getRepository('BGRSerranoProductoBundle:Presentacion')->find($paquete->getPresentacion()->getId());
+  
+   	return $presentacion->getProducto()->getId() == $productoId;
+   }
+   
+   
 }

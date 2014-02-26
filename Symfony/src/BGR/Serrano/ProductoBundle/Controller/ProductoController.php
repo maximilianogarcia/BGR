@@ -289,7 +289,7 @@ class ProductoController extends Controller
     	$productoId = $this->get('request')->request->get('data');
     	$serializer =  SerializerBuilder::create()->build();
     	 
-    	$result = $em->getRepository('BGRSerranoProductoBundle:Producto')->findRemanente($productoId);
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Remanente')->findRemanente($productoId);
     	 
     	$response = new Response($serializer->serialize($result,'json'));
     	$response->headers->set('Content-Type', 'application/json');
@@ -314,7 +314,7 @@ class ProductoController extends Controller
     	 
     	$logger = $this->get('logger');
 
-    	$result = $em->getRepository('BGRSerranoProductoBundle:Producto')->getRemanentesParaUnaListaDeProductos($object);
+    	$result = $em->getRepository('BGRSerranoProductoBundle:Remanente')->getRemanentesParaUnaListaDeProductos($object);
     	
     	$response = new Response($serializer->serialize($result,'json'));
     	$response->headers->set('Content-Type', 'application/json');
@@ -333,14 +333,34 @@ class ProductoController extends Controller
     
     	$serializer =  SerializerBuilder::create()->build();
     
-    	$result = $em->getRepository('BGRSerranoProductoBundle:Producto')->getAllRemanentes();
-    
-    	$response = new Response($serializer->serialize($result,'json'));
+    	$result = $em->getRepository ( 'BGRSerranoProductoBundle:Remanente' )->getAllRemanentes ();
+		
+		$response = new Response($serializer->serialize($result,'json'));
     	$response->headers->set('Content-Type', 'application/json');
     
     	return $response;
     
     
     }
+    
+    /**
+     * @Route("/producto/validarPaquete")
+     */
+    public function getValidatePaqueteAction()
+    {
+    	$productoId = $this->get('request')->query->get('productoId');
+    	$paqueteId = $this->get('request')->query->get('paqueteId');
+    	    	 
+		
+    	$em = $this->getDoctrine()->getManager();
+		$success = $em->getRepository ( 'BGRSerranoProductoBundle:Paquete' )->validarPaqueteProducto( $paqueteId, $productoId );
+   		$response = new Response();
+     	$response->headers->set('Content-Type', 'application/json');
+     	$response->setContent($productoId);     	
+    	if(!$success){
+    		$response->setStatusCode(400);
+    	}
+    	return $response;
+    }   
     
 }

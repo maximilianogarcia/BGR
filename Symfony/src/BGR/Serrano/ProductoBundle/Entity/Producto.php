@@ -198,5 +198,10 @@ class Producto
 		$this->proveedores = $proveedores;
 		return $this;
 	}
+	public function setId($id) {
+		$this->id = $id;
+		return $this;
+	}
+	
 	
 }
