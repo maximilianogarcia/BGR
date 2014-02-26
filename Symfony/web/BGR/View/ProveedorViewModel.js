@@ -27,7 +27,7 @@ function ProveedorViewModel() {
 		   
 		     $.ajax(BASE_REST_URL+"/proveedor/getProveedoresByProductoId", {
 		            data:  {'data':producto_id},
-		            type: "PUT",
+		            type: "POST",
 		            success: function(result){
 			              destino(result);
 		            }
@@ -39,7 +39,7 @@ function ProveedorViewModel() {
 		   
 		     $.ajax(BASE_REST_URL+"/proveedor/saveRelation", {
 		            data: {'data':JSON.stringify(JSON.parse(ko.mapping.toJSON(proveedor)))},
-		            type: "PUT",
+		            type: "POST",
 		            error: function(result){
 		                  alert("Ocurrio un error al salvar");
 		            },

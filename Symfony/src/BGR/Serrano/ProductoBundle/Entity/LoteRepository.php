@@ -16,6 +16,7 @@ public function save($lote)
     {   
         $em = $this->getEntityManager();
 	    $lote->setProducto($em->merge($lote->getProducto()));
+	    $lote->setProveedor($em->merge($lote->getProveedor()));
         $em->persist($lote);
         $em->flush();
     }
