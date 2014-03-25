@@ -237,4 +237,21 @@ class PresentacionRepository extends EntityRepository
     	return $result;
     }
     
+    public function findByProductoId($producto_id)
+    {
+    	 
+    	$em = $this->getEntityManager();
+
+    	$result= $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findBy(
+    			Array(
+    				"producto"=>$producto_id
+    			)
+    	);
+    	
+    	
+    	return $result;
+    }
+    
+    
+    
 }

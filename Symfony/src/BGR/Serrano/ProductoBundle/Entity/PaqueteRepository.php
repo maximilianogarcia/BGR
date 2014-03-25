@@ -49,5 +49,33 @@ class PaqueteRepository extends EntityRepository
    	return $presentacion->getProducto()->getId() == $productoId;
    }
    
+   public function findPaquetesByProducto($producto_id, $estado)
+   {
+   	
+   	$em = $this->getEntityManager();
+   	
+   	$rsm = new ResultSetMapping();
+
+   	$rsm->addScalarResult('id', 'id');
+   	$rsm->addScalarResult('presentacion_id', 'presentacion_id');
+   	$rsm->addScalarResult('codigo', 'codigo');
+   	$rsm->addScalarResult('estado', 'estado');
+   	   	
+   	$query = $em->createNativeQuery('
+		  SELECT pa.id,
+   			pa.presentacion_id,
+   			pa.codigo,
+   			pa.estado
+            FROM Presentacion p
+            JOIN Paquete pa ON ( pa.presentacion_id = p.id )
+    	    JOIN Producto pr on (p.producto_id = pr.id)
+		   WHERE pr.id = ? AND pa.estado= ?
+      ',$rsm)->setParameter(1,$producto_id)->setParameter(2, $estado);
+   	
+   	$result = $query->getResult();   	
+   	return $result;
+   	
+   }
+   
    
 }

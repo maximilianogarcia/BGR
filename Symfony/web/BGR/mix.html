@@ -91,41 +91,83 @@
       </div>
 
         <h3>Mix de productos</h3>
-        <input type="button" value="Seleccionar productos" data-bind="click: seleccionarProductos" class="btn btn-default"/>
 			<div class="container">
-				<div data-bind="visible: step1">
-					<div class="span6">
-						<h5>Mixear desde paquetes cerrados</h5>   
-						  <div data-bind="foreach: selectedProductos" id="deRemanentes">
-	                         <label data-bind="text: name"></label> 
-	                         <label data-bind="attr: { id: 'messageValidar' + id }" class="hide" > El Paquete No Pertenece al producto</label>
-	                         <input  data-bind="attr: { id: 'utilizarPaquete' + id }" class="input-block-level" min="0" class="input-block-level" placeholder="Nro. de paquete"> 
-					      </div>
-					</div>				
-						
-					<div class="span5">
-					      <h5>Mixear desde remanentes</h5>     
-	               		      <select data-bind="options: remanentes, selectedOptions: remanentesAgregados, optionsText:'producto_name'"  size="10" multiple="true"></select>
-					</div>			
-					
-						
-				</div>
-				
-				
-				 <div data-bind="visible: step2">
+	        
+                  <!-- ko if: step1 -->
+                    <div class="span4">
+	               		<select class="span4"  data-bind="options: allProductos, selectedOptions: selectedProductos, optionsText: 'name'" size="10" multiple="true"></select>
+	               	</div>
+	               	<div class="span3">
+	               		<p>Productos Seleccionados</p>
+		               	<ul  class="unstyled" data-bind="foreach: selectedProductos">
+						    <li data-bind="text: name"/>
+						</ul>
+             		</div>
+             		
+				  <!--/ko -->
+     
+			
+	               	<!-- ko if: step2 -->
+	              	<div class="span5"  data-bind="foreach: selectedProductos">
+						<label class="span5" data-bind="text: name"></label>	              	   
+	              		<span class="span4"><input list="paquetesList" data-bind="attr: {id: 'producto'+ id}, click:$root.getPaquetesByProducto " type="text" class="input-block-level"  /></span>	         
+	              		<input data-bind="click: $root.addSelectedPaquete" type="button" class="btn span1"  value="+"/>
+	    				<datalist style="height: 100px; overflow-y: scroll;" id="paquetesList" data-bind="foreach: $root.paquetesPorProducto">
+		 				    <option data-bind="value:id">
+						</datalist>
+	               	</div>
+	               	
+	               	<div class="span5"  data-bind="foreach: selectedProductos">
+						<label data-bind="text: name"></label>
+					      <ul class="nav nav-list" data-bind="foreach: $root.paquetesPorProductoSelected">
+		                  <!-- ko if: $parent.id == id -->
+						  	<!-- ko foreach: data -->
+		                      <li  >
+		                          <a data-bind="click:function(data, event) { $root.removePaquete($parent.id,data,event) }">
+		                             <span data-bind="text:$data"></span><i class="icon-remove"></i>
+		                          </a>
+		                      </li>     
+		          		   		<!-- /ko -->
+					   	  <!-- /ko -->
+		                  </ul>
 
-					
-					
-					
-					
-					
-					
+	               	</div>
+
+             		<!--/ko -->
+             		
+           		  	<!-- ko if: step3 -->
+						<div class="step6">
+		                    <label>Nombre</label>
+		                      <input   required data-bind="value: selected.name" 
+		                            class="input-block-level " 
+		                            placeholder="Nombre">
+     						<label class="margenArriba"> Unidad De Medida</label>
+							<select class="form-control" data-bind="foreach: allUnidades" >
+							  		<option data-bind="text: name "></option>
+							</select>
 							
-				</div>
-				<div class="span8 margenArriba" >
-					<input class="btn btn-primary" type="button" value="Siguiente" data-bind="click: validateAndNext"/>
-				</div>
+							<label class="margenArriba"> Categoria</label>
+							<select class="form-control" data-bind="foreach: allCategorias">
+								  		<option data-bind="text: name "></option>
+							</select>
+						</div>		
+
+					<!-- /ko -->
+
+           		  	<!-- ko if: step4 -->
+						<div class="step6">
+		                    <label>Elegir cantidades etc.. </label>
+		                      <input   required 
+		                            class="input-block-level " 
+		                            placeholder="Nombre">
+						</div>		
+					<!-- /ko -->  
+             		
 			</div>
+
+			<input type="button" value="Siguiente"  class="btn btn-primary" data-bind="click:next"/>
+			
       </div>
+
   </body>
 </html>

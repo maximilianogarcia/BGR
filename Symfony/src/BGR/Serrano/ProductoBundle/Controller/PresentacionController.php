@@ -304,6 +304,27 @@ class PresentacionController extends Controller
     	$response->headers->set('Content-Type', 'application/json');
     	return $response;
     }
+
+    
+    /**
+     * @Route("/presentacion/getByProductoId")
+     * @Template()
+     */
+    public function getByProductoIdAction()
+    {
+    	$productoId = $this->get('request')->query->get('productoId');
+    	 
+    	$em = $this->getDoctrine()->getManager();
+    	$data = $em->getRepository('BGRSerranoProductoBundle:Presentacion')->findByProductoId($productoId);
+
+    	    
+    	$serializer =  SerializerBuilder::create()->build();
+    	$jsonContent = $serializer->serialize($data, 'json');
+    	$response = new Response($jsonContent);
+    	$response->headers->set('Content-Type', 'application/json');
+    	return $response;
+    }
+    
     
     
 }

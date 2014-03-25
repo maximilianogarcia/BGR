@@ -63,6 +63,12 @@ function PresentacionViewModel() {
 
    self.proveedores    = ko.mapping.fromJS([new Proveedor()]);
   
+   self.placeHolderDesactivar = ko.computed(function(){
+	   if(self.selected.active()){
+		   return "Razon para desactivar";
+	   }
+	   return "Razon para activar";
+    });
    
    self.selectedProductoId = ko.observable(null);
    self.selectedMedidaId = ko.observable(null);
