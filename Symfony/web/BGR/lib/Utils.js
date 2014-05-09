@@ -23,13 +23,16 @@ function Utils(){
 	}
 	
 	
-	self.doPost = function(pData, callback,path){
+	self.doPost = function(path, pData, callback, errorCallback){
 	     $.ajax(BASE_REST_URL+path, {
 	    	   data: {'data': pData},
 	           type: "POST",
-		            success: function(result) {
+		       success: function(result) {
 	                callback(result);
-	            }
+	           },
+	           error: function(error){
+	        	   errorCallback(error);
+	           }
 	      });
 	}
 	

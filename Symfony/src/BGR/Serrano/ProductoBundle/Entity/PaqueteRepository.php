@@ -60,12 +60,16 @@ class PaqueteRepository extends EntityRepository
    	$rsm->addScalarResult('presentacion_id', 'presentacion_id');
    	$rsm->addScalarResult('codigo', 'codigo');
    	$rsm->addScalarResult('estado', 'estado');
-   	   	
+   	$rsm->addScalarResult('cantidad', 'cantidad');
+   	$rsm->addScalarResult('unidad', 'unidad');
+   	
    	$query = $em->createNativeQuery('
 		  SELECT pa.id,
    			pa.presentacion_id,
    			pa.codigo,
-   			pa.estado
+   			pa.estado,
+   			p.cantidad,
+   			p.unidadDeMedida_id as unidad
             FROM Presentacion p
             JOIN Paquete pa ON ( pa.presentacion_id = p.id )
     	    JOIN Producto pr on (p.producto_id = pr.id)

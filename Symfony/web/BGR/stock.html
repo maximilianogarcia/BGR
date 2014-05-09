@@ -35,7 +35,32 @@
        $(document).ready(function(){
             viewModel = new StockViewModel();
             viewModel.apply();
+            jQuery.expr[":"].Contains = jQuery.expr.createPseudo(function(arg) {
+                return function( elem ) {
+                    return jQuery(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+                };
+            });
+
+            $("#search").keyup(function () {
+                var data = this.value.split(" ");
+                var tbl = $("#table").find("tr:has(td)");
+                if (this.value == "") {
+                    tbl.show();
+                    return;
+                }
+                tbl.hide();
+                tbl.filter(function (i, v) {
+                    var t = $(this);
+                    for (var d = 0; d < data.length; d++) {
+                        if (t.is(":Contains('" + data[d] + "')")) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }).show();
+            });
        });
+       
     </script>
    
   </head>
@@ -68,9 +93,11 @@
                    <select class="form-control" data-bind="options: productos, optionsText: 'name', 
                    optionsValue: 'id', value: selectedProductoId, optionsCaption:'Producto', click:$root.loadStocks"></select>
               </span>
-
+              <span>
+                   <input class="input-large search-query" id="search"/>
+              </span>
               <div class="grid">
-             <table class="table table-hover">
+             <table id ="table" class="table table-hover">
                   <thead><tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Total de KG</th><th>Presentacion</th>
                   <th>lote</th><th>Fecha de elaboracion</th><th>fecha de vencimiento</th></tr></thead>
                   <tbody data-bind="foreach: stocks">

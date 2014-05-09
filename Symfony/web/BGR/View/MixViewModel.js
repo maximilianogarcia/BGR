@@ -6,10 +6,13 @@ function MixViewModel() {
 	   self.selected = ko.mapping.fromJS(new Producto());
 	   self.allCategorias = ko.observableArray();
 	   self.allUnidades = ko.observableArray();
+	   self.allUnidadesTotalizadas = ko.observableArray();
 	   
 	   self.selectedProductos = ko.observableArray();
 	   
 	   self.paquetesPorProducto = ko.observableArray();
+
+	   self.totalesByProducto = ko.observableArray();
 	   
 	   self.paquetesPorProductoSelected = ko.observableArray();
 	   
@@ -93,22 +96,40 @@ function MixViewModel() {
 		   self.paquetesPorProducto(data.data);
 	   }
 	   
+	   self.getPaquetesSelectedByProducto = function(producto_id){
+		   return ko.utils.arrayFirst(self.paquetesPorProductoSelected(), function(item) {
+	           return producto_id === item.id;
+	       });
+	   }
+	   
+	   self.getPaqueteFromCache = function(numeroPaquete, producto_id){
+		   var todosLosPaquetes = self.paquetesListCache[producto_id];
+		   
+		   return ko.utils.arrayFirst(todosLosPaquetes, function(item) {
+	           return numeroPaquete === item.id;
+	       });
+	   }
+	   
 	   self.addSelectedPaquete = function(data){
-		   if( self.validarPaqueteProducto($("#producto"+data.id).val(),data.id) ){
-			   var aux={};
-			   var paquetesArray = new Array();
-			   paquetesArray[0] = $("#producto"+data.id).val();
-			   aux['id'] =  data.id;
-			   aux['data'] = ko.observableArray(paquetesArray);
-			   var productoSelected = ko.utils.arrayFirst(self.paquetesPorProductoSelected(), function(item) {
-		           return data.id === item.id;
-		       });
-		       
-		       if(!productoSelected){
+		   var  numeroPaquete= $("#producto"+data.id).val();
+		    
+		   
+		   if( self.validarPaqueteProducto(numeroPaquete,data.id) ){
+			   
+			   var productoSelected = self.getPaquetesSelectedByProducto(data.id)		       
+		   
+			   var paquete = self.getPaqueteFromCache(numeroPaquete,data.id);
+			   
+			   if(!productoSelected){
+		    	   var paquetesArray = new Array();
+		    	   var aux={};
+				   paquetesArray[0] = paquete;
+				   aux['id'] =  data.id;
+				   aux['data'] = ko.observableArray(paquetesArray);
 		    	   self.paquetesPorProductoSelected.push(aux);   
 		       }else{
-		    	   if( productoSelected.data.indexOf($("#producto"+data.id).val()) < 0){
-		    		   productoSelected.data.push($("#producto"+data.id).val());
+		    	   if( productoSelected.data.indexOf(paquete) < 0){
+		    		   productoSelected.data.push(paquete);
 		    	   }else{
 		    		   alert("paquete duplicado");
 		    	   }
@@ -127,11 +148,54 @@ function MixViewModel() {
 		  return false;
 	   }
 	   
+	   
+	   self.cantidadTotalByProducto = function(producto){
+		   self.totalesByProducto.removeAll();
+		   
+		   for(var i = 0; i < self.paquetesPorProductoSelected().length; i++){
+			 //  if( self.paquetesPorProductoSelected()[i].id == producto.id){
+			   	   var id = 0;	
+			   	   var sum = 0;
+				   for(var j = 0; j < self.paquetesPorProductoSelected()[i].data().length; j++){
+					   sum = sum + parseInt(self.paquetesPorProductoSelected()[i].data()[j].cantidad);
+					   product_id = self.paquetesPorProductoSelected()[i].id;
+				   }
+//				   var productoFounded= ko.utils.arrayFirst(self.totalesByProducto(), function(item) {
+//			           return producto.id === item.id;
+//				   });
+//				   
+				   
+				   if(product_id != 0){					   
+					   self.totalesByProducto.push({id:product_id, cantidad:sum});
+				   }
+			//   }
+			   
+		   }
+	   };
+	   
 	   self.loadForMixProduct = function(){
 		   self.utils.getAll(self.allCategorias, "/categoria/getAll");
 		   self.utils.getAll(self.allUnidades, "/unidadMedida/getAll");
+		   
+		   var paquetes = new Array();
+		   for(var i = 0 ;i < self.paquetesPorProductoSelected().length; i++){		
+			   var paq = self.getPaqueteSelectedObject(self.paquetesPorProductoSelected()[i].id);
+			   paquetes.push({
+				   "paquete_id":paq.id,
+				   "cantidad":paq.cantidad,
+				   "unidad":paq.unidad				   
+			   });
+		   }
+		   
+		   self.utils.doPost(self.allUnidadesTotalizadas, paquetes ,"/unidadMedida/getTotalByPaquetes");
+		   
 	   }
 	   
+	   self.getPaqueteSelectedObject = function(producto_id){
+		   paquetes = self.getPaquetesSelectedByProducto(producto_id);
+		   return paquetes.data();	
+	   }
+
 	   self.removePaquete = function(producto_id,paquete_id){
 		   var paqueteSelected = ko.utils.arrayFirst(self.paquetesPorProductoSelected(), function(item) {
 	           return producto_id === item.id;
@@ -211,14 +275,33 @@ function MixViewModel() {
 		         self.loadForMixProduct();
 		         self.doNext();
 		         break;
+		      case 3:
+			         self.cantidadTotalByProducto();
+			         self.doNext();
+			         break;
+		      case 5:
+			         self.guardar();
+			         break;
 		      default:
 		    	  self.doNext();
 		        break;
 		      }   
 	   }
-	   
+	   self.back = function(){
+		   self.step(self.step()-1);
+		 
+	   }  
 	   self.doNext = function(){
 		   self.step(self.step()+1);
 	   }
 
+	   self.guardar = function(){
+		   var mix = {
+		     'infoMix'   : self.selected,
+		     'paquetes'  : self.paquetesPorProductoSelected,
+		     'cantidades_por_producto': self.totalesByProducto
+		   }
+	   }
+
+	   
 }

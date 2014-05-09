@@ -124,7 +124,7 @@
 						  	<!-- ko foreach: data -->
 		                      <li  >
 		                          <a data-bind="click:function(data, event) { $root.removePaquete($parent.id,data,event) }">
-		                             <span data-bind="text:$data"></span><i class="icon-remove"></i>
+		                             <span data-bind="text:id"></span><i class="icon-remove"></i>
 		                          </a>
 		                      </li>     
 		          		   		<!-- /ko -->
@@ -150,6 +150,10 @@
 							<select class="form-control" data-bind="foreach: allCategorias">
 								  		<option data-bind="text: name "></option>
 							</select>
+							
+							<label class="margenArriba">Fecha de vencimiento</label>
+							 <input   type="date" required data-bind="value: selected.vencimiento" 
+		                            class="input-block-level " >
 						</div>		
 
 					<!-- /ko -->
@@ -157,15 +161,26 @@
            		  	<!-- ko if: step4 -->
 						<div class="step6">
 		                    <label>Elegir cantidades etc.. </label>
-		                      <input   required 
-		                            class="input-block-level " 
-		                            placeholder="Nombre">
+				            <ul  class="unstyled" data-bind="foreach: selectedProductos">
+								    <li data-bind="text: 'cantidad de '+name"/>
+									
+					                <li>  
+					                  <!-- ko foreach:  $root.totalesByProducto -->
+					                      <!-- ko if: $parent.id == id -->
+					                   		<input class="input-block-level" type="number" min="1" data-bind="value: 1, attr: { max : cantidad}">
+					                      <!-- /ko -->
+						  		      <!-- /ko -->
+					                         
+					                         
+									</li>
+							</ul>	                    
 						</div>		
 					<!-- /ko -->  
              		
 			</div>
 
 			<input type="button" value="Siguiente"  class="btn btn-primary" data-bind="click:next"/>
+			<input type="button" value="volver"  class="btn btn-primary" data-bind="click:back"/>
 			
       </div>
 
