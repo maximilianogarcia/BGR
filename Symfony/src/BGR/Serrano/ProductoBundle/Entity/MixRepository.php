@@ -12,4 +12,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class MixRepository extends EntityRepository
 {
+	
+	public function save($mix)
+	{
+		$em = $this->getEntityManager();
+		$em->persist($mix);
+		$em->flush();
+		return $mix;
+	}
 }

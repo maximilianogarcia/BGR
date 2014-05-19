@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/navbar.css" rel="stylesheet">
+
+    <style>
+
+      .hide{
+          display: none;
+          visibility: hidden;
+      }
+      .error{
+          display:block;
+		  color:red;
+      }
+      .margenArriba{
+        margin-top: 1em;
+      }
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
+      }
+    </style>
+
+    <script type='text/javascript'  src='lib/knockout-3.0.0.js'></script>
+    <script type='text/javascript'  src='lib/knockout.mapping-latest.js'></script>
+    <script type='text/javascript'  src='lib/Utils.js'></script>
+    <script type='text/javascript'  src='Model/Categoria.js'></script>
+    <script type='text/javascript'  src='Model/Producto.js'></script>
+    <script type='text/javascript'  src='View/CategoriaViewModel.js'></script>
+    <script type='text/javascript'  src='View/MixViewModel.js'></script>
+    <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+    <script type='text/javascript'  src='conf/config.js'></script>
+
+    <script type='text/javascript'>
+       $(document).ready(function(){
+            viewModel = new MixViewModel();
+            viewModel.apply();
+       });
+    </script>
+   
+  </head>
+  <body>
+
+       
+    <div class="container">
+      <div class="navbar navbar-default" role="navigation">
+        
+        <div class="navbar-collapse in collapse" style="height: auto;">
+           <ul class="nav navbar-nav">
+            <li><a href="categoria.html">Categorias</a></li>
+            <li><a href="unidadMedida.html">Unidades de medida</a></li>
+            <li><a href="producto.html">Productos</a></li>
+            <li><a href="lote.html">Lotes</a></li>
+            <li><a href="material.html">Materiales de presentacion</a></li>
+            <li><a href="presentacion.html">Presentaciones</a></li>
+            <li class="active"><a href="#">Mixes</a></li>
+            <li><a href="stock.html">Stock</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+
+        <h3>Mix de productos</h3>
+			<div class="container">
+	            <a href="mix.html" class="btn btn-default" >Agregar</a>
+				<div class="grid">
+		              <table class="table table-hover">
+		                  <thead><tr><th>Nombre</th></tr></thead>
+		                  <tbody data-bind="foreach: mixes">
+		                      <tr>
+		                          <td data-bind="text: nombre"></td>
+		                      </tr>     
+		                  </tbody>
+		              </table>
+				</div>
+				
+			</div>
+			
+      </div>
+
+  </body>
+</html>

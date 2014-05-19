@@ -8,13 +8,21 @@ function MixViewModel() {
 	   self.allUnidades = ko.observableArray();
 	   self.allUnidadesTotalizadas = ko.observableArray();
 	   
+	   self.mixes = ko.observableArray();
+	   
 	   self.selectedProductos = ko.observableArray();
 	   
 	   self.paquetesPorProducto = ko.observableArray();
 
+	   self.selectedCategoriaId = ko.observable(1);
+	   
+	   self.selectedUnidadId = ko.observable(1);
+
 	   self.totalesByProducto = ko.observableArray();
 	   
 	   self.paquetesPorProductoSelected = ko.observableArray();
+	   
+	   self.selectedCategoria = ko.observable();
 	   
 	   self.paquetesListCache = {};
 	   
@@ -39,6 +47,9 @@ function MixViewModel() {
 	   
 	   self.apply = function(){
 		   self.utils.getAll(self.allProductos, "/producto/getAll");
+		   
+		   self.utils.getAll(self.mixes, "/mix/getAll");
+		   
 		   ko.applyBindings(self);	
 	   }
 	   
@@ -279,7 +290,7 @@ function MixViewModel() {
 			         self.cantidadTotalByProducto();
 			         self.doNext();
 			         break;
-		      case 5:
+		      case 4:
 			         self.guardar();
 			         break;
 		      default:
@@ -295,12 +306,54 @@ function MixViewModel() {
 		   self.step(self.step()+1);
 	   }
 
-	   self.guardar = function(){
-		   var mix = {
-		     'infoMix'   : self.selected,
-		     'paquetes'  : self.paquetesPorProductoSelected,
-		     'cantidades_por_producto': self.totalesByProducto
+	   
+	   self.joinPaquetesCantidades= function(paquetes, cantidades){
+		   
+		   var result = [];
+		   var indexCant = 0;
+		   for (var i = 0; i < paquetes().length; i++) {
+			   for (var j = 0; j < cantidades().length; j++) {
+				   if(paquetes()[i].id == cantidades()[j].id){
+					   
+					   var thiscant =  $("#cant_elegida"+indexCant).val();
+						   
+					   result.push({
+						   'id': paquetes()[i].id,
+						   'paquetes': paquetes()[i].data(),
+						   'cantidad': cantidades()[j].cantidad,
+						   'cant_elegida': thiscant
+					   });
+					   indexCant++;
+				   }
+			   }			   
 		   }
+		   
+		   return result;
+	   }
+	   
+	   self.guardar = function(){
+		   var infoPaquetes = self.joinPaquetesCantidades(
+				   self.paquetesPorProductoSelected, 
+				   self.totalesByProducto);
+		   var mix = {
+		     'nombre'   : self.selected.name(),
+		     'vencimiento'  : self.selected.vencimiento,
+		     'unidad_de_medida'  : ko.mapping.toJSON( self.selectedUnidadId),
+		     'categoria'  : ko.mapping.toJSON( self.selectedCategoriaId),
+		     'paquetes_mix'  : infoPaquetes,
+		   }
+
+		   $.ajax(BASE_REST_URL+"/mix/saveMix", {
+    		   data: {'data': JSON.stringify(mix) },
+               type: "POST",
+               error: function(result){
+                 alert(result.responseText);
+               },
+               success: function(result) { 
+            	   alert("se ha guardado el mix exitosamente");
+            	   location.href = "mixGrid.html";
+               }
+		   });
 	   }
 
 	   

@@ -81,5 +81,23 @@ class PaqueteRepository extends EntityRepository
    	
    }
    
+   public function markMixed($paqueteId)
+   {
+   	$em = $this->getEntityManager();
+   	$p = $em->getRepository('BGRSerranoProductoBundle:Paquete')->find($paqueteId);
+   	$p->setEstado('MIXED');
+   	$em->persist($p);
+   	$conection = $em->getConnection();
+   	$em->flush();
+   	return $p;
+   }
+   
+   public function save($paquete)
+   {
+   	$em = $this->getEntityManager();
+   	$em->persist($paquete);
+   	$em->flush();
+   }
+    
    
 }

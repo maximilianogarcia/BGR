@@ -8,90 +8,123 @@ class MixImpresentation
 	 * @Type("string")
 	 * @var unknown
 	 */
-    private $nombre_mix;
+    private $nombre;
     /**
-     * @Type("string")
+     * @Type("DateTime<'Y-m-d'>")
      * @var unknown
      */
-    private $nombre_presentacion;
+    private $vencimiento;
     /**
      * @Type("integer")
      * @var unknown
      */
-    private $cantidad_de_paquetes;
+    private $unidad_de_medida;
     /**
-     * @Type("ArrayCollection<BGR\Serrano\ProductoBundle\Model\MixData>")
+	 * @Type("integer")
      * @var unknown
      */
-    private $mix_data_list;
+    private $categoria;
+    
 	/**
-	 * @Type("integer") 
+	 * @Type("ArrayCollection<BGR\Serrano\ProductoBundle\Model\PaqueteMix>")
 	 * @var unknown
 	 */
-    private $unidad_de_medida_id;
-    
-	public function getNombreMix() {
-		return $this->nombre_mix;
+    private $paquetes_mix;
+	
+	/**
+	 *
+	 * @return the unknown
+	 */
+	public function getNombre() {
+		return $this->nombre;
 	}
-	public function setNombreMix($nombre_mix) {
-		$this->nombre_mix = $nombre_mix;
-		return $this;
-	}
-	public function getNombrePresentacion() {
-		return $this->nombre_presentacion;
-	}
-	public function setNombrePresentacion($nombre_presentacion) {
-		$this->nombre_presentacion = $nombre_presentacion;
-		return $this;
-	}
-	public function getCantidadDePaquetes() {
-		return $this->cantidad_de_paquetes;
-	}
-	public function setCantidadDePaquetes($cantidad_de_paquetes) {
-		$this->cantidad_de_paquetes = $cantidad_de_paquetes;
-		return $this;
-	}
-	public function getMixDataList() {
-		return $this->mix_data_list;
-	}
-	public function setMixDataList($mix_data_list) {
-		$this->mix_data_list = $mix_data_list;
-		return $this;
-	}
-	public function getUnidadDeMedidaId() {
-		return $this->unidad_de_medida_id;
-	}
-	public function setUnidadDeMedidaId($unidad_de_medida_id) {
-		$this->unidad_de_medida_id = $unidad_de_medida_id;
+	
+	/**
+	 *
+	 * @param
+	 *        	$nombre
+	 */
+	public function setNombre($nombre) {
+		$this->nombre = $nombre;
 		return $this;
 	}
 	
+	/**
+	 *
+	 * @return the unknown
+	 */
+	public function getVencimiento() {
+		return $this->vencimiento;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$vencimiento
+	 */
+	public function setVencimiento($vencimiento) {
+		$this->vencimiento = $vencimiento;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the unknown
+	 */
+	public function getUnidadDeMedida() {
+		return $this->unidad_de_medida;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$unidad_de_medida
+	 */
+	public function setUnidadDeMedida($unidad_de_medida) {
+		$this->unidad_de_medida = $unidad_de_medida;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the unknown
+	 */
+	public function getCategoria() {
+		return $this->categoria;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$categoria
+	 */
+	public function setCategoria($categoria) {
+		$this->categoria = $categoria;
+		return $this;
+	}
+	
+	/**
+	 *
+	 * @return the unknown
+	 */
+	public function getPaquetesMix() {
+		return $this->paquetes_mix;
+	}
+	
+	/**
+	 *
+	 * @param
+	 *        	$paquetesMix
+	 */
+	public function setPaquetesMix($paquetes_mix) {
+		$this->paquetes_mix = $paquetes_mix;
+		return $this;
+	}
+	
+    
 
 	
 	
-    
-	
-  
-	/*
-	 * {
-  "nombreMix":"mix1",
-  "nombrePrensentacion":"presentacion de mix1",
-  "cantidad_de_paquetes":"4",
-  "mixDataList":[private productoid;
-    {
-      "producto_id":"1".
-      "paquete_id":"142",
-      "cantidad_original":"500",
-      "cantidad_nueva":"100"
-    },
-    {
-      "producto_id":"5".
-      "paquete_id":"145",
-      "cantidad_original":"400",
-      "cantidad_nueva":"80"
-    }
-  ]
-}
-	 * */
+
 
 }

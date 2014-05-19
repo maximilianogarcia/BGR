@@ -142,14 +142,37 @@
 		                            class="input-block-level " 
 		                            placeholder="Nombre">
      						<label class="margenArriba"> Unidad De Medida</label>
-							<select class="form-control" data-bind="foreach: allUnidades" >
-							  		<option data-bind="text: name "></option>
-							</select>
+							
+							 <select class="input-block-level form-control" data-bind="options: allUnidades, 
+							 optionsText: 'name', 
+                    		 optionsValue: 'id', 
+                    		 value: selectedUnidadId, 
+                    		 optionsCaption:'Seleccione'" required></select>
+							
+						
+							<!-- 
+							<select class="form-control" data-bind="foreach: allUnidades,
+							selectedOptions: $root.selected.unidad_de_medidas,optionsValue: 'id'" >
+							
+							<option data-bind="text: name "></option>
+							</select> -->
+							
+							 <select class="input-block-level form-control" data-bind="options: allCategorias, 
+							 optionsText: 'name', 
+                    		 optionsValue: 'id', 
+                    		 value: selectedCategoriaId, 
+                    		 optionsCaption:'Seleccione'" required></select>
+                    
+							<!-- 
 							
 							<label class="margenArriba"> Categoria</label>
-							<select class="form-control" data-bind="foreach: allCategorias">
+							<select class="form-control" data-bind="foreach: allCategorias,
+							optionsValue: 'id',
+							value: selectedCategoriaId,
+							selectedOptions: $root.selectedCategoria
+							">
 								  		<option data-bind="text: name "></option>
-							</select>
+							</select> -->
 							
 							<label class="margenArriba">Fecha de vencimiento</label>
 							 <input   type="date" required data-bind="value: selected.vencimiento" 
@@ -160,14 +183,18 @@
 
            		  	<!-- ko if: step4 -->
 						<div class="step6">
-		                    <label>Elegir cantidades etc.. </label>
+		                    <label>Elegir cantidades </label>
 				            <ul  class="unstyled" data-bind="foreach: selectedProductos">
 								    <li data-bind="text: 'cantidad de '+name"/>
 									
 					                <li>  
 					                  <!-- ko foreach:  $root.totalesByProducto -->
 					                      <!-- ko if: $parent.id == id -->
-					                   		<input class="input-block-level" type="number" min="1" data-bind="value: 1, attr: { max : cantidad}">
+					                   		<input class="input-block-level"
+					                   				id=" " 
+					                   				type="number" 
+					                   				min="1" 
+					                   				data-bind="value: 1, attr: { max : cantidad, id: 'cant_elegida'+$index()}">
 					                      <!-- /ko -->
 						  		      <!-- /ko -->
 					                         

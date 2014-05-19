@@ -19,6 +19,7 @@ class Paquete
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Type("integer")
      */
     private $id;
 
@@ -26,6 +27,7 @@ class Paquete
      * @var string
      *
      * @ORM\Column(name="codigo", type="string", length=255)
+     * @Type("string")
      */
     private $codigo;
 
@@ -33,6 +35,7 @@ class Paquete
      * @var string
      *
      * @ORM\Column(name="estado", type="string", length=255)
+     * @Type("string")
      */
     private $estado;
 
@@ -103,6 +106,13 @@ class Paquete
      */
     protected $presentacion;
 
+   /**
+     * @ORM\ManyToOne(targetEntity="Mix") 
+     * @ORM\JoinColumn(name="mix_id", referencedColumnName="id")
+     * @Type("BGR\Serrano\ProductoBundle\Entity\Mix")
+     */
+    protected $mix;
+
     public function setPresentacion(Presentacion $presentacion)
     {
         $this->presentacion = $presentacion;
@@ -112,5 +122,13 @@ class Paquete
     {
         return $this->presentacion;
     }
+	public function getMix() {
+		return $this->mix;
+	}
+	public function setMix($mix) {
+		$this->mix = $mix;
+		return $this;
+	}
+	
 
 }
