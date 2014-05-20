@@ -30,6 +30,7 @@
     <script type='text/javascript'  src='lib/Utils.js'></script>
     <script type='text/javascript'  src='Model/Categoria.js'></script>
     <script type='text/javascript'  src='Model/Producto.js'></script>
+    <script type='text/javascript'  src='Model/Mix.js'></script>
     <script type='text/javascript'  src='View/CategoriaViewModel.js'></script>
     <script type='text/javascript'  src='View/MixViewModel.js'></script>
     <script type='text/javascript'  src='lib/jquery-2.0.3.min.js'></script>
@@ -141,6 +142,9 @@
 		                      <input   required data-bind="value: selected.name" 
 		                            class="input-block-level " 
 		                            placeholder="Nombre">
+		                      <input   required data-bind="value: selected.descripcion" 
+		                            class="input-block-level " 
+		                            placeholder="Nombre">
      						<label class="margenArriba"> Unidad De Medida</label>
 							
 							 <select class="input-block-level form-control" data-bind="options: allUnidades, 
@@ -207,7 +211,9 @@
 			</div>
 
 			<input type="button" value="Siguiente"  class="btn btn-primary" data-bind="click:next"/>
-			<input type="button" value="volver"  class="btn btn-primary" data-bind="click:back"/>
+			<input type="button" value="volver"  class="btn btn-primary" data-bind="visible:showBackButton ,click:back"/>
+			<a href="mixGrid.html" class="btn btn-default">Cancelar</a>
+
 			
       </div>
 

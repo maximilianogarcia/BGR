@@ -3,7 +3,7 @@ function MixViewModel() {
 	   self.utils = new Utils();
 	   self.remanentes= ko.observableArray();
 	   self.allProductos = ko.observableArray();
-	   self.selected = ko.mapping.fromJS(new Producto());
+	   self.selected = ko.mapping.fromJS(new Mix());
 	   self.allCategorias = ko.observableArray();
 	   self.allUnidades = ko.observableArray();
 	   self.allUnidadesTotalizadas = ko.observableArray();
@@ -40,6 +40,11 @@ function MixViewModel() {
 	   
 	   self.step4 = ko.computed(function(){
 	        return self.step() == 4;
+	   });
+	   
+	   
+	   self.showBackButton = ko.computed(function(){
+	        return self.step() > 1 && self.step() <= 5 ;
 	   });
 	   
 	   self.remanentesAgregados= ko.observableArray();
