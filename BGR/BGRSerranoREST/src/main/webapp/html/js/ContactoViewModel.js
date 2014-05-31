@@ -2,13 +2,9 @@ function ContactoViewModel() {
 	var self = this;
 
 	self.formVisible = ko.observable(false);
-
 	self.createNew = ko.observable(false);
-	
 	self.selected = ko.mapping.fromJS(new Contacto());
-
 	self.contactos = ko.observableArray();
-
 	self.utils = new Utils();
 
 	self.init = function() {
@@ -30,7 +26,7 @@ function ContactoViewModel() {
 	}
 
 	self.remove = function(data) {
-		self.utils.doDelete("/contacto/remove/"+self.selected.id(),
+		self.utils.doDelete("/contacto/remove/"+self.selected.id(),"",
 				self.removeFromGrid, function(a) {
 					alert(a)
 		});
@@ -75,22 +71,6 @@ function ContactoViewModel() {
 		self.formVisible(false);
 	}
 
-	ko.bindingHandlers.fadeVisible = {
-		init : function(element, valueAccessor) {
-			// Initially set the element to be instantly visible/hidden
-			// depending on the value
-			var value = valueAccessor();
-			$(element).toggle(ko.unwrap(value)); // Use "unwrapObservable" so
-													// we can handle values that
-													// may or may not be
-													// observable
-		},
-		update : function(element, valueAccessor) {
-			// Whenever the value subsequently changes, slowly fade the element
-			// in or out
-			var value = valueAccessor();
-			ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
-		}
-	};
+	ko.bindingHandlers.fadeVisible =self.utils.fadeVisible;  
 
 }

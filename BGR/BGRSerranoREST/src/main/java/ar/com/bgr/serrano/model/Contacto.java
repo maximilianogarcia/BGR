@@ -14,7 +14,7 @@ public class Contacto {
 	@GeneratedValue
 	private int id;
 
-	@Column(name = "name")
+	@Column(name = "name", nullable=false)
 	private String name;
 
 	@Column(name = "webSite")
@@ -23,10 +23,10 @@ public class Contacto {
 	@Column(name = "blog")
 	private String blog;
 
-	@Column(name = "telefonoMovil")
+	@Column(name = "telefonoMovil", nullable=false)
 	private String telefonoMovil;
 
-	@Column(name = "telefonoFijo")
+	@Column(name = "telefonoFijo", nullable=false)
 	private String telefonoFijo;
 	
 	@Column(name = "radio")
@@ -35,7 +35,7 @@ public class Contacto {
 	@Column(name = "fax")
 	private String fax;
 
-	@Column(name = "diaHoraContacto")
+	@Column(name = "diaHoraContacto", nullable=false)
 	private String diaHoraContacto;
 
 	public int getId() {
