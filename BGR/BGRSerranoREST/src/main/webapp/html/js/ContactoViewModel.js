@@ -3,6 +3,8 @@ function ContactoViewModel() {
 
 	self.formVisible = ko.observable(false);
 
+	self.createNew = ko.observable(false);
+	
 	self.selected = ko.mapping.fromJS(new Contacto());
 
 	self.contactos = ko.observableArray();
@@ -14,22 +16,52 @@ function ContactoViewModel() {
 	}
 
 	self.edit = function(data) {
-		self.formVisible(true);
 		ko.mapping.fromJS(data, self.selected);
+		self.formVisible(true);
+		self.createNew(false);
 	}
 
 	self.save = function(data) {
 		self.formVisible(true);
 		self.utils.doPost("/contacto/save", ko.mapping.toJSON(self.selected),
-				self.putInGrid, function(a) {
+				self.pushInGrid, function(a) {
 					alert(a)
 		});
 	}
 
-	self.putInGrid = function(data) {
-		self.utils.putInGrid(data, self.contactos);
+	self.remove = function(data) {
+		self.utils.doDelete("/contacto/remove/"+self.selected.id(),
+				self.removeFromGrid, function(a) {
+					alert(a)
+		});
+	}
+	
+	self.update = function(data) {
+		self.formVisible(true);
+		self.utils.doPost("/contacto/save", ko.mapping.toJSON(self.selected),
+				self.updateGrid, function(a) {
+					alert(a)
+		});
+	}
+	
+	
+	self.updateGrid = function(data) {
+		self.utils.updateGrid(data, self.contactos);
+		alert("Actualizado correctamente");
+		self.formVisible(false);
 	}
 
+	self.pushInGrid = function(data) {
+		self.utils.pushInGrid(data, self.contactos);
+		alert("Guardado correctamente");
+		self.formVisible(false);
+	}	
+	self.removeFromGrid = function(data) {
+		self.utils.removeFromGrid(self.selected, self.contactos);
+		alert("Eliminado correctamente");
+		self.formVisible(false);
+	}	
+	
 	self.doSelect = function(data) {
 		ko.mapping.fromJS(data, self.selected);
 	}
@@ -37,6 +69,7 @@ function ContactoViewModel() {
 	self.create = function() {
 		ko.mapping.fromJS(new Contacto(), self.selected);
 		self.formVisible(true);
+		self.createNew(true);
 	}
 	self.cancelForm = function() {
 		self.formVisible(false);

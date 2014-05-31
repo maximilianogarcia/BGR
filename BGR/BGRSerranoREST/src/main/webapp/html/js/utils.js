@@ -36,7 +36,36 @@ function Utils(){
 	      });
 	}
 	
-	self.putInGrid = function(data, grid) {
+	self.doDelete = function(path, callback, errorCallback){
+	     $.ajax(BASE_REST_URL+path, {
+	           type: "DELETE",
+		       success: function(result) {
+	                callback(result);
+	           },
+	           error: function(error){
+	        	   errorCallback(error);
+	           }
+	      });
+	}	
+	
+	
+	self.pushInGrid  = function(data, grid) {
+		var id = data.id;
+		grid.push(data);
+	}
+	self.removeFromGrid  = function(data, grid) {
+		var id = data.id();
+		var innerArray = grid();
+		
+	    for (var i = 0, len = innerArray.length; i < len; ++i) {
+	        var item = innerArray[i];
+	        if(item.id == id){
+	        	grid.remove(item);	        	
+	        }
+	    }		
+	}
+	
+	self.updateGrid= function(data, grid) {
 		var id = data.id;
 		var innerArray = grid();
 		
@@ -47,4 +76,6 @@ function Utils(){
 	        }
 	    }		
 	}
+
+
 }
