@@ -36,5 +36,15 @@ function Utils(){
 	      });
 	}
 	
-	
+	self.putInGrid = function(data, grid) {
+		var id = data.id;
+		var innerArray = grid();
+		
+	    for (var i = 0, len = innerArray.length; i < len; ++i) {
+	        var item = innerArray[i];
+	        if(item.id == id){
+	        	grid.replace(grid()[i], data);	        	
+	        }
+	    }		
+	}
 }
