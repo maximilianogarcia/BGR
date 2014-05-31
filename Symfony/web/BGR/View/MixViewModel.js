@@ -42,6 +42,10 @@ function MixViewModel() {
 	        return self.step() == 4;
 	   });
 	   
+	   self.shouldShowNext = ko.computed(function(){
+	        return self.step() != 4;
+	   });
+	   
 	   
 	   self.showBackButton = ko.computed(function(){
 	        return self.step() > 1 && self.step() <= 5 ;

@@ -142,9 +142,10 @@
 		                      <input   required data-bind="value: selected.name" 
 		                            class="input-block-level " 
 		                            placeholder="Nombre">
+		                    <label>Descripcion</label>        
 		                      <input   required data-bind="value: selected.descripcion" 
 		                            class="input-block-level " 
-		                            placeholder="Nombre">
+		                            placeholder="Descripcion">
      						<label class="margenArriba"> Unidad De Medida</label>
 							
 							 <select class="input-block-level form-control" data-bind="options: allUnidades, 
@@ -210,10 +211,10 @@
              		
 			</div>
 
-			<input type="button" value="Siguiente"  class="btn btn-primary" data-bind="click:next"/>
+			<input type="button" value="Siguiente"  class="btn btn-primary" data-bind="click:next,visible: shouldShowNext"/>
+			<input type="button" value="Guardar"  class="btn btn-primary" data-bind="click:next,visible:step4"/>
 			<input type="button" value="volver"  class="btn btn-primary" data-bind="visible:showBackButton ,click:back"/>
 			<a href="mixGrid.html" class="btn btn-default">Cancelar</a>
-
 			
       </div>
 

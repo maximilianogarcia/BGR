@@ -75,20 +75,22 @@ class MixController extends Controller
 		$newMix->setNombre($mixImpresentation->getNombre());
 		$newMix->setVencimiento($mixImpresentation->getVencimiento());
 
-		$remanentes = [];
 
 		$ok = true;
 		$index = 0;
 				
-		$paqueteMixInicial = $mixImpresentation->getPaquetesMix()[$index];
-	
-	
+		$array = array();
+		foreach ($mixImpresentation->getPaquetesMix() as $k => $v) {
+			$array[$k] = clone $v;
+		}
 		
+		$paqueteMixInicial = $array[$index];
+	
 		$cantidad_original = floor( $paqueteMixInicial->getCantidad() / $paqueteMixInicial->getCantElegida() );
 		$index++;
-		while ( $ok && sizeof($mixImpresentation->getPaquetesMix()) > $index){
+		while ( $ok && sizeof($array) > $index){
 
-			$paqueteMix = $mixImpresentation->getPaquetesMix()[$index];
+			$paqueteMix = $array[$index];
 			$cantidad = floor( $paqueteMix->getCantidad() / $paqueteMix->getCantElegida() );
 			$ok = $cantidad_original == $cantidad;
 			$index++;
@@ -155,5 +157,19 @@ class MixController extends Controller
 	
 	
 
-	
+	/**
+	 * @Route("/mix/desactivarMix")
+	 */
+	public function deleteMixAction()
+	{
+		$mixId = $this->get('request')->request->get('data');
+		$message = $this->get('request')->request->get('message');
+		 
+		$serializer =  SerializerBuilder::create()->build();
+		$em = $this->getDoctrine()->getManager();
+		$result =$em->getRepository('BGRSerranoProductoBundle:Mix')->desactivar($mixId,$message);
+		$response = new Response($serializer->serialize($result,'json'));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
 }

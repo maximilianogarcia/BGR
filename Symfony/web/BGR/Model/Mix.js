@@ -4,5 +4,4 @@ function Mix( ) {
 	this.categoria = ko.observable();
 	this.unidad_de_medidas = ko.observableArray();
 	this.descripcion = ko.observable();
-
 }
