@@ -1,3 +1,21 @@
+/**
+* soporte extendido para JSON ajax_request.
+* 
+* @author matias.garcia
+*/
+function _ajax_request(contentType, url, data, callback, dataType, method) {
+if ($.isFunction(data)) {callback = data;data = {};}
+return $.ajax({contentType:contentType,url:url,data:data,success:callback,dataType:dataType,type:method});
+}
+
+$.extend({postJSON:function(url, data, callback, type) {
+return _ajax_request('application/json', url, data, callback, 'json', 'POST');}
+});
+
+$.extend({deleteJSON:function(url, data, callback, type) {
+return _ajax_request('application/json', url, data, callback, 'json', 'DELETE');}
+});
+
 function Utils(){
 	var self = this; 
 	self.getAll = function(callback,path){

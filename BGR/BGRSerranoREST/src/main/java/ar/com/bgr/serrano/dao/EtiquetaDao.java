@@ -1,28 +1,24 @@
 package ar.com.bgr.serrano.dao;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import ar.com.bgr.serrano.model.Etiqueta;
 
-
+/**
+ * 
+ * 
+ * Descripcion:
+ * 
+ * {}
+ *
+ * @author matias
+ * 
+ * @since 31/05/2014
+ */
 @Repository
-public class EtiquetaDao extends AbstracDAO<Etiqueta>{
-
-	@Autowired
-	private SessionFactory sessionFactory;
-	
+public class EtiquetaDao extends AbstractDAO<Etiqueta>{
+   
 	public EtiquetaDao() {
-		super(Etiqueta.class);
-	}
-	
-	
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
+		setClasz(Etiqueta.class);
 	}
 }

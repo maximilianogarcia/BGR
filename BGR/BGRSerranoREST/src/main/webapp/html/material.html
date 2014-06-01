@@ -1,0 +1,157 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/navbar.css" rel="stylesheet">
+
+    <style>
+      .hide{
+          display: none;
+          visibility: hidden;
+      }
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
+      }
+      .margenArriba{
+        margin-top: 1em;
+      }
+    </style>
+    <script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
+	<script type='text/javascript'  src='js/utils.js'></script>
+    <script type='text/javascript'  src='lib/knockout-3.1.0.js'></script>
+    <script type='text/javascript'  src='lib/knockout-mapping.js'></script>
+    <script type='text/javascript'  src='js/Material.js'></script>
+    <script type='text/javascript'  src='js/MaterialViewModel.js'></script>
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+    <script type='text/javascript'  src='js/config.js'></script>
+
+    <script type='text/javascript'>
+       $(document).ready(function(){
+            viewModel = new MaterialViewModel();
+            viewModel.apply();
+       });
+    </script>
+   
+  </head>
+  <body>
+
+
+    <div class="container">
+
+
+
+      <div class="navbar navbar-default" role="navigation">
+        
+        <div class="navbar-collapse in collapse" style="height: auto;">
+           <ul class="nav navbar-nav">
+            <li ><a href="categoria.html">Categorias</a></li>
+            <li><a href="unidadMedida.html">Unidades de medida</a></li>
+            <li><a href="producto.html">Productos</a></li>
+            <li><a href="lote.html">Lotes</a></li>
+            <li class="active"><a href="#">Materiales de presentacion</a></li>
+            <li><a href="presentacion.html">Presentaciones</a></li>
+            <li><a href="mixGrid.html">Mixes</a></li>
+            <li><a href="stock.html">Stock</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+
+
+
+        <h3>Edicion de materiales de presentaci&oacute;n</h3>
+
+
+
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
+<div class="grid">
+
+        <table class="table table-hover">
+            <thead><tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Peso</th>
+            <th>Alto</th>
+            <th>Largo</th>
+            <th>Ancho</th>
+            </tr></thead>
+            <tbody data-bind="foreach: materiales">
+                <tr data-bind="click: $root.editar" >
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: descripcion"></td>
+                    <td data-bind="text: peso"></td>
+                    <td data-bind="text: alto"></td>
+                    <td data-bind="text: largo"></td>
+                    <td data-bind="text: ancho"></td>
+                </tr>     
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+
+
+        <div class="modal fade" id="editMaterial" style="display:none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Editar Material</h4>
+              </div>
+              <div class="modal-body">
+                <form action="#" id="editMaterialForm" >
+                    <label>nombre</label>
+                    <input required data-bind="value: selected.name" class="form-control" placeholder="Nombre del material"> 
+                    <label class="margenArriba">descripcion</label>
+                    <input   required data-bind="value: selected.descripcion" 
+                          class="form-control " 
+                          placeholder="Descripci&oacute;n"> 
+
+                    <label class="margenArriba">peso</label>
+                    <input required data-bind="value: selected.peso" 
+                    class="form-control" placeholder="Peso en gramos"> 
+                    <label class="margenArriba">alto</label>
+                    <input   required data-bind="value: selected.alto" 
+                          class="form-control " 
+                          placeholder="Alto en cm"> 
+
+                    <label class="margenArriba">largo</label>
+                    <input required data-bind="value: selected.largo" class="form-control" placeholder="Largo en cm"> 
+                    <label class="margenArriba">ancho</label>
+                    <input   required data-bind="value: selected.ancho" 
+                          class="form-control " 
+                          placeholder="ancho en cm"> 
+                    <input type="submit"  id="submitOculto" class="hide"/>
+
+                    <!-- ko if: createNew -->
+
+                    <input type="button" data-bind="click: save" value="crear" class="btn btn-primary margenArriba"/>
+
+                    <!-- /ko -->
+                    <!-- ko ifnot: createNew -->
+
+                    <input type="button" data-bind="click: update" value="Guardar" class="btn btn-primary margenArriba"/>      
+                    <!-- /ko -->
+
+                 </form>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!-- ko ifnot: createNew -->
+
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: borrar">
+                  Eliminar Material</button>
+               <!-- /ko -->
+
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+  </body>
+</html>

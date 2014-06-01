@@ -6,21 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.bgr.serrano.dao.EtiquetaDao;
-import ar.com.bgr.serrano.model.Etiqueta;
+import ar.com.bgr.serrano.dao.CategoriaDao;
+import ar.com.bgr.serrano.model.Categoria;
 
 @Component
 @Transactional
-public class EtiquetaService {
+public class CategoriaService {
 
 	@Autowired
-	EtiquetaDao dao;
+	CategoriaDao dao;
 	
-	public Etiqueta save(Etiqueta etiqueta) {
-		return dao.saveOrUpdate(etiqueta);
+	public Categoria save(Categoria categoria) {
+		return dao.saveOrUpdate(categoria);
 	}
 
-	public List<Etiqueta> list() {
+	public List<Categoria> list() {
 		return dao.list();
 	}
 
@@ -28,7 +28,7 @@ public class EtiquetaService {
 		dao.remove(id);		
 	}
 	
-	public Etiqueta getById(int id) {
+	public Categoria getById(int id) {
 		return dao.getById(id);
 	}
 }

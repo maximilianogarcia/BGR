@@ -16,11 +16,12 @@
      http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
      http://www.springframework.org/schema/aop 
      http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
- 
+
 	<context:component-scan base-package="ar.com.bgr.serrano.controller" />
 	<context:component-scan base-package="ar.com.bgr.serrano.dao" />
 	<context:component-scan base-package="ar.com.bgr.serrano.service" />
- 
+	<context:component-scan base-package="ar.com.bgr.serrano.model" />
+
 	<mvc:annotation-driven />
     <tx:annotation-driven/> 
  

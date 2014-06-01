@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package ar.com.bgr.serrano.service;
 
 import java.util.List;
@@ -6,21 +9,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.bgr.serrano.dao.EtiquetaDao;
-import ar.com.bgr.serrano.model.Etiqueta;
+import ar.com.bgr.serrano.dao.MaterialDao;
+import ar.com.bgr.serrano.model.Material;
 
+/**
+ * 
+ * Descripcion:
+ * 
+ * {}
+ *
+ * @author matias
+ * 
+ * @since 01/06/2014
+ */
 @Component
 @Transactional
-public class EtiquetaService {
-
-	@Autowired
-	EtiquetaDao dao;
+public class MaterialService {
 	
-	public Etiqueta save(Etiqueta etiqueta) {
-		return dao.saveOrUpdate(etiqueta);
+	@Autowired
+	MaterialDao dao;
+	
+	public Material save(Material material) {
+		return dao.saveOrUpdate(material);
 	}
 
-	public List<Etiqueta> list() {
+	public List<Material> list() {
 		return dao.list();
 	}
 
@@ -28,7 +41,7 @@ public class EtiquetaService {
 		dao.remove(id);		
 	}
 	
-	public Etiqueta getById(int id) {
+	public Material getById(int id) {
 		return dao.getById(id);
 	}
 }
