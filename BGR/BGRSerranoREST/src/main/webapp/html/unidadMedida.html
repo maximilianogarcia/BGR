@@ -1,0 +1,162 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/navbar.css" rel="stylesheet">
+
+    <style>
+      .hide{
+          display: none;
+          visibility: hidden;
+      }
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
+      }
+      .margenArriba{
+        margin-top: 1em;
+      }
+      #divisibleInput{
+      	margin-left:0px;
+      }
+      #divisibleSelect{
+      	margin-left:5px;
+      }
+    </style>
+    
+    <script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
+	<script type='text/javascript'  src='js/utils.js'></script>
+    <script type='text/javascript'  src='lib/knockout-3.1.0.js'></script>
+    <script type='text/javascript'  src='lib/knockout-mapping.js'></script>
+    <script type='text/javascript'  src='js/UnidadMedida.js'></script>
+    <script type='text/javascript'  src='js/UnidadMedidaViewModel.js'></script>
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+    <script type='text/javascript'  src='js/config.js'></script>
+
+    <script type='text/javascript'>
+       $(document).ready(function(){
+            viewModel = new UnidadMedidaViewModel();
+            viewModel.apply();
+           $('#equivalenciaInput').popover({ trigger: "hover" });
+       });
+    </script>
+   
+  </head>
+  <body>
+
+
+    <div class="container">
+ 
+
+      <div class="navbar navbar-default" role="navigation">
+        
+        <div class="navbar-collapse in collapse" style="height: auto;">
+           <ul class="nav navbar-nav">
+            <li ><a href="categoria.html">Categorias</a></li>
+            <li class="active"><a href="#">Unidades de medida</a></li>
+            <li><a href="producto.html">Productos</a></li>
+            <li><a href="lote.html">Lotes</a></li>
+            <li><a href="material.html">Materiales de presentacion</a></li>
+            <li><a href="presentacion.html">Presentaciones</a></li>
+            <li><a href="mixGrid.html">Mixes</a></li>
+            <li><a href="stock.html">Stock</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+
+
+        <h3>Edicion de unidades de medida</h3>
+
+
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
+<div class="grid">
+
+        <table class="table table-hover">
+            <thead><tr><th>Nombre</th><th>Descripcion</th><th>Equivalencia</th></tr></thead>
+            <tbody data-bind="foreach: unidadMedidas">
+                <tr data-bind="click: $root.editar" >
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: descripcion"></td>
+                    <td data-bind="text: equivalencia"></td>
+                </tr>     
+            </tbody>
+        </table>
+        </div>
+     </div>
+
+        <div class="modal fade" id="editUnity" style="display:none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Editar unidad de medida</h4>
+              </div>
+              <div class="modal-body">
+                <form action="#" id="editUnityForm" >
+                 <label>Nombre</label>
+                 <input required data-bind="value: selected.name" class="input-block-level" placeholder="Nombre"> 
+                    <label >Descripcion</label>
+                    <input   required data-bind="value: selected.descripcion" 
+                          class="input-block-level " 
+                          placeholder="Descripci&oacute;n">
+                    <label class="margenArriba">Equivalencia</label>
+						<label class="margenArriba"> Es divisivle
+                          <input type="checkbox" name="divisible"  data-bind="checked: selected.divisible" />
+                        </label>
+                    <!-- ko if: selected.divisible -->
+
+					<span class="span4" id="divisibleInput">
+                    <input
+                          id="equivalenciaInput"   
+                          required data-bind="value: selected.equivalencia" 
+                          pattern="-?[0-9]*[\.|,]?[0-9]+" 
+                          class="input-block-level " 
+                          placeholder="Equivalencia"
+                          data-content="Numero real con un '.' como separador" 
+                          rel="popover" data-placement="bottom" 
+                          data-original-title="Formato requerido:"/> 
+                    <input type="submit"  id="submitOculto" class="hide"/>
+                    </span>
+                    
+					<span class="span3" id="divisibleSelect">
+                        <select class="input-block-level form-control" data-bind="options: noDivisibles, optionsText: 'name', 
+                        optionsValue: 'id', value: selectedMedidaId, optionsCaption:'Deriva de'" ></select>
+                        <span class="icon-repeat"></span>
+                     </span>
+                    
+                     <!-- /ko -->
+                    <input type="submit"  id="submitOculto" class="hide"/>
+                    
+                    <input type="submit"  id="submitOculto" class="hide"/>
+
+                    <!-- ko if: createNew -->
+
+                    <input type="button" data-bind="click: save" value="crear" class="btn btn-large btn-success margenArriba"/>
+
+                    <!-- /ko -->
+                    <!-- ko ifnot: createNew -->
+
+                    <input type="button" data-bind="click: update" value="Guardar" class="btn btn-large btn-success  margenArriba"/>      
+                    <!-- /ko -->
+
+                 </form>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!-- ko ifnot: createNew -->
+
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: borrar">
+                  Eliminar unidad de medida</button>
+               <!-- /ko -->
+
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+  </body>
+</html>

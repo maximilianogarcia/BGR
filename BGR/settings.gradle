@@ -1,1 +1,1 @@
-include "BGRSerranoREST"
+include "BGR-Data", "BGR-Services" , "BGRSerranoREST"
