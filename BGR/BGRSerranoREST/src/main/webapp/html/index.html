@@ -110,21 +110,18 @@
                 </div>
           </div>
           <div class="row margenArriba">
-	           <div class="col-md-2">
+	           <div class="col-md-7">
 	           </div>
-	           <div class="col-md-1">
-	            <button  class="btn btn-danger" data-bind="click: cancelForm">Cancel</button>
+	           <div class="col-md-1 text-right">
+	            <button  class="btn btn-link" data-bind="click: cancelForm">Cancel</button>
 	           </div>
-	           <div class="col-md-5">
-	           </div>
-
 	           <div class="col-md-2 text-right">
 	            <!-- ko if: createNew -->
 		             <button  class="btn btn-primary" data-bind="click:save">Aceptar</button>
 	             <!-- /ko -->
                 <!-- ko ifnot: createNew -->
-		             <button  class="btn btn-primary" data-bind="click:update">Aceptar</button>
-		             <button  class="btn btn-primary" data-bind="click:remove">Borrar</button>
+		             <button  class="btn btn-success" data-bind="click:update">Aceptar</button>
+		             <button  class="btn btn-danger" data-bind="click:remove">Borrar</button>
 	             <!-- /ko -->
 	           </div>
            </div>
