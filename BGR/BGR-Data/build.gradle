@@ -1,7 +1,7 @@
 import org.apache.tools.ant.filters.*
-apply plugin: 'war'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'about'
+apply plugin: 'maven'
 
 group = "ar.com.bgr"
 version = '1.0'
@@ -10,12 +10,9 @@ about {
     fileName = 'build.properties'
 }
 
-repositories {
-	mavenLocal()
-}
-
 dependencies {
-
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	
 	/* Spring dependencies */
     compile("org.springframework:spring-web:$springVersion")
     compile("org.springframework:spring-webmvc:$springVersion")
@@ -26,27 +23,10 @@ dependencies {
     compile("org.hibernate:hibernate-core:4.0.1.Final")
 	compile("org.hibernate:hibernate-entitymanager:4.0.1.Final")
 	compile("commons-dbcp:commons-dbcp:1.4")
-    compile("mysql:mysql-connector-java:5.1.10")
-    
-    /* Jackson JSON Mapper */
-    compile("org.codehaus.jackson:jackson-mapper-asl:1.9.2")
-	
-    /* Freemarker dependencies */
+    compile("mysql:mysql-connector-java:5.1.10")    
+        /* Freemarker dependencies */
     compile("org.freemarker:freemarker:2.3.20")
-    
-	/* Java dependencies */
-	providedCompile("javax.servlet:servlet-api:2.5")
-	
-	compile("ar.com.bgr:BGR-Services:1.0")
-}
    
-
-eclipse {
-	classpath {
-		downloadSources = true
-	}
+    
+    testCompile group: 'junit', name: 'junit', version: '4.+'
 }
-
-/* Project dependencies */
-
-war.dependsOn 'about'
