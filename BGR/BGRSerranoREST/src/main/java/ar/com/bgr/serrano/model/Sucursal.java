@@ -1,9 +1,13 @@
 package ar.com.bgr.serrano.model;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity(name = "Sucursal")
@@ -50,6 +54,19 @@ public class Sucursal {
 	@Column(name = "observacionDireccion", nullable=false)
 	private String observacionDireccion;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "stock")
+	private Set<Contacto> contactos;
+	
+	public Set<Contacto> getContactos() {
+		return this.contactos;
+	}
+ 
+	public void setContactos(Set<Contacto> contactos) {
+		 this.contactos = contactos;
+	}
+	
+	
+	
 	public int getId() {
 		return id;
 	}
