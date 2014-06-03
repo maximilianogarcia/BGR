@@ -2,8 +2,11 @@ package ar.com.bgr.serrano.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity(name = "Contacto")
@@ -38,6 +41,10 @@ public class Contacto {
 	@Column(name = "diaHoraContacto", nullable=false)
 	private String diaHoraContacto;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "SUCURSAL_ID", nullable = false)
+	private Sucursal sucursal;
+	
 	public int getId() {
 		return id;
 	}
@@ -108,6 +115,14 @@ public class Contacto {
 
 	public void setTelefonoFijo(String telefonoFijo) {
 		this.telefonoFijo = telefonoFijo;
+	}
+
+	public Sucursal getSucursal() {
+		return sucursal;
+	}
+
+	public void setSucursal(Sucursal sucursal) {
+		this.sucursal = sucursal;
 	}
 
 }
