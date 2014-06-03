@@ -11,3 +11,7 @@
 /BGR/BGRSerranoREST/build
 /BGR/BGR-Services/bin
 /BGR/BGR-Services/build
+/BGR/.settings
+/BGR/*.classpath
+/BGR/*.project
+/BGR/BGRSerranoREST/*.classpath
