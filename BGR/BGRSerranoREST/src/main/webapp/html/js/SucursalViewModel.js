@@ -7,6 +7,11 @@ function SucursalViewModel() {
 	self.sucursales = ko.observableArray();
 	self.utils = new Utils();
 
+	self.showable = ko.observable(true);
+	
+	self.editContacts =function(data){
+		showContact(self , contactoModel, self.selected);
+	}
 	self.init = function() {
 		self.utils.getAll(self.sucursales, "/sucursal/list");
 	}
@@ -29,7 +34,7 @@ function SucursalViewModel() {
 		});*/
     //	$.deleteJSON(BASE_REST_URL+"/sucursal/delete/", self.selected.id()).done(self.removeFromGrid).fail(function(){ alert("Ocurrio un error al borrar"); });
     	
-    	$.deleteJSON(BASE_REST_URL+"/sucursal/delete",self.selected.id()).done(self.removeFromGrid).fail(function(error){ alert(error.responseText);});
+    	$.deleteJSON(BASE_REST_URL+"/sucursal/delete",JSON.stringify(self.selected.id())).done(self.removeFromGrid).fail(function(error){ alert(error.responseText);});
     	
 
 	}
@@ -73,4 +78,13 @@ function SucursalViewModel() {
 
 	ko.bindingHandlers.fadeVisible =self.utils.fadeVisible;  
 
+	
+	self.hide = function(){
+		self.showable(false);
+	}
+	self.display= function(){
+		self.showable(true);
+	}
+
+	
 }

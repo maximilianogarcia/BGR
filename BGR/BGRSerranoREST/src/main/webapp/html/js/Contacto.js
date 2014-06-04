@@ -18,4 +18,6 @@ function Contacto(){
 	self.fax= ko.observable();
 
 	self.diaHoraContacto= ko.observable();
+
+	self.sucursal= ko.observable();
 }

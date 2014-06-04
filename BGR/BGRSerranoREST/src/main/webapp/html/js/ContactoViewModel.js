@@ -7,6 +7,11 @@ function ContactoViewModel() {
 	self.contactos = ko.observableArray();
 	self.utils = new Utils();
 
+	self.sucursal = ko.mapping.fromJS(new Sucursal());
+
+	
+	self.showable = ko.observable(false);
+
 	self.init = function() {
 		self.utils.getAll(self.contactos, "/contacto/list");
 	}
@@ -19,10 +24,16 @@ function ContactoViewModel() {
 
 	self.save = function(data) {
 		self.formVisible(true);
-		self.utils.doPost("/contacto/save", ko.mapping.toJSON(self.selected),
+		
+		var sucursal = ko.mapping.toJS(self.sucursal);
+		self.selected.sucursal = sucursal;
+		var serializado = ko.mapping.toJSON(self.selected)
+
+		$.postJSON(BASE_REST_URL+"/contacto/save", serializado).done(self.pushInGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
+	/*	self.utils.doPost("/contacto/save", ko.mapping.toJS(self.selected),
 				self.pushInGrid, function(a) {
 					alert(a)
-		});
+		});*/
 	}
 
 	self.remove = function(data) {
@@ -34,7 +45,7 @@ function ContactoViewModel() {
 	
 	self.update = function(data) {
 		self.formVisible(true);
-		self.utils.doPost("/contacto/save", ko.mapping.toJSON(self.selected),
+		self.utils.doPost("/contacto/save", ko.mapping.toJS(self.selected),
 				self.updateGrid, function(a) {
 					alert(a)
 		});
@@ -64,6 +75,7 @@ function ContactoViewModel() {
 
 	self.create = function() {
 		ko.mapping.fromJS(new Contacto(), self.selected);
+		//self.selected.sucursal = self.sucursal;
 		self.formVisible(true);
 		self.createNew(true);
 	}
@@ -73,4 +85,12 @@ function ContactoViewModel() {
 
 	ko.bindingHandlers.fadeVisible =self.utils.fadeVisible;  
 
+	self.hide = function(){
+		self.showable(false);
+	}
+	self.display= function(sucur){
+		ko.mapping.fromJS(sucur, self.sucursal);
+		self.showable(true);
+	}	
+	
 }

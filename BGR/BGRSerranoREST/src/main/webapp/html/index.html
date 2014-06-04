@@ -26,17 +26,34 @@
     <script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
 
     <script type='text/javascript'  src='js/SucursalViewModel.js'></script>
-    <script type='text/javascript'  src='js/utils.js'></script>
     <script type='text/javascript'  src='js/Sucursal.js'></script>
+    <script type='text/javascript'  src='js/ContactoViewModel.js'></script>
+    <script type='text/javascript'  src='js/Contacto.js'></script>
+    <script type='text/javascript'  src='js/utils.js'></script>
     <script type='text/javascript'  src='js/config.js'></script>
 
     <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
 
     <script type='text/javascript'>
+       
+       showContact = function(smodel,cmodel, sucur){
+    	   cmodel.display(sucur);
+    	   smodel.hide();
+       }
+ 
+       showSucursal = function(cmodel,smodel, idSucursal){
+    	   cmodel.hide();
+    	   smodel.display();
+       }
+
        $(document).ready(function(){
-             model = new SucursalViewModel()
-             model.init();
-             ko.applyBindings(model);
+             sucursalModel = new SucursalViewModel()
+             sucursalModel.init();
+             
+             contactoModel = new ContactoViewModel()
+             
+             ko.applyBindings(sucursalModel, document.getElementById("sucursalView"));
+             ko.applyBindings(contactoModel, document.getElementById("contactoView"));
        });
     </script>
    
@@ -58,8 +75,9 @@
           </ul>
         </div><!--/.nav-collapse -->
       </div>
+<div id="sucursalView">
 
-    <div class="container">
+    <div class="container" data-bind="visible: showable">
           <h2>Sucursal</h2>
 
           <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
@@ -131,6 +149,125 @@
                 </div>
           </div>
           <div class="row margenArriba">
+	           <div class="col-md-1 text-right">
+	            <button  class="btn btn-link" data-bind="click: cancelForm">Cancel</button>
+	           </div>
+	           <div class="col-md-6">
+	           </div>
+	           <div class="col-md-3 text-right">
+	            <!-- ko if: createNew -->
+		             <button  class="btn btn-primary" data-bind="click:save">Aceptar</button>
+	             <!-- /ko -->
+                <!-- ko ifnot: createNew -->
+				     <button class="btn" data-bind="click: editContacts, visible: showable">contactos</button>
+		             <button  class="btn btn-success" data-bind="click:update">Aceptar</button>
+		             <button  class="btn btn-danger" data-bind="click:remove">Borrar</button>
+	             <!-- /ko -->
+	           </div>
+           </div>
+          </form>
+      </div>
+       
+         <div class="grid container" data-bind="visible: showable">
+                        <table class="container table table-hover">
+                            <thead><tr>
+	                            <th>Nombre</th><th>blog</th>
+	                            <th>fax</th><th>radio</th>
+	                            <th>telefono movil</th><th>telefono fijo</th>
+	                            <th>Dia y hora de contacto</th><th>website</th>
+                            </tr></thead>
+                            <tbody data-bind="foreach: sucursales">
+                                <tr data-bind="click: $root.edit">
+                                    <td data-bind="text: name" ></td>
+                                    <td data-bind="text: descripcion"></td>
+                                    <td data-bind="text: observacion"></td>
+                                    <td data-bind="text: calle"></td>
+                                    <td data-bind="text: piso"></td>
+                                    <td data-bind="text: pais"></td>
+                                    <td data-bind="text: provincia"></td>
+                                    <td data-bind="text: localidad"></td>
+                                    <td data-bind="text: codigoPostal"></td>
+                                </tr>     
+                            </tbody>
+                        </table>
+          </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="contactoView">
+
+
+        <!-- ko if: showable -->
+        <div class="container" >
+          <h2>Contactos</h2>
+
+          <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
+          <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
+
+          <div class="row show-grid bs-docs-grid margenArriba">
+                <div class="text-right col-md-2">Nombre</div>
+                <div class="col-md-3">
+                <input required class="form-control" data-bind="value: selected.name" type="text" placeholder="Nombre" ></input>  
+                </div>
+                <div  class="text-right col-md-2">Sitio Web</div>
+                <div class="col-md-3">
+                <input class=" form-control" data-bind="value: selected.webSite" type="text" placeholder="Sitio web" ></input>    
+                </div>     
+          </div>
+
+          <div class="row margenArriba">
+                <div class="text-right col-md-2">Blog</div>
+                <div class="col-md-3">
+                  <input class=" form-control" data-bind="value: selected.blog" type="text" placeholder="Blog" ></input>
+                </div>
+                <div  class="text-right col-md-2">Telefono Movil</div>
+                <div class="col-md-3">
+                 <input required class="form-control" data-bind="value: selected.telefonoMovil" type="text" placeholder="Telefono Movil" ></input>
+                </div>
+          </div>
+
+          <div class="row margenArriba">
+
+                <div   class="text-right col-md-2">Telefono Fijo</div>
+                <div class="col-md-3">
+                <input required class=" form-control"  data-bind="value: selected.telefonoFijo" type="text" placeholder="Telefono Fijo" ></input>
+                </div>
+                <div class="text-right col-md-2">Fax</div>
+                <div class="col-md-3">
+                <input class=" form-control" data-bind="value: selected.fax"  type="text" placeholder="Fax"></input>
+                </div>
+          </div>
+
+          <div class="row margenArriba">
+                <div class="text-right col-md-2">Radio</div>
+                <div class="col-md-3">
+                <input class="form-control" data-bind="value: selected.radio"  type="text" placeholder="Radio" ></input>
+                </div>
+                <div class="text-right col-md-2">Dia y hora de contacto </div>
+                <div class="col-md-3">
+                <input required class=" form-control" data-bind="value: selected.diaHoraContacto"  type="text" placeholder="Dia y hora de contacto" ></input>
+                </div>
+          </div>
+          <div class="row margenArriba">
 	           <div class="col-md-7">
 	           </div>
 	           <div class="col-md-1 text-right">
@@ -156,21 +293,24 @@
 	                            <th>telefono movil</th><th>telefono fijo</th>
 	                            <th>Dia y hora de contacto</th><th>website</th>
                             </tr></thead>
-                            <tbody data-bind="foreach: sucursales">
+                            <tbody data-bind="foreach: contactos">
                                 <tr data-bind="click: $root.edit">
                                     <td data-bind="text: name" ></td>
-                                    <td data-bind="text: descripcion"></td>
-                                    <td data-bind="text: observacion"></td>
-                                    <td data-bind="text: calle"></td>
-                                    <td data-bind="text: piso"></td>
-                                    <td data-bind="text: pais"></td>
-                                    <td data-bind="text: provincia"></td>
-                                    <td data-bind="text: localidad"></td>
-                                    <td data-bind="text: codigoPostal"></td>
+                                    <td data-bind="text: blog"></td>
+                                    <td data-bind="text: fax"></td>
+                                    <td data-bind="text: radio"></td>
+                                    <td data-bind="text: telefonoMovil"></td>
+                                    <td data-bind="text: telefonoFijo"></td>
+                                    <td data-bind="text: diaHoraContacto"></td>
+                                    <td data-bind="text: webSite"></td>
                                 </tr>     
                             </tbody>
                         </table>
           </div>
+
+
+      <!-- /ko -->
+</div>
 
   </body>
 </html>
