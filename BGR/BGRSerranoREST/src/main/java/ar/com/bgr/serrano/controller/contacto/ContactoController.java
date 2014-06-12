@@ -40,6 +40,13 @@ public class ContactoController {
 	public @ResponseBody Contacto get(@PathVariable("id") int id) {
 		return service.getById(id);
 	}
+	/**
+	 * Devuelve la contacto ligada al identificador recibido
+	 */
+	@RequestMapping(value="listBySucursal/{id}",method = RequestMethod.GET)
+	public @ResponseBody  List<Contacto> getbySucursal(@PathVariable("id") int id) {
+		return service.listBySucursal(id);
+	}
 
 	/**
 	 * Lista todas las contactos. 

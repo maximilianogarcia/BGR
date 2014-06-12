@@ -5,15 +5,17 @@ function SucursalViewModel() {
 	self.createNew = ko.observable(false);
 	self.selected = ko.mapping.fromJS(new Sucursal());
 	self.sucursales = ko.observableArray();
+	self.proveedor = ko.mapping.fromJS(new Proveedor());
 	self.utils = new Utils();
 
-	self.showable = ko.observable(true);
+	self.showable = ko.observable(false);
 	
-	self.editContacts =function(data){
-		showContact(self , contactoModel, self.selected);
-	}
 	self.init = function() {
-		self.utils.getAll(self.sucursales, "/sucursal/list");
+		ko.mapping.fromJS(new Sucursal(), self.selected);
+		$.getJSON(BASE_REST_URL+"/sucursal/listByProveedor/"+self.proveedor.id(), function(data){  
+			 self.sucursales(data);
+			 self.showable(true);
+		});
 	}
 
 	self.edit = function(data) {
@@ -23,25 +25,27 @@ function SucursalViewModel() {
 	}
 
 	self.save = function(data) {
-    	$.postJSON(BASE_REST_URL+"/sucursal/save", ko.mapping.toJSON(self.selected)).done(self.pushInGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
+		var proveedor = ko.mapping.toJS(self.proveedor);
+		self.selected.proveedor = proveedor;
+		var serializado = ko.myToJSON(self.selected);
+		
+    	$.postJSON(BASE_REST_URL+"/sucursal/save",serializado).done(self.pushInGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
 
 	}
 
 	self.remove = function(data) {
-	/*	self.utils.doDelete("/sucursal/remove/"+self.selected.id(),"",
-				self.removeFromGrid, function(a) {
-					alert(a)
-		});*/
-    //	$.deleteJSON(BASE_REST_URL+"/sucursal/delete/", self.selected.id()).done(self.removeFromGrid).fail(function(){ alert("Ocurrio un error al borrar"); });
-    	
+	
     	$.deleteJSON(BASE_REST_URL+"/sucursal/delete",JSON.stringify(self.selected.id())).done(self.removeFromGrid).fail(function(error){ alert(error.responseText);});
     	
 
 	}
 
 	self.update = function(data) {
-		self.formVisible(true);
-    	$.postJSON(BASE_REST_URL+"/sucursal/save", ko.mapping.toJSON(self.selected)).done(self.updateGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
+		var proveedor = ko.mapping.toJS(self.proveedor);
+		self.selected.proveedor = proveedor;
+		var serializado = ko.myToJSON(self.selected);
+		
+    	$.postJSON(BASE_REST_URL+"/sucursal/save",serializado).done(self.updateGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
 	}
 
 	self.updateGrid = function(data) {
@@ -68,6 +72,7 @@ function SucursalViewModel() {
 
 	self.create = function() {
 		ko.mapping.fromJS(new Sucursal(), self.selected);
+		self.selected.proveedor = self.proveedor;
 		self.formVisible(true);
 		self.createNew(true);
 	}
@@ -78,13 +83,29 @@ function SucursalViewModel() {
 
 	ko.bindingHandlers.fadeVisible =self.utils.fadeVisible;  
 
+
+	
+	self.editContacts =function(data){
+		showContact(self.selected);
+	}
 	
 	self.hide = function(){
 		self.showable(false);
 	}
-	self.display= function(){
+	
+	self.display= function(prov){
+		ko.mapping.fromJS(prov, self.proveedor);
+		self.init();
 		self.showable(true);
 	}
-
+	
+	self.displayOpen= function(sucursal){
+		ko.mapping.fromJS(sucursal, self.selected);
+		self.showable(true);
+	}
+	
+	self.backToProveedor= function(){
+		showProveedorOpen(self.proveedor);
+	}
 	
 }

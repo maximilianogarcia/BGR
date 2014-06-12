@@ -24,6 +24,10 @@ public class ContactoService {
 		return dao.list();
 	}
 
+	public List<Contacto> listBySucursal(int id) {
+		return dao.listBySucursal(id);
+	}
+
 	public void remove(int id) {
 		dao.remove(id);		
 	}

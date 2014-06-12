@@ -41,9 +41,13 @@ public class Contacto {
 	@Column(name = "diaHoraContacto", nullable=false)
 	private String diaHoraContacto;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "SUCURSAL_ID", nullable = false)
 	private Sucursal sucursal;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "EOI_ID", nullable = false)
+	private Eoi eoi;
 	
 	public int getId() {
 		return id;
@@ -123,6 +127,14 @@ public class Contacto {
 
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
+	}
+
+	public Eoi getEoi() {
+		return eoi;
+	}
+
+	public void setEoi(Eoi eoi) {
+		this.eoi = eoi;
 	}
 
 }

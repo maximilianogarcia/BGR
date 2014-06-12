@@ -16,6 +16,12 @@ $.extend({deleteJSON:function(url, data, callback, type) {
 return _ajax_request('application/json', url, data, callback, 'json', 'DELETE');}
 });
 
+ko.myToJSON = function(obj) {
+    return JSON.stringify(ko.toJS(obj), function (key, val) {
+        return key === '__ko_mapping__' ? undefined : val;
+    });
+}
+
 function Utils(){
 	var self = this; 
 	self.getAll = function(callback,path){

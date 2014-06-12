@@ -23,6 +23,10 @@ public class SucursalService {
 	public List<Sucursal> list() {
 		return dao.list();
 	}
+	
+	public List<Sucursal> listByProveedor(int proveedor_id) {
+		return dao.listByProveedor(proveedor_id);
+	}
 
 	public void remove(int id) {
 		dao.remove(id);		

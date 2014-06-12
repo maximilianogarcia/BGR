@@ -18,17 +18,25 @@
         min-height:150px ;
         height: 60%;
       }
-
+	 .showCursor{
+		    cursor: pointer;
+		    cursor: hand;
+		}
     </style>
 
     <script type='text/javascript'  src='lib/knockout-3.1.0.js'></script>
     <script type='text/javascript'  src='lib/knockout-mapping.js'></script>
     <script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
 
+    <script type='text/javascript'  src='js/ProveedorViewModel.js'></script>
+    <script type='text/javascript'  src='js/Proveedor.js'></script>
+    
     <script type='text/javascript'  src='js/SucursalViewModel.js'></script>
     <script type='text/javascript'  src='js/Sucursal.js'></script>
+    
     <script type='text/javascript'  src='js/ContactoViewModel.js'></script>
     <script type='text/javascript'  src='js/Contacto.js'></script>
+    
     <script type='text/javascript'  src='js/utils.js'></script>
     <script type='text/javascript'  src='js/config.js'></script>
 
@@ -36,31 +44,47 @@
 
     <script type='text/javascript'>
        
-       showContact = function(smodel,cmodel, sucur){
-    	   cmodel.display(sucur);
-    	   smodel.hide();
+       showContact = function(sucur){
+    	   contactoModel.display(sucur);
+    	   sucursalModel.hide();
+    	   proveedorModel.hide();
        }
  
-       showSucursal = function(cmodel,smodel, idSucursal){
-    	   cmodel.hide();
-    	   smodel.display();
+       showSucursal = function(proovedor){
+    	   proveedorModel.hide();
+    	   contactoModel.hide();
+    	   sucursalModel.display(proovedor);
+       }
+
+       showSucursalOpen = function(sucursal){
+    	   proveedorModel.hide();
+    	   contactoModel.hide();
+    	   sucursalModel.displayOpen(sucursal);
+       }
+       showProveedorOpen = function(proveedor){
+    	   proveedorModel.displayOpen(proveedor);
+    	   contactoModel.hide();
+    	   sucursalModel.hide();
        }
 
        $(document).ready(function(){
+    	     proveedorModel = new ProveedorViewModel()
+    	     proveedorModel.init();
+    	     
              sucursalModel = new SucursalViewModel()
-             sucursalModel.init();
              
              contactoModel = new ContactoViewModel()
              
              ko.applyBindings(sucursalModel, document.getElementById("sucursalView"));
              ko.applyBindings(contactoModel, document.getElementById("contactoView"));
+             ko.applyBindings(proveedorModel, document.getElementById("proveedorView"));
        });
     </script>
    
   </head>
   <body>
 
-      <div class="navbar navbar-default" role="navigation">
+      <div class="navbar-default" role="navigation">
         
         <div class="navbar-collapse in collapse" style="height: auto;">
            <ul class="nav navbar-nav">
@@ -75,10 +99,12 @@
           </ul>
         </div><!--/.nav-collapse -->
       </div>
+            
+        
 <div id="sucursalView">
 
     <div class="container" data-bind="visible: showable">
-          <h2>Sucursal</h2>
+         <h2 class="showCursor" data-bind="click: backToProveedor"><i class="glyphicon glyphicon-chevron-left"></i> proveedor: <span data-bind="text: proveedor.name"></span></h2>
 
           <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
           <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
@@ -150,7 +176,7 @@
           </div>
           <div class="row margenArriba">
 	           <div class="col-md-1 text-right">
-	            <button  class="btn btn-link" data-bind="click: cancelForm">Cancel</button>
+	            <button  class="btn btn-link" data-bind="click: cancelForm"><i class="glyphicon glyphicon-remove "></i>  Cancel</button>
 	           </div>
 	           <div class="col-md-6">
 	           </div>
@@ -196,6 +222,128 @@
 </div>
 
 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+<div id="proveedorView">
+
+    <div class="container" data-bind="visible: showable">
+          <h2> Proveedores</span></h2>
+
+          <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
+          <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
+
+          <div class="row show-grid bs-docs-grid margenArriba">
+                <div class="text-right col-md-2">Nombre</div>
+                <div class="col-md-3">
+                <input required class="form-control" data-bind="value: selected.name" type="text" placeholder="Nombre" ></input>  
+                </div>
+                <div  class="text-right col-md-2">Razon social</div>
+                <div class="col-md-3">
+                <input class=" form-control" data-bind="value: selected.razonSocial" type="text" placeholder="razón Social" ></input>    
+                </div>     
+          </div>
+
+          <div class="row margenArriba">
+                <div class="text-right col-md-2">CUIT</div>
+                <div class="col-md-3">
+                  <input class=" form-control" data-bind="value: selected.cuit" type="text" placeholder="CUIT" ></input>
+                </div>
+                <div  class="text-right col-md-2">Condición impositiva</div>
+                <div class="col-md-3">
+                 <input required class="form-control" data-bind="value: selected.condicionImpositiva" type="text" placeholder="Condicion impositiva" ></input>
+                </div>
+          </div>
+
+          <div class="row margenArriba">
+
+                <div   class="text-right col-md-2">Ingresos Brutos</div>
+                <div class="col-md-3">
+                <input required class=" form-control"  data-bind="value: selected.ingresosBrutos" type="text" placeholder="Ingresos Brutos" ></input>
+                </div>
+                <div class="text-right col-md-2">Observaciones</div>
+                <div class="col-md-3">
+                <input class=" form-control" data-bind="value: selected.observaciones"  type="text" placeholder="Observaciones"></input>
+                </div>
+          </div>
+
+          <div class="row margenArriba">
+	           <div class="col-md-1 text-right">
+	            <button  class="btn btn-link" data-bind="click: cancelForm"><i class="glyphicon glyphicon-remove "></i>  Cancel</button>
+	           </div>
+	           <div class="col-md-6">
+	           </div>
+	           <div class="col-md-3 text-right">
+	            <!-- ko if: createNew -->
+		             <button  class="btn btn-primary" data-bind="click:save">Aceptar</button>
+	             <!-- /ko -->
+                <!-- ko ifnot: createNew -->
+				     <button class="btn" data-bind="click: editSucursales, visible: showable">Sucursales</button>
+		             <button  class="btn btn-success" data-bind="click:update">Aceptar</button>
+		             <button  class="btn btn-danger" data-bind="click:remove">Borrar</button>
+	             <!-- /ko -->
+	           </div>
+           </div>
+          </form>
+      </div>
+
+         <div class="grid container" data-bind="visible: showable">
+                        <table class="container table table-hover">
+                            <thead><tr>
+	                            <th>Nombre</th><th>razon Social</th>
+	                            <th>CUIT</th><th>Condicion Impositiva</th>
+	                            <th>Ingresos Brutos</th><th>Observaciones</th>
+                            </tr></thead>
+                            <tbody data-bind="foreach: proveedores">
+                                <tr data-bind="click: $root.edit">
+                                    <td data-bind="text: name" ></td>
+                                    <td data-bind="text: razonSocial"></td>
+                                    <td data-bind="text: cuit"></td>
+                                    <td data-bind="text: condicionImpositiva"></td>
+                                    <td data-bind="text: ingresosBrutos"></td>
+                                    <td data-bind="text: observaciones"></td>
+                                </tr>     
+                            </tbody>
+                        </table>
+          </div>
+
+
+</div>
+
+
 
 
 
@@ -218,9 +366,10 @@
 
         <!-- ko if: showable -->
         <div class="container" >
-          <h2>Contactos</h2>
+          <h2 class="showCursor" data-bind="click: backToSucursal"><i class="glyphicon glyphicon-chevron-left"></i> <span data-bind="text: sucursal.name"></span></h2>
 
           <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
+          
           <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
 
           <div class="row show-grid bs-docs-grid margenArriba">
@@ -268,12 +417,12 @@
                 </div>
           </div>
           <div class="row margenArriba">
-	           <div class="col-md-7">
-	           </div>
 	           <div class="col-md-1 text-right">
-	            <button  class="btn btn-link" data-bind="click: cancelForm">Cancel</button>
+	            <button  class="btn btn-link" data-bind="click: cancelForm"><i class="glyphicon glyphicon-remove "></i>  Cancel</button>
 	           </div>
-	           <div class="col-md-2 text-right">
+	           <div class="col-md-6">
+	           </div>
+	           <div class="col-md-3 text-right">
 	            <!-- ko if: createNew -->
 		             <button  class="btn btn-primary" data-bind="click:save">Aceptar</button>
 	             <!-- /ko -->

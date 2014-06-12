@@ -60,4 +60,7 @@ public abstract class AbstractDAO<T> {
 	public  void setSessionFactory(SessionFactory sessionFactory){
 		this.sessionFactory = sessionFactory;
 	}
+	protected SessionFactory getSessionFactory(){
+		return this.sessionFactory ;
+	}
 }

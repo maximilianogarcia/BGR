@@ -26,5 +26,7 @@ function Sucursal(){
 	self.codigoPostal= ko.observable();
 	
 	self.observacionDireccion= ko.observable();
+
+	self.proveedor= ko.observable();
 	
 }

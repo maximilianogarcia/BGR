@@ -1,6 +1,10 @@
 package ar.com.bgr.serrano.dao;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +20,10 @@ public class SucursalDao extends AbstractDAO<Sucursal>{
 		setClasz(Sucursal.class);
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Sucursal>listByProveedor(int id){
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(getClasz());
+		criteria.add(Restrictions.eq("proveedor.id", id));
+		return (List<Sucursal>) criteria.list();
+	}
 }

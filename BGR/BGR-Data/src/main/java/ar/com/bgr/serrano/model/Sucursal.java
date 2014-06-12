@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -14,7 +16,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @Entity(name = "Sucursal")
 @Table(name = "Sucursal")
-@JsonIgnoreProperties({"contactos"})
+@JsonIgnoreProperties(value={"contactos"})
 public class Sucursal {
 
 	@Id
@@ -57,6 +59,10 @@ public class Sucursal {
 	@Column(name = "observacionDireccion", nullable=false)
 	private String observacionDireccion;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "PROVEEDOR_ID", nullable = false)
+	private Eoi proveedor;
+	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "sucursal")
 	private Set<Contacto> contactos;
 	
@@ -172,6 +178,14 @@ public class Sucursal {
 
 	public void setPiso(String piso) {
 		this.piso = piso;
+	}
+
+	public Eoi getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Eoi proveedor) {
+		this.proveedor = proveedor;
 	}
 
 }

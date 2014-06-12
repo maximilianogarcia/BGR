@@ -4,7 +4,7 @@ function ContactoViewModel() {
 	self.formVisible = ko.observable(false);
 	self.createNew = ko.observable(false);
 	self.selected = ko.mapping.fromJS(new Contacto());
-	self.contactos = ko.observableArray();
+	self.contactos= ko.observableArray();
 	self.utils = new Utils();
 
 	self.sucursal = ko.mapping.fromJS(new Sucursal());
@@ -13,7 +13,13 @@ function ContactoViewModel() {
 	self.showable = ko.observable(false);
 
 	self.init = function() {
-		self.utils.getAll(self.contactos, "/contacto/list");
+		ko.mapping.fromJS(new Contacto(), self.selected);
+		self.formVisible = ko.observable(false);
+		$.getJSON(BASE_REST_URL+"/contacto/listBySucursal/"+self.sucursal.id(), function(data){  
+			 self.contactos(data);
+			 self.showable(true);
+		});
+		
 	}
 
 	self.edit = function(data) {
@@ -23,32 +29,26 @@ function ContactoViewModel() {
 	}
 
 	self.save = function(data) {
-		self.formVisible(true);
-		
 		var sucursal = ko.mapping.toJS(self.sucursal);
 		self.selected.sucursal = sucursal;
-		var serializado = ko.mapping.toJSON(self.selected)
-
+		self.selected.eoi = sucursal.proveedor;
+		var serializado = ko.myToJSON(self.selected);
+		
 		$.postJSON(BASE_REST_URL+"/contacto/save", serializado).done(self.pushInGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
-	/*	self.utils.doPost("/contacto/save", ko.mapping.toJS(self.selected),
-				self.pushInGrid, function(a) {
-					alert(a)
-		});*/
 	}
 
 	self.remove = function(data) {
-		self.utils.doDelete("/contacto/remove/"+self.selected.id(),"",
-				self.removeFromGrid, function(a) {
-					alert(a)
-		});
+    	$.deleteJSON(BASE_REST_URL+"/contacto/delete",JSON.stringify(self.selected.id())).done(self.removeFromGrid).fail(function(error){ alert(error.responseText);});
 	}
 	
 	self.update = function(data) {
-		self.formVisible(true);
-		self.utils.doPost("/contacto/save", ko.mapping.toJS(self.selected),
-				self.updateGrid, function(a) {
-					alert(a)
-		});
+		var sucursal = ko.mapping.toJS(self.sucursal);
+		self.selected.sucursal = sucursal;
+		self.selected.eoi = sucursal.proveedor;
+		var serializado = ko.myToJSON(self.selected);
+
+		$.postJSON(BASE_REST_URL+"/contacto/save", serializado).done(self.updateGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
+
 	}
 	
 	
@@ -75,7 +75,7 @@ function ContactoViewModel() {
 
 	self.create = function() {
 		ko.mapping.fromJS(new Contacto(), self.selected);
-		//self.selected.sucursal = self.sucursal;
+		self.selected.sucursal = self.sucursal;
 		self.formVisible(true);
 		self.createNew(true);
 	}
@@ -85,12 +85,16 @@ function ContactoViewModel() {
 
 	ko.bindingHandlers.fadeVisible =self.utils.fadeVisible;  
 
+	self.backToSucursal =function(data){
+		showSucursalOpen(self.sucursal);
+	}
+	
 	self.hide = function(){
 		self.showable(false);
 	}
 	self.display= function(sucur){
 		ko.mapping.fromJS(sucur, self.sucursal);
-		self.showable(true);
+		self.init();
 	}	
 	
 }
