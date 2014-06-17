@@ -104,7 +104,7 @@
 <div id="sucursalView">
 
     <div class="container" data-bind="visible: showable">
-         <h2 class="showCursor" data-bind="click: backToProveedor"><i class="glyphicon glyphicon-chevron-left"></i> proveedor: <span data-bind="text: proveedor.name"></span></h2>
+         <h2 class="showCursor" data-bind="click: backToProveedor"><i class="glyphicon glyphicon-chevron-left"></i> proveedor: <span data-bind="text: eoi.name"></span></h2>
 
           <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
           <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
@@ -365,10 +365,51 @@
 
 
         <!-- ko if: showable -->
+        
+        
+        <div class="modal fade" id="modalContactos">
+			  <div class="modal-dialog modal-lg">
+				    <div class="modal-content">
+					      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						        <h4 class="modal-title">Modal title</h4>
+					      </div>
+					      <div class="modal-body">
+
+
+	                        <table class="container table table-hover">
+	                            <thead><tr>
+		                            <th>Nombre</th>
+		                            <th>radio</th>
+		                            <th>telefono movil</th><th>telefono fijo</th>
+	                            </tr></thead>
+	                            <tbody data-bind="foreach: contactosEoi">
+	                                <tr data-bind="click: $root.edit">
+	                                    <td data-bind="text: name" ></td>
+	                                    <td data-bind="text: radio"></td>
+	                                    <td data-bind="text: telefonoMovil"></td>
+	                                    <td data-bind="text: telefonoFijo"></td>
+	                                </tr>     
+	                            </tbody>
+	                        </table>
+
+
+					      </div>
+					      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						        <button type="button" class="btn btn-primary">Save changes</button>
+					      </div>
+				    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+        
+        
+
         <div class="container" >
           <h2 class="showCursor" data-bind="click: backToSucursal"><i class="glyphicon glyphicon-chevron-left"></i> <span data-bind="text: sucursal.name"></span></h2>
 
           <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
+          <button class="btn btn-default" data-bind="click: contactosProveedor, disable:formVisible">Todos los contactos del proveedor</button>
           
           <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
 

@@ -32,4 +32,10 @@ public class ContactoDao extends AbstractDAO<Contacto>{
 		criteria.add(Restrictions.eq("sucursal.id", id));
 		return (List<Contacto>) criteria.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Contacto>listByEoi(int id){
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(getClasz());
+		criteria.add(Restrictions.eq("eoi.id", id));
+		return (List<Contacto>) criteria.list();
+	}
 }

@@ -27,6 +27,10 @@ public class ContactoService {
 	public List<Contacto> listBySucursal(int id) {
 		return dao.listBySucursal(id);
 	}
+	
+	public List<Contacto> listByEoi(int id) {
+		return dao.listByEoi(id);
+	}
 
 	public void remove(int id) {
 		dao.remove(id);		

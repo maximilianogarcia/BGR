@@ -27,6 +27,6 @@ function Sucursal(){
 	
 	self.observacionDireccion= ko.observable();
 
-	self.proveedor= ko.observable();
+	self.eoi= ko.observable();
 	
 }

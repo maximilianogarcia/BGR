@@ -41,11 +41,19 @@ public class ContactoController {
 		return service.getById(id);
 	}
 	/**
-	 * Devuelve la contacto ligada al identificador recibido
+	 * Devuelve la contacto ligada al id de la sucursal recibida 
 	 */
 	@RequestMapping(value="listBySucursal/{id}",method = RequestMethod.GET)
 	public @ResponseBody  List<Contacto> getbySucursal(@PathVariable("id") int id) {
 		return service.listBySucursal(id);
+	}
+
+	/**
+	 * Devuelve la contacto ligada al EOI ( proveedor/cliente)  recibido
+	 */
+	@RequestMapping(value="listByEoi/{id}",method = RequestMethod.GET)
+	public @ResponseBody  List<Contacto> getbyEoi(@PathVariable("id") int id) {
+		return service.listByEoi(id);
 	}
 
 	/**

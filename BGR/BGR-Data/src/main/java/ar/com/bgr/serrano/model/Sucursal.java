@@ -1,15 +1,17 @@
 package ar.com.bgr.serrano.model;
 
-import java.util.Set;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -60,17 +62,22 @@ public class Sucursal {
 	private String observacionDireccion;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "PROVEEDOR_ID", nullable = false)
-	private Eoi proveedor;
+	@JoinColumn(name = "eoi_id", nullable = false)
+	private Eoi eoi;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "sucursal")
-	private Set<Contacto> contactos;
+	//@OneToMany(fetch = FetchType.EAGER, mappedBy = "sucursal")
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "contacto_sucursal",  joinColumns = { 
+			@JoinColumn(name = "CONTACTO_ID", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "SUCURSAL_ID", 
+					nullable = false, updatable = false) })
+	private List<Contacto> contactos;
 	
-	public Set<Contacto> getContactos() {
+	public List<Contacto> getContactos() {
 		return this.contactos;
 	}
  
-	public void setContactos(Set<Contacto> contactos) {
+	public void setContactos(List<Contacto> contactos) {
 		 this.contactos = contactos;
 	}
 	
@@ -180,12 +187,13 @@ public class Sucursal {
 		this.piso = piso;
 	}
 
-	public Eoi getProveedor() {
-		return proveedor;
+	public Eoi getEoi() {
+		return eoi;
 	}
 
-	public void setProveedor(Eoi proveedor) {
-		this.proveedor = proveedor;
+	public void setEoi(Eoi eoi) {
+		this.eoi = eoi;
 	}
+
 
 }

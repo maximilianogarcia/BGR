@@ -5,14 +5,14 @@ function SucursalViewModel() {
 	self.createNew = ko.observable(false);
 	self.selected = ko.mapping.fromJS(new Sucursal());
 	self.sucursales = ko.observableArray();
-	self.proveedor = ko.mapping.fromJS(new Proveedor());
+	self.eoi = ko.mapping.fromJS(new Proveedor());
 	self.utils = new Utils();
 
 	self.showable = ko.observable(false);
 	
 	self.init = function() {
 		ko.mapping.fromJS(new Sucursal(), self.selected);
-		$.getJSON(BASE_REST_URL+"/sucursal/listByProveedor/"+self.proveedor.id(), function(data){  
+		$.getJSON(BASE_REST_URL+"/sucursal/listByProveedor/"+self.eoi.id(), function(data){  
 			 self.sucursales(data);
 			 self.showable(true);
 		});
@@ -25,8 +25,8 @@ function SucursalViewModel() {
 	}
 
 	self.save = function(data) {
-		var proveedor = ko.mapping.toJS(self.proveedor);
-		self.selected.proveedor = proveedor;
+		var eoi = ko.mapping.toJS(self.eoi);
+		self.selected.eoi = eoi;
 		var serializado = ko.myToJSON(self.selected);
 		
     	$.postJSON(BASE_REST_URL+"/sucursal/save",serializado).done(self.pushInGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
@@ -41,8 +41,8 @@ function SucursalViewModel() {
 	}
 
 	self.update = function(data) {
-		var proveedor = ko.mapping.toJS(self.proveedor);
-		self.selected.proveedor = proveedor;
+		var eoi = ko.mapping.toJS(self.eoi);
+		self.selected.eoi = eoi;
 		var serializado = ko.myToJSON(self.selected);
 		
     	$.postJSON(BASE_REST_URL+"/sucursal/save",serializado).done(self.updateGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
@@ -72,7 +72,7 @@ function SucursalViewModel() {
 
 	self.create = function() {
 		ko.mapping.fromJS(new Sucursal(), self.selected);
-		self.selected.proveedor = self.proveedor;
+		self.selected.eoi = self.eoi;
 		self.formVisible(true);
 		self.createNew(true);
 	}
@@ -94,7 +94,7 @@ function SucursalViewModel() {
 	}
 	
 	self.display= function(prov){
-		ko.mapping.fromJS(prov, self.proveedor);
+		ko.mapping.fromJS(prov, self.eoi);
 		self.init();
 		self.showable(true);
 	}
@@ -105,7 +105,8 @@ function SucursalViewModel() {
 	}
 	
 	self.backToProveedor= function(){
-		showProveedorOpen(self.proveedor);
+		self.formVisible(false);
+		showProveedorOpen(self.eoi);
 	}
 	
 }

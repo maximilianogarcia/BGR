@@ -23,7 +23,7 @@ public class SucursalDao extends AbstractDAO<Sucursal>{
 	@SuppressWarnings("unchecked")
 	public List<Sucursal>listByProveedor(int id){
 		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(getClasz());
-		criteria.add(Restrictions.eq("proveedor.id", id));
+		criteria.add(Restrictions.eq("eoi.id", id));
 		return (List<Sucursal>) criteria.list();
 	}
 }

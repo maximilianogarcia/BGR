@@ -9,7 +9,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.com.bgr.serrano.dao.EOIDao;
+import ar.com.bgr.serrano.model.Eoi;
 import ar.com.bgr.serrano.model.Sucursal;
+import ar.com.bgr.serrano.service.ProveedorService;
 import ar.com.bgr.serrano.service.SucursalService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
@@ -19,6 +22,8 @@ public class SucursalServiceTest {
 	
 	@Autowired
 	SucursalService service;
+	@Autowired
+	ProveedorService proveedorService;
 	
 	@Test
 	public void testSave() {
@@ -37,6 +42,22 @@ public class SucursalServiceTest {
 		sucursal.setPiso("sasa");
 		sucursal.setProvincia("Buenos Aires");
 		sucursal.setZona("zona");
+		
+		
+		
+		Eoi eoi = new Eoi();
+		eoi.setCondicionImpositiva("sasas");
+		eoi.setCuit("3216165");
+		eoi.setIngresosBrutos("asdasd");
+		eoi.setName("asasadasdasd");
+		eoi.setObservaciones("asdd asda asd asd  asdasd asda sd asd a");
+		eoi.setRazonSocial("asdasdadsa asd a");
+		eoi.setType(EOIDao.PROVEEDOR);
+		eoi = proveedorService.save(eoi);
+		
+		
+		sucursal.setEoi(eoi);
+		
 		
 		Sucursal result = service.save(sucursal);
 		assertNotNull(result);

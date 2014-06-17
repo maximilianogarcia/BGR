@@ -1,5 +1,6 @@
 package ar.com.bgr.serrano.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,7 +42,7 @@ public class Contacto {
 	@Column(name = "diaHoraContacto", nullable=false)
 	private String diaHoraContacto;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
 	@JoinColumn(name = "SUCURSAL_ID", nullable = false)
 	private Sucursal sucursal;
 	

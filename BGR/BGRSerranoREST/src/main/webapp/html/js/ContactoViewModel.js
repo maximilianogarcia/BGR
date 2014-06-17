@@ -5,6 +5,7 @@ function ContactoViewModel() {
 	self.createNew = ko.observable(false);
 	self.selected = ko.mapping.fromJS(new Contacto());
 	self.contactos= ko.observableArray();
+	self.contactosEoi= ko.observableArray();
 	self.utils = new Utils();
 
 	self.sucursal = ko.mapping.fromJS(new Sucursal());
@@ -14,10 +15,25 @@ function ContactoViewModel() {
 
 	self.init = function() {
 		ko.mapping.fromJS(new Contacto(), self.selected);
-		self.formVisible = ko.observable(false);
+		self.formVisible(false);
 		$.getJSON(BASE_REST_URL+"/contacto/listBySucursal/"+self.sucursal.id(), function(data){  
 			 self.contactos(data);
 			 self.showable(true);
+		});
+		
+	}
+	
+	/**
+	 * TODO
+	 * Aca traigo todos los cotnactos de un EOI
+	 * */
+	self.contactosProveedor = function() {
+		ko.mapping.fromJS(new Contacto(), self.selected);
+		self.formVisible(false);
+		$.getJSON(BASE_REST_URL+"/contacto/listByEoi/"+self.sucursal.eoi().id(), function(data){  
+			self.contactosEoi(data);
+			self.showable(true);
+			$('#modalContactos').modal('show')
 		});
 		
 	}
@@ -31,7 +47,7 @@ function ContactoViewModel() {
 	self.save = function(data) {
 		var sucursal = ko.mapping.toJS(self.sucursal);
 		self.selected.sucursal = sucursal;
-		self.selected.eoi = sucursal.proveedor;
+		self.selected.eoi = sucursal.eoi;
 		var serializado = ko.myToJSON(self.selected);
 		
 		$.postJSON(BASE_REST_URL+"/contacto/save", serializado).done(self.pushInGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
@@ -44,7 +60,7 @@ function ContactoViewModel() {
 	self.update = function(data) {
 		var sucursal = ko.mapping.toJS(self.sucursal);
 		self.selected.sucursal = sucursal;
-		self.selected.eoi = sucursal.proveedor;
+		self.selected.eoi = sucursal.eoi;
 		var serializado = ko.myToJSON(self.selected);
 
 		$.postJSON(BASE_REST_URL+"/contacto/save", serializado).done(self.updateGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
