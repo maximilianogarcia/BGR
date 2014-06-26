@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.bgr.serrano.dao.EOIDao;
 import ar.com.bgr.serrano.model.Contacto;
@@ -23,7 +22,7 @@ public class ContactoServiceTest {
 	@Autowired
 	ContactoService service;
 	
-	@Test
+//	@Test
 	public void testSave() {
 		//estos test hay que tirarlos y hacer mejores test
 		
@@ -67,20 +66,21 @@ public class ContactoServiceTest {
 		contacto.setTelefonoFijo("48992516");
 		contacto.setDiaHoraContacto("de lunes a viernes de 8 a 13");
 		contacto.setEoi(eoi);
-		contacto.setSucursal(sucursal);
+//		contacto.setSucursal(sucursal);
 		
 		Contacto result = service.save(contacto);
 		assertNotNull(result);
 		assertNotNull(service.getById(result.getId()));
 	}
 
-	@Test
+//	@Test
 	public void testList() {
 		System.out.println(service.list());
 	}
 
 	@Test
-	public void testRemove(){
+	public void testRemoveFromSucursal(){
+		service.removeFromSucursal(2,2); 
 	}
 
 }

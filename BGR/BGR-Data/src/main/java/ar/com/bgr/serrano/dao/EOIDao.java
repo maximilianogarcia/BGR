@@ -26,6 +26,8 @@ public class EOIDao extends AbstractDAO<Eoi>{
 	public List<Eoi> listProveedores(){
 		Criteria criteria =  getCurrentSession().createCriteria(getClasz());
 		criteria.add(Restrictions.eq("type", PROVEEDOR));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.add(Restrictions.eq("active", true));
 		return  (List<Eoi>)criteria.list();
 	}
 	public Eoi getProveedorById(int id){
@@ -37,7 +39,9 @@ public class EOIDao extends AbstractDAO<Eoi>{
 	public void removeProveedor(int id){
 		Eoi proveedor = super.getById(id);
 		validateProveedor(proveedor);
-		super.remove(id);
+		proveedor.setActive(false);
+		getCurrentSession().update(proveedor);
+	//	super.remove(id);
 	}
 
 	public Eoi saveOrUpdateProveedor(Eoi proveedor){
@@ -58,4 +62,10 @@ public class EOIDao extends AbstractDAO<Eoi>{
 		}
 	}
 
+	public void remove(int id){
+		Eoi entity=   (Eoi) getCurrentSession().get(getClasz(), id);
+		entity.setActive(false);
+		getCurrentSession().update(entity);
+	}	
+	
 }

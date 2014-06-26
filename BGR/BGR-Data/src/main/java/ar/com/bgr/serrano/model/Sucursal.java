@@ -66,10 +66,11 @@ public class Sucursal {
 	private Eoi eoi;
 	
 	//@OneToMany(fetch = FetchType.EAGER, mappedBy = "sucursal")
+
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "contacto_sucursal",  joinColumns = { 
-			@JoinColumn(name = "CONTACTO_ID", nullable = false, updatable = false) }, 
-			inverseJoinColumns = { @JoinColumn(name = "SUCURSAL_ID", 
+			@JoinColumn(name = "SUCURSAL_ID", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "CONTACTO_ID", 
 					nullable = false, updatable = false) })
 	private List<Contacto> contactos;
 	

@@ -31,9 +31,16 @@ public class ContactoService {
 	public List<Contacto> listByEoi(int id) {
 		return dao.listByEoi(id);
 	}
+	
+	public List<Contacto> listOthersByEoi(int proveedorId, int sucursalId) {
+		return dao.listOthersByEoi(proveedorId,sucursalId );
+	}
 
 	public void remove(int id) {
 		dao.remove(id);		
+	}
+	public void removeFromSucursal(int ContactoId, int sucursalId) {
+		dao.removeFromSucursal(ContactoId,sucursalId);		
 	}
 
 	public Contacto getById(int id) {

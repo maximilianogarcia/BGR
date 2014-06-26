@@ -17,6 +17,8 @@ function Proveedor(){
 
 	self.observaciones= ko.observable();
 
+	self.active= ko.observable(true);
 
+	self.etiquetas= ko.observableArray();
 	
 }

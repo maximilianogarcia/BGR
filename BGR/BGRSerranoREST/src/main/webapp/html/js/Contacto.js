@@ -19,5 +19,6 @@ function Contacto(){
 
 	self.diaHoraContacto= ko.observable();
 
-	self.sucursal= ko.observable();
+
+	//self.sucursal= ko.observable();
 }

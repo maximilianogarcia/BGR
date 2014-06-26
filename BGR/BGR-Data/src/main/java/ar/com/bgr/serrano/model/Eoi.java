@@ -2,30 +2,34 @@ package ar.com.bgr.serrano.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.hibernate.annotations.Type;
 
 @Entity(name = "EOI")
 @Table(name = "EOI")
-@JsonIgnoreProperties({"contactos"})
+@JsonIgnoreProperties({ "contactos" })
 public class Eoi {
 
 	@Id
 	@GeneratedValue
 	private int id;
 
-	@Column(name = "name", nullable=false)
+	@Column(name = "name", nullable = false)
 	private String name;
-	
-	//tipo (cliente/proveedor)
-	@Column(name = "type", nullable=false)
+
+	// tipo (cliente/proveedor)
+	@Column(name = "type", nullable = false)
 	private String type;
 
 	@Column(name = "razonSocial")
@@ -33,16 +37,26 @@ public class Eoi {
 
 	@Column(name = "cuit")
 	private String cuit;
-	
 
-	@Column(name = "condicionImpositiva", nullable=false)
+	@Column(name = "condicionImpositiva", nullable = false)
 	private String condicionImpositiva;
 
-	@Column(name = "ingresosBrutos", nullable=false)
+	@Column(name = "ingresosBrutos", nullable = false)
 	private String ingresosBrutos;
-	
+
 	@Column(name = "observaciones")
 	private String observaciones;
+
+	@Column(name = "active")
+	@Type(type = "true_false")
+	private Boolean active;
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "etiquetas_eoi",  joinColumns = { 
+			@JoinColumn(name = "EOI_ID", nullable = false, updatable = false) }, 
+			inverseJoinColumns = { @JoinColumn(name = "ETIQUETA_ID", 
+					nullable = false, updatable = false) })
+	private Set<Etiqueta> etiquetas;
 
 	public int getId() {
 		return id;
@@ -92,7 +106,6 @@ public class Eoi {
 		this.observaciones = observaciones;
 	}
 
-
 	public String getType() {
 		return type;
 	}
@@ -100,13 +113,28 @@ public class Eoi {
 	public void setType(String type) {
 		this.type = type;
 	}
- 
 
 	public String getCuit() {
 		return cuit;
 	}
-	
+
 	public void setCuit(String cuit) {
 		this.cuit = cuit;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public Set<Etiqueta> getEtiquetas() {
+		return etiquetas;
+	}
+
+	public void setEtiquetas(Set<Etiqueta> etiquetas) {
+		this.etiquetas = etiquetas;
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.bgr.serrano.dao.EOIDao;
+import ar.com.bgr.serrano.model.Contacto;
 import ar.com.bgr.serrano.model.Eoi;
 import ar.com.bgr.serrano.model.Sucursal;
 import ar.com.bgr.serrano.service.ProveedorService;
@@ -25,7 +26,7 @@ public class SucursalServiceTest {
 	@Autowired
 	ProveedorService proveedorService;
 	
-	@Test
+//	@Test
 	public void testSave() {
 		//estos test hay que tirarlos y hacer mejores test
 		
@@ -64,13 +65,30 @@ public class SucursalServiceTest {
 		assertNotNull(service.getById(result.getId()));
 	}
 
-	@Test
+//	@Test
 	public void testList() {
 		System.out.println(service.list());
 	}
-
-	@Test
-	public void testRemove(){
+	
+//	@Test
+	public void testAddContact(){
+		Contacto contacto = new Contacto();
+		contacto.setBlog("agregado1234");
+		contacto.setDiaHoraContacto("agregado1234");
+		contacto.setFax("agregado412");
+		contacto.setName("agregado1234");
+		contacto.setRadio("agregado1234");
+		contacto.setTelefonoFijo("agregado1243");
+		contacto.setTelefonoMovil("agregado1243");
+		contacto.setWebSite("agregado1234");
+		
+		
+		//Sucursal sucursal = service.getById(1);
+		//contacto.setSucursal(sucursal);
+	//	sucursal.getContactos().add(contacto);
+		service.addExistingContact(contacto, 1);
+		
 	}
+
 
 }

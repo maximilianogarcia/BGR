@@ -4,6 +4,7 @@
 package ar.com.bgr.serrano.controller.contacto;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,6 +58,14 @@ public class ContactoController {
 	}
 
 	/**
+	 * Devuelve la contacto ligada al EOI ( proveedor/cliente)  recibido
+	 */
+	@RequestMapping(value="listOthersByEoi/{proveedor_id}/{sucursal_id}",method = RequestMethod.GET)
+	public @ResponseBody  List<Contacto> getOthersbyEoi(@PathVariable("proveedor_id") int proveedorId, @PathVariable("sucursal_id") int sucursalId) {
+		return service.listOthersByEoi(proveedorId, sucursalId);
+	}
+
+	/**
 	 * Lista todas las contactos. 
 	 */
 	@RequestMapping(value="list",method = RequestMethod.GET)
@@ -80,5 +89,13 @@ public class ContactoController {
 	public @ResponseBody Boolean execute(@RequestBody Integer id) {
        service.remove(id);
        return true;
+	}
+	/**
+	 * Desvincula un contacto de una sucursal.
+	 */
+	@RequestMapping(value="deleteFromSucursal",method = RequestMethod.DELETE)
+	public @ResponseBody Boolean removeFromSucursal(@RequestBody Map<String, Integer> map) {
+		service.removeFromSucursal(map.get("contacto"),map.get("sucursal"));
+		return true;
 	}
 }

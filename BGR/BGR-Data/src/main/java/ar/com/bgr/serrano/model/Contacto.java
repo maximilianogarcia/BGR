@@ -1,6 +1,5 @@
 package ar.com.bgr.serrano.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,8 +9,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity(name = "Contacto")
 @Table(name = "Contacto")
+@OnDelete(action=OnDeleteAction.CASCADE)
 public class Contacto {
 
 	@Id
@@ -41,10 +44,10 @@ public class Contacto {
 
 	@Column(name = "diaHoraContacto", nullable=false)
 	private String diaHoraContacto;
-
+/*
 	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
 	@JoinColumn(name = "SUCURSAL_ID", nullable = false)
-	private Sucursal sucursal;
+	private Sucursal sucursal;*/
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "EOI_ID", nullable = false)
@@ -122,13 +125,13 @@ public class Contacto {
 		this.telefonoFijo = telefonoFijo;
 	}
 
-	public Sucursal getSucursal() {
+/*	public Sucursal getSucursal() {
 		return sucursal;
 	}
 
 	public void setSucursal(Sucursal sucursal) {
 		this.sucursal = sucursal;
-	}
+	}*/
 
 	public Eoi getEoi() {
 		return eoi;

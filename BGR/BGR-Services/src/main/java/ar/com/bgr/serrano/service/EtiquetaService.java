@@ -20,12 +20,21 @@ public class EtiquetaService {
 		return dao.saveOrUpdate(etiqueta);
 	}
 
+	public Etiqueta create(String name) {
+		Etiqueta etiqueta = new Etiqueta();
+		etiqueta.setName(name);
+		return dao.saveOrUpdate(etiqueta);
+	}
+
 	public List<Etiqueta> list() {
 		return dao.list();
 	}
 
 	public void remove(int id) {
 		dao.remove(id);		
+	}
+	public Etiqueta unTag(int etiquetaId, int eoiId) {
+		return dao.unTag(etiquetaId,eoiId);		
 	}
 	
 	public Etiqueta getById(int id) {

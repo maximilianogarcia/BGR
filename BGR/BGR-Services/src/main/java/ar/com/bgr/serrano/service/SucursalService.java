@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.bgr.serrano.dao.SucursalDao;
+import ar.com.bgr.serrano.model.Contacto;
 import ar.com.bgr.serrano.model.Sucursal;
 
 @Component
@@ -36,4 +37,7 @@ public class SucursalService {
 		return dao.getById(id);
 	}
 
+	public Sucursal addExistingContact(Contacto contacto, int sucursalId) {
+		return dao.addExistingContact(contacto, sucursalId);
+	}
 }

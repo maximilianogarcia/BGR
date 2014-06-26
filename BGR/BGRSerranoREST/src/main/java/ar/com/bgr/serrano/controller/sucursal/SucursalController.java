@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ar.com.bgr.serrano.model.Contacto;
 import ar.com.bgr.serrano.model.Sucursal;
 import ar.com.bgr.serrano.service.SucursalService;
 
@@ -56,6 +57,16 @@ public class SucursalController {
 	@RequestMapping(value="save", method = RequestMethod.POST)
 	public @ResponseBody Sucursal execute(@RequestBody Sucursal sucursal) {
 		return service.save(sucursal);
+	}
+
+	/**
+	 * Da de alta o Actualiza en caso de existir una sucursal.
+	 * {"id":anIdValue,"name":"aName","descripcion":"aDescription"}
+	 */
+	@RequestMapping(value="addContact/{sucursalId}", method = RequestMethod.POST)
+	public @ResponseBody Contacto addExistingContact(@RequestBody Contacto contacto, @PathVariable("sucursalId") int sucursalId) {
+         service.addExistingContact(contacto,sucursalId);
+		return contacto;
 	}
 	
 	/**

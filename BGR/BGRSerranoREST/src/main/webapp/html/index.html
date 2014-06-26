@@ -3,15 +3,29 @@
     <title></title>
     <meta content="">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="css/bootstrap-dialog.min.css" rel="stylesheet">
+    <link href="css/bootstrap-tagsinput.css" rel="stylesheet">
 
     <style>
-
+		.show-inline{
+			display:inline;
+		}
       .hide{
           display: none;
           visibility: hidden;
       }
+      .tag{
+      	margin-top: 2px;
+      }
       .margenArriba{
         margin-top: 1em;
+      }
+      .margenDerecha{
+        margin-right: 1em;
+      }
+      .margenIzquierda{
+        margin-left: 1em;
       }
       .grid {
         overflow: auto;
@@ -22,11 +36,15 @@
 		    cursor: pointer;
 		    cursor: hand;
 		}
+    .padeado{
+		padding:0.5em; 
+	}
     </style>
 
+    <script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
     <script type='text/javascript'  src='lib/knockout-3.1.0.js'></script>
     <script type='text/javascript'  src='lib/knockout-mapping.js'></script>
-    <script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
+    <script type='text/javascript'  src='lib/knockout-bootstrap.min.js'></script>
 
     <script type='text/javascript'  src='js/ProveedorViewModel.js'></script>
     <script type='text/javascript'  src='js/Proveedor.js'></script>
@@ -41,6 +59,9 @@
     <script type='text/javascript'  src='js/config.js'></script>
 
     <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+    <script type='text/javascript'  src='js/bootstrap-dialog.min.js'></script>
+    <script type='text/javascript'  src='js/bootstrap-tagsinput.min.js'></script>
+
 
     <script type='text/javascript'>
        
@@ -78,6 +99,8 @@
              ko.applyBindings(sucursalModel, document.getElementById("sucursalView"));
              ko.applyBindings(contactoModel, document.getElementById("contactoView"));
              ko.applyBindings(proveedorModel, document.getElementById("proveedorView"));
+             
+             
        });
     </script>
    
@@ -264,7 +287,7 @@
           <h2> Proveedores</span></h2>
 
           <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
-          <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
+          <div class="container margenArriba "  data-bind="fadeVisible: formVisible">
 
           <div class="row show-grid bs-docs-grid margenArriba">
                 <div class="text-right col-md-2">Nombre</div>
@@ -299,14 +322,41 @@
                 <input class=" form-control" data-bind="value: selected.observaciones"  type="text" placeholder="Observaciones"></input>
                 </div>
           </div>
-
+          <!-- ko if: formVisible -->
+	          <div class="row margenArriba panel panel-default ">
+	          <div class="panel-heading">
+			    <h3 class="panel-title"><i class="glyphicon glyphicon-tags "></i> Etiquetas</h3>
+			  </div>
+			  <div class="panel-body">
+			  
+					<div class="col-md-3">
+						<input class="form-control" list="taglist" id ="tagInput"data-bind="event: { keypress: addTag}"class="col-md-2"/>
+					</div>
+					<div class="col-md-9">
+						<ul class="list-inline" data-bind="foreach: selected.etiquetas">
+							<li class="tag label label-success" >
+							   <i class="glyphicon glyphicon-tag "></i> 
+							      <span data-bind="text: name"></span>
+							      <span data-bind="click: $root.unTag" ><i class="glyphicon glyphicon-remove"></i></span> 
+							</li>
+						</ul>
+						
+						<datalist id="taglist" data-bind="foreach: etiquetas" >
+							<option  data-bind="text: name"></option>
+						</datalist>
+					</div>
+	         	</div>
+	          </div>
+	          <!-- /ko -->
+			
+				
           <div class="row margenArriba">
 	           <div class="col-md-1 text-right">
-	            <button  class="btn btn-link" data-bind="click: cancelForm"><i class="glyphicon glyphicon-remove "></i>  Cancel</button>
+	            <button  class="btn btn-default" data-bind="click: cancelForm"><i class="glyphicon glyphicon-remove "></i>  Cancel</button>
 	           </div>
-	           <div class="col-md-6">
+	           <div class="col-md-5">
 	           </div>
-	           <div class="col-md-3 text-right">
+	           <div class="col-md-4 text-right">
 	            <!-- ko if: createNew -->
 		             <button  class="btn btn-primary" data-bind="click:save">Aceptar</button>
 	             <!-- /ko -->
@@ -317,7 +367,7 @@
 	             <!-- /ko -->
 	           </div>
            </div>
-          </form>
+          </div>
       </div>
 
          <div class="grid container" data-bind="visible: showable">
@@ -341,22 +391,14 @@
           </div>
 
 
+
+
+
+
+
+
+
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -384,7 +426,7 @@
 		                            <th>telefono movil</th><th>telefono fijo</th>
 	                            </tr></thead>
 	                            <tbody data-bind="foreach: contactosEoi">
-	                                <tr data-bind="click: $root.edit">
+	                                <tr data-bind="click: $root.addToSucursal">
 	                                    <td data-bind="text: name" ></td>
 	                                    <td data-bind="text: radio"></td>
 	                                    <td data-bind="text: telefonoMovil"></td>
@@ -409,7 +451,7 @@
           <h2 class="showCursor" data-bind="click: backToSucursal"><i class="glyphicon glyphicon-chevron-left"></i> <span data-bind="text: sucursal.name"></span></h2>
 
           <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
-          <button class="btn btn-default" data-bind="click: contactosProveedor, disable:formVisible">Todos los contactos del proveedor</button>
+          <button class="btn btn-default" data-bind="click: contactosProveedor, disable:formVisible">Otros contactos del proveedor</button>
           
           <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
 

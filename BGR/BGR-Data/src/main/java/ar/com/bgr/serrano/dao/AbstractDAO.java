@@ -23,6 +23,7 @@ public abstract class AbstractDAO<T> {
 	
 	public List<T> list(){
 		Criteria criteria =  getCurrentSession().createCriteria(getClasz());
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return  criteria.list();
 	}
 
