@@ -68,4 +68,57 @@ public class EOIDao extends AbstractDAO<Eoi>{
 		getCurrentSession().update(entity);
 	}	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Eoi> listClientes(){
+		Criteria criteria =  getCurrentSession().createCriteria(getClasz());
+		criteria.add(Restrictions.eq("type", CLIENTE));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.add(Restrictions.eq("active", true));
+		return  (List<Eoi>)criteria.list();
+	}
+	public Eoi getClienteById(int id){
+		Eoi cliente = super.getById(id);
+		validateCliente(cliente);
+		return  cliente;
+	}
+	
+	public void removeCliente(int id){
+		Eoi cliente = super.getById(id);
+		validateCliente(cliente);
+		cliente.setActive(false);
+		getCurrentSession().update(cliente);
+	//	super.remove(id);
+	}
+
+	public Eoi saveOrUpdateCliente(Eoi cliente){
+		if(cliente.getId() != 0){
+			validateCliente(cliente);
+		}
+		return super.saveOrUpdate(cliente);
+	
+	}
+
+	private void validateCliente(Eoi cliente) {
+		if(!CLIENTE.equals(cliente.getType())){
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.append("El id solicitado: ");
+			stringBuilder.append(cliente.getId());
+			stringBuilder.append(" no corresponde a un cliente valido");
+			throw new EntityDontMatchException(stringBuilder.toString());
+		}
+	}
+	
+	
+	
+	
 }

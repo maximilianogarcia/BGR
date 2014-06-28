@@ -5,6 +5,7 @@ package ar.com.bgr.serrano.controller.contacto;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +46,7 @@ public class ContactoController {
 	 * Devuelve la contacto ligada al id de la sucursal recibida 
 	 */
 	@RequestMapping(value="listBySucursal/{id}",method = RequestMethod.GET)
-	public @ResponseBody  List<Contacto> getbySucursal(@PathVariable("id") int id) {
+	public @ResponseBody  Set<Contacto> getbySucursal(@PathVariable("id") int id) {
 		return service.listBySucursal(id);
 	}
 

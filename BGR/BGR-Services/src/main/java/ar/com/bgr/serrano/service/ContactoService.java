@@ -1,6 +1,7 @@
 package ar.com.bgr.serrano.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,7 @@ public class ContactoService {
 		return dao.list();
 	}
 
-	public List<Contacto> listBySucursal(int id) {
+	public Set<Contacto> listBySucursal(int id) {
 		return dao.listBySucursal(id);
 	}
 	

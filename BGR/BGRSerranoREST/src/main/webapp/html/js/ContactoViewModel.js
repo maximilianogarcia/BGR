@@ -24,7 +24,7 @@ function ContactoViewModel() {
 	}
 	
 
-	self.contactosProveedor = function() {
+	self.listContactosEoi = function() {
 		ko.mapping.fromJS(new Contacto(), self.selected);
 		self.formVisible(false);
 		$.getJSON(BASE_REST_URL+"/contacto/listOthersByEoi/"+self.sucursal.eoi().id()+"/"+self.sucursal.id(), function(data){  

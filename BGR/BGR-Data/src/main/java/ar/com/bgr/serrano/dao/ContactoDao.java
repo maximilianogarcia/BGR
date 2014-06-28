@@ -1,6 +1,7 @@
 package ar.com.bgr.serrano.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -27,10 +28,11 @@ public class ContactoDao extends AbstractDAO<Contacto> {
 		setClasz(Contacto.class);
 	}
 
-	public List<Contacto> listBySucursal(int id) {
+	public Set<Contacto> listBySucursal(int id) {
 
 		Sucursal sucursal = (Sucursal) getSessionFactory().getCurrentSession()
 				.get(Sucursal.class, id);
+
 		return sucursal.getContactos();
 	}
 
@@ -39,13 +41,15 @@ public class ContactoDao extends AbstractDAO<Contacto> {
 		Criteria criteria = getSessionFactory().getCurrentSession()
 				.createCriteria(getClasz());
 		criteria.add(Restrictions.eq("eoi.id", id));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
 		return (List<Contacto>) criteria.list();
 	}
 
 	public boolean removeFromSucursal(int contactoId, int sucursalId) {
 
 		Sucursal sucursal = (Sucursal) getSessionFactory().getCurrentSession().get(Sucursal.class, sucursalId);
-		List<Contacto> contactos = sucursal.getContactos();
+		Set<Contacto> contactos = sucursal.getContactos();
 		Contacto toremove = null;
 		for (Contacto contacto : contactos) {
 			if(contacto.getId() == contactoId){

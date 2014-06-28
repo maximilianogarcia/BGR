@@ -29,6 +29,14 @@ public class SucursalDao extends AbstractDAO<Sucursal>{
 		return (List<Sucursal>) criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Sucursal>listByCliente(int id){
+		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(getClasz());
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.add(Restrictions.eq("eoi.id", id));
+		return (List<Sucursal>) criteria.list();
+	}
+
 	public Sucursal addExistingContact(Contacto contacto, int sucursalID){
 		Sucursal sucursal = this.getById(sucursalID);
 		contacto.setEoi(sucursal.getEoi());

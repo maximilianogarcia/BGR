@@ -1,6 +1,6 @@
 package ar.com.bgr.serrano.model;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -72,13 +72,13 @@ public class Sucursal {
 			@JoinColumn(name = "SUCURSAL_ID", nullable = false, updatable = false) }, 
 			inverseJoinColumns = { @JoinColumn(name = "CONTACTO_ID", 
 					nullable = false, updatable = false) })
-	private List<Contacto> contactos;
+	private Set<Contacto> contactos;
 	
-	public List<Contacto> getContactos() {
+	public Set<Contacto> getContactos() {
 		return this.contactos;
 	}
  
-	public void setContactos(List<Contacto> contactos) {
+	public void setContactos(Set<Contacto> contactos) {
 		 this.contactos = contactos;
 	}
 	

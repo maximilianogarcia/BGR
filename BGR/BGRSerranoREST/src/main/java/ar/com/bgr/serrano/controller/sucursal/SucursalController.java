@@ -73,8 +73,16 @@ public class SucursalController {
 	 * Devuelve la contacto ligada al identificador recibido
 	 */
 	@RequestMapping(value="listByProveedor/{id}",method = RequestMethod.GET)
-	public @ResponseBody  List<Sucursal> getbySucursal(@PathVariable("id") int id) {
+	public @ResponseBody  List<Sucursal> getbyProveedor(@PathVariable("id") int id) {
 		return service.listByProveedor(id);
+	}
+
+	/**
+	 * Devuelve la contacto ligada al identificador recibido
+	 */
+	@RequestMapping(value="listByCliente/{id}",method = RequestMethod.GET)
+	public @ResponseBody  List<Sucursal> getbyCliente(@PathVariable("id") int id) {
+		return service.listByCliente(id);
 	}
 
 	

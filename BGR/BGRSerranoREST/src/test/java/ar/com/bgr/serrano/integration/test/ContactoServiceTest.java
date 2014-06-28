@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.bgr.serrano.dao.EOIDao;
 import ar.com.bgr.serrano.model.Contacto;
@@ -15,7 +16,7 @@ import ar.com.bgr.serrano.model.Sucursal;
 import ar.com.bgr.serrano.service.ContactoService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={"classpath:applicationContext.xml"})
-//@Transactional
+@Transactional
 public class ContactoServiceTest {
 
 	
