@@ -16,6 +16,12 @@ $.extend({deleteJSON:function(url, data, callback, type) {
 return _ajax_request('application/json', url, data, callback, 'json', 'DELETE');}
 });
 
+ko.myToJSON = function(obj) {
+    return JSON.stringify(ko.toJS(obj), function (key, val) {
+        return key === '__ko_mapping__' ? undefined : val;
+    });
+}
+
 function Utils(){
 	var self = this; 
 	self.getAll = function(callback,path){
@@ -54,9 +60,10 @@ function Utils(){
 	      });
 	}
 	
-	self.doDelete = function(path, callback, errorCallback){
+	self.doDelete = function(path, pData, callback, errorCallback){
 	     $.ajax(BASE_REST_URL+path, {
 	           type: "DELETE",
+	           data:{'data':pData},
 		       success: function(result) {
 	                callback(result);
 	           },
@@ -94,8 +101,28 @@ function Utils(){
 	        }
 	    }		
 	}
+	
+	self.fadeVisible = {
+			init : function(element, valueAccessor) {
+				// Initially set the element to be instantly visible/hidden
+				// depending on the value
+				var value = valueAccessor();
+				$(element).toggle(ko.unwrap(value)); // Use "unwrapObservable" so
+														// we can handle values that
+														// may or may not be
+														// observable
+			},
+			update : function(element, valueAccessor) {
+				// Whenever the value subsequently changes, slowly fade the element
+				// in or out
+				var value = valueAccessor();
+				ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
+			}
+		};
 
-
+	
+	
+	
 }
 
 //fix to HTML5 datePicker bug onChange

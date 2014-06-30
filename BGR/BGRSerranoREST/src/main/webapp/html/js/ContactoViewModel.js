@@ -2,19 +2,57 @@ function ContactoViewModel() {
 	var self = this;
 
 	self.formVisible = ko.observable(false);
-
 	self.createNew = ko.observable(false);
-	
 	self.selected = ko.mapping.fromJS(new Contacto());
-
-	self.contactos = ko.observableArray();
-
+	self.contactos= ko.observableArray();
+	self.contactosEoi= ko.observableArray();
 	self.utils = new Utils();
 
+	self.sucursal = ko.mapping.fromJS(new Sucursal());
+
+	
+	self.showable = ko.observable(false);
+
 	self.init = function() {
-		self.utils.getAll(self.contactos, "/contacto/list");
+		ko.mapping.fromJS(new Contacto(), self.selected);
+		self.formVisible(false);
+		$.getJSON(BASE_REST_URL+"/contacto/listBySucursal/"+self.sucursal.id(), function(data){  
+			 self.contactos(data);
+			 self.showable(true);
+		});
+		
+	}
+	
+
+	self.listContactosEoi = function() {
+		ko.mapping.fromJS(new Contacto(), self.selected);
+		self.formVisible(false);
+		$.getJSON(BASE_REST_URL+"/contacto/listOthersByEoi/"+self.sucursal.eoi().id()+"/"+self.sucursal.id(), function(data){  
+			self.contactosEoi(data);
+			self.showable(true);
+			$('#modalContactos').modal('show')
+		});
+		
 	}
 
+	self.addToSucursal = function(data) {
+		 BootstrapDialog.confirm('Seguro que quiere agregar: '+data.name, 
+			    function(result){
+		            if(result) {
+		        		var sucursal = ko.mapping.toJS(self.sucursal);
+		        		data.eoi = sucursal.eoi;
+		        		var serializado = ko.myToJSON(data);
+		        		
+		        		$.postJSON(BASE_REST_URL+"/sucursal/addContact/"+self.sucursal.id(), serializado).done(self.pushInGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
+
+		            }else {
+		    			$('#modalContactos').modal('hide')
+		            }		
+			   }
+		 );
+	}
+	
+	
 	self.edit = function(data) {
 		ko.mapping.fromJS(data, self.selected);
 		self.formVisible(true);
@@ -22,26 +60,28 @@ function ContactoViewModel() {
 	}
 
 	self.save = function(data) {
-		self.formVisible(true);
-		self.utils.doPost("/contacto/save", ko.mapping.toJSON(self.selected),
-				self.pushInGrid, function(a) {
-					alert(a)
-		});
+		var sucursal = ko.mapping.toJS(self.sucursal);
+		self.selected.eoi = sucursal.eoi;
+		var serializado = ko.myToJSON(self.selected);
+		
+		$.postJSON(BASE_REST_URL+"/sucursal/addContact/"+self.sucursal.id(), serializado).done(self.pushInGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
 	}
 
 	self.remove = function(data) {
-		self.utils.doDelete("/contacto/remove/"+self.selected.id(),
-				self.removeFromGrid, function(a) {
-					alert(a)
-		});
+		var datos = {};
+		datos.contacto = self.selected.id();
+		datos.sucursal = self.sucursal.id();
+    	$.deleteJSON(BASE_REST_URL+"/contacto/deleteFromSucursal",JSON.stringify(datos)).done(self.removeFromGrid).fail(function(error){ alert(error.responseText);});
 	}
 	
 	self.update = function(data) {
-		self.formVisible(true);
-		self.utils.doPost("/contacto/save", ko.mapping.toJSON(self.selected),
-				self.updateGrid, function(a) {
-					alert(a)
-		});
+		var sucursal = ko.mapping.toJS(self.sucursal);
+	//	self.selected.sucursal = sucursal;
+		self.selected.eoi = sucursal.eoi;
+		var serializado = ko.myToJSON(self.selected);
+
+		$.postJSON(BASE_REST_URL+"/contacto/save", serializado).done(self.updateGrid).fail(function(){ alert("Ocurrio un error al salvar"); });
+
 	}
 	
 	
@@ -68,6 +108,7 @@ function ContactoViewModel() {
 
 	self.create = function() {
 		ko.mapping.fromJS(new Contacto(), self.selected);
+	//	self.selected.sucursal = self.sucursal;
 		self.formVisible(true);
 		self.createNew(true);
 	}
@@ -75,22 +116,18 @@ function ContactoViewModel() {
 		self.formVisible(false);
 	}
 
-	ko.bindingHandlers.fadeVisible = {
-		init : function(element, valueAccessor) {
-			// Initially set the element to be instantly visible/hidden
-			// depending on the value
-			var value = valueAccessor();
-			$(element).toggle(ko.unwrap(value)); // Use "unwrapObservable" so
-													// we can handle values that
-													// may or may not be
-													// observable
-		},
-		update : function(element, valueAccessor) {
-			// Whenever the value subsequently changes, slowly fade the element
-			// in or out
-			var value = valueAccessor();
-			ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
-		}
-	};
+	ko.bindingHandlers.fadeVisible =self.utils.fadeVisible;  
 
+	self.backToSucursal =function(data){
+		showSucursalOpen(self.sucursal);
+	}
+	
+	self.hide = function(){
+		self.showable(false);
+	}
+	self.display= function(sucur){
+		ko.mapping.fromJS(sucur, self.sucursal);
+		self.init();
+	}	
+	
 }

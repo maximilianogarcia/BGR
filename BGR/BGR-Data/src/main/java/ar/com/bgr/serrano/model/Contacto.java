@@ -2,19 +2,26 @@ package ar.com.bgr.serrano.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity(name = "Contacto")
 @Table(name = "Contacto")
+@OnDelete(action=OnDeleteAction.CASCADE)
 public class Contacto {
 
 	@Id
 	@GeneratedValue
 	private int id;
 
-	@Column(name = "name")
+	@Column(name = "name", nullable=false)
 	private String name;
 
 	@Column(name = "webSite")
@@ -23,10 +30,10 @@ public class Contacto {
 	@Column(name = "blog")
 	private String blog;
 
-	@Column(name = "telefonoMovil")
+	@Column(name = "telefonoMovil", nullable=false)
 	private String telefonoMovil;
 
-	@Column(name = "telefonoFijo")
+	@Column(name = "telefonoFijo", nullable=false)
 	private String telefonoFijo;
 	
 	@Column(name = "radio")
@@ -35,9 +42,17 @@ public class Contacto {
 	@Column(name = "fax")
 	private String fax;
 
-	@Column(name = "diaHoraContacto")
+	@Column(name = "diaHoraContacto", nullable=false)
 	private String diaHoraContacto;
-
+/*
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.MERGE)
+	@JoinColumn(name = "SUCURSAL_ID", nullable = false)
+	private Sucursal sucursal;*/
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "EOI_ID", nullable = false)
+	private Eoi eoi;
+	
 	public int getId() {
 		return id;
 	}
@@ -108,6 +123,22 @@ public class Contacto {
 
 	public void setTelefonoFijo(String telefonoFijo) {
 		this.telefonoFijo = telefonoFijo;
+	}
+
+/*	public Sucursal getSucursal() {
+		return sucursal;
+	}
+
+	public void setSucursal(Sucursal sucursal) {
+		this.sucursal = sucursal;
+	}*/
+
+	public Eoi getEoi() {
+		return eoi;
+	}
+
+	public void setEoi(Eoi eoi) {
+		this.eoi = eoi;
 	}
 
 }

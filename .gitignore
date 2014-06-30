@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+/BGR/.project
+/BGR/BGRSerranoREST/.settings
+/BGR/.gradle
+=======
 /BGR/.gradle
 /BGR/BGRSerranoREST/bin
 /BGR/BGRSerranoREST/.settings
@@ -5,3 +10,13 @@
 /BGR/BGRSerranoREST/build/.*
 /BGR/BGR-Services/build/.*
 /BGR/BGR-Data/build/.*
+/BGR/BGR-Services/bin
+/BGR/BGR-Services/build
+/BGR/.settings
+/BGR/*.classpath
+/BGR/*.project
+/BGR/BGRSerranoREST/*.classpath
+/BGR/BGR-Data/.settings
+/BGR/BGR-Data/bin
+/BGR/BGR-Data/*.classpath
+build

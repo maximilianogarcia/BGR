@@ -1,0 +1,569 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="css/bootstrap-dialog.min.css" rel="stylesheet">
+    <link href="css/bootstrap-tagsinput.css" rel="stylesheet">
+
+    <style>
+		.show-inline{
+			display:inline;
+		}
+      .hide{
+          display: none;
+          visibility: hidden;
+      }
+      .tag{
+      	margin-top: 2px;
+      }
+      .margenArriba{
+        margin-top: 1em;
+      }
+      .margenDerecha{
+        margin-right: 1em;
+      }
+      .margenIzquierda{
+        margin-left: 1em;
+      }
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
+      }
+	 .showCursor{
+		    cursor: pointer;
+		    cursor: hand;
+		}
+    .padeado{
+		padding:0.5em; 
+	}
+    </style>
+
+    <script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
+    <script type='text/javascript'  src='lib/knockout-3.1.0.js'></script>
+    <script type='text/javascript'  src='lib/knockout-mapping.js'></script>
+    <script type='text/javascript'  src='lib/knockout-bootstrap.min.js'></script>
+
+    <script type='text/javascript'  src='js/ProveedorViewModel.js'></script>
+    <script type='text/javascript'  src='js/Proveedor.js'></script>
+    
+    <script type='text/javascript'  src='js/SucursalViewModel.js'></script>
+    <script type='text/javascript'  src='js/Sucursal.js'></script>
+    
+    <script type='text/javascript'  src='js/ContactoViewModel.js'></script>
+    <script type='text/javascript'  src='js/Contacto.js'></script>
+    
+    <script type='text/javascript'  src='js/utils.js'></script>
+    <script type='text/javascript'  src='js/config.js'></script>
+
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+    <script type='text/javascript'  src='js/bootstrap-dialog.min.js'></script>
+    <script type='text/javascript'  src='js/bootstrap-tagsinput.min.js'></script>
+
+
+    <script type='text/javascript'>
+       
+       showContact = function(sucur){
+    	   contactoModel.display(sucur);
+    	   sucursalModel.hide();
+    	   proveedorModel.hide();
+       }
+ 
+       showSucursal = function(proovedor){
+    	   proveedorModel.hide();
+    	   contactoModel.hide();
+    	   sucursalModel.display(proovedor);
+       }
+
+       showSucursalOpen = function(sucursal){
+    	   proveedorModel.hide();
+    	   contactoModel.hide();
+    	   sucursalModel.displayOpen(sucursal);
+       }
+       showProveedorOpen = function(proveedor){
+    	   proveedorModel.displayOpen(proveedor);
+    	   contactoModel.hide();
+    	   sucursalModel.hide();
+       }
+
+       $(document).ready(function(){
+    	     proveedorModel = new ProveedorViewModel()
+    	     proveedorModel.init();
+    	     
+             sucursalModel = new SucursalViewModel()
+             
+             contactoModel = new ContactoViewModel()
+             
+             ko.applyBindings(sucursalModel, document.getElementById("sucursalView"));
+             ko.applyBindings(contactoModel, document.getElementById("contactoView"));
+             ko.applyBindings(proveedorModel, document.getElementById("proveedorView"));
+             
+             
+       });
+    </script>
+   
+  </head>
+  <body>
+
+        
+<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" >Serrano</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#">Home</a></li>
+            <li class=" active dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clientes y proveedores <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="cliente.html">Clientes</a></li>
+                <li class="active"><a href="#">Proveedores</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Settings</li>
+                <li><a href="calificativo.html">Calificativos</a></li>
+                <li><a href="#">Etiquetas</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Login</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+            
+
+        
+
+        
+        
+<div id="sucursalView">
+
+    <div class="container" data-bind="visible: showable">
+         <h2 class="showCursor" data-bind="click: backToProveedor"><i class="glyphicon glyphicon-chevron-left"></i> proveedor: <span data-bind="text: eoi.name"></span></h2>
+          <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
+          <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
+
+          <div class="row show-grid bs-docs-grid margenArriba">
+                <div class="text-right col-sm-2">Nombre</div>
+                <div class="col-sm-3">
+                <input required class="form-control" data-bind="value: selected.name" type="text" placeholder="Nombre" ></input>  
+                </div>
+                <div  class="text-right col-sm-2">Descripcion</div>
+                <div class="col-sm-3">
+                <input class=" form-control" data-bind="value: selected.descripcion" type="text" placeholder="Descripcio" ></input>    
+                </div>     
+          </div>
+
+          <div class="row margenArriba">
+                <div class="text-right col-sm-2">Observacion</div>
+                <div class="col-sm-3">
+                  <input class=" form-control" data-bind="value: selected.observacion" type="text" placeholder="Observacion" ></input>
+                </div>
+                <div  class="text-right col-sm-2">Calle</div>
+                <div class="col-sm-3">
+                 <input required class="form-control" data-bind="value: selected.calle" type="text" placeholder="Calle" ></input>
+                </div>
+          </div>
+
+          <div class="row margenArriba">
+
+                <div   class="text-right col-sm-2">Numero</div>
+                <div class="col-sm-3">
+                <input required class=" form-control"  data-bind="value: selected.numero" type="text" placeholder="Número" ></input>
+                </div>
+                <div class="text-right col-sm-2">Piso</div>
+                <div class="col-sm-3">
+                <input class=" form-control" data-bind="value: selected.piso"  type="text" placeholder="piso"></input>
+                </div>
+          </div>
+
+          <div class="row margenArriba">
+                <div class="text-right col-sm-2">País</div>
+                <div class="col-sm-3">
+                <input class="form-control" data-bind="value: selected.pais"  type="text" placeholder="País" ></input>
+                </div>
+                <div class="text-right col-sm-2">Provincia </div>
+                <div class="col-sm-3">
+                <input required class=" form-control" data-bind="value: selected.provincia"  type="text" placeholder="Provincia" ></input>
+                </div>
+          </div>
+          
+          <div class="row margenArriba">
+                <div class="text-right col-sm-2">Codigo Postal</div>
+                <div class="col-sm-3">
+                <input class="form-control" data-bind="value: selected.codigoPostal"  type="text" placeholder="Codigo Postal" ></input>
+                </div>
+                <div class="text-right col-sm-2">Localidad </div>
+                <div class="col-sm-3">
+                <input required class=" form-control" data-bind="value: selected.localidad"  type="text" placeholder="Localidad" ></input>
+                </div>
+          </div>
+          <div class="row margenArriba">
+                <div class="text-right col-sm-2">Observaciones de la direccion</div>
+                <div class="col-sm-3">
+                <input class="form-control" data-bind="value: selected.observacionDireccion"  type="text" placeholder="Observaciones de la direccion" ></input>
+                </div>
+                <div class="text-right col-sm-2">Zona </div>
+                <div class="col-sm-3">
+                <input required class=" form-control" data-bind="value: selected.zona"  type="text" placeholder="zona" ></input>
+                </div>
+          </div>
+          <div class="row margenArriba">
+	           <div class="col-sm-1 text-right">
+	            <button  class="btn btn-link" data-bind="click: cancelForm"><i class="glyphicon glyphicon-remove "></i>  Cancel</button>
+	           </div>
+	           <div class="col-sm-6">
+	           </div>
+	           <div class="col-sm-3 text-right">
+	            <!-- ko if: createNew -->
+		             <button  class="btn btn-primary" data-bind="click:save">Aceptar</button>
+	             <!-- /ko -->
+                <!-- ko ifnot: createNew -->
+				     <button class="btn" data-bind="click: editContacts, visible: showable">contactos</button>
+		             <button  class="btn btn-success" data-bind="click:update">Aceptar</button>
+		             <button  class="btn btn-danger" data-bind="click:remove">Borrar</button>
+	             <!-- /ko -->
+	           </div>
+           </div>
+          </form>
+      </div>
+       
+         <div class="grid container" data-bind="visible: showable">
+                        <table class="container table table-hover">
+                            <thead><tr>
+	                            <th>Nombre</th><th>blog</th>
+	                            <th>fax</th><th>radio</th>
+	                            <th>telefono movil</th><th>telefono fijo</th>
+	                            <th>Dia y hora de contacto</th><th>website</th>
+                            </tr></thead>
+                            <tbody data-bind="foreach: sucursales">
+                                <tr data-bind="click: $root.edit">
+                                    <td data-bind="text: name" ></td>
+                                    <td data-bind="text: descripcion"></td>
+                                    <td data-bind="text: observacion"></td>
+                                    <td data-bind="text: calle"></td>
+                                    <td data-bind="text: piso"></td>
+                                    <td data-bind="text: pais"></td>
+                                    <td data-bind="text: provincia"></td>
+                                    <td data-bind="text: localidad"></td>
+                                    <td data-bind="text: codigoPostal"></td>
+                                </tr>     
+                            </tbody>
+                        </table>
+          </div>
+
+
+</div>
+
+
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+<div id="proveedorView" class="container">
+
+    <div class="container" data-bind="visible: showable">
+          <h2> Proveedores</h2>
+
+          <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
+          <div class="container margenArriba "  data-bind="fadeVisible: formVisible">
+
+          <div class="row show-grid bs-docs-grid margenArriba">
+                <div class="text-right col-sm-2">Nombre</div>
+                <div class="col-sm-3">
+                <input required class="form-control" data-bind="value: selected.name" type="text" placeholder="Nombre" ></input>  
+                </div>
+                <div  class="text-right col-sm-2">Razon social</div>
+                <div class="col-sm-3">
+                <input class=" form-control" data-bind="value: selected.razonSocial" type="text" placeholder="razón Social" ></input>    
+                </div>     
+          </div>
+
+          <div class="row margenArriba">
+                <div class="text-right col-sm-2">CUIT</div>
+                <div class="col-sm-3">
+                  <input class=" form-control" data-bind="value: selected.cuit" type="text" placeholder="CUIT" ></input>
+                </div>
+                <div  class="text-right col-sm-2">Condición impositiva</div>
+                <div class="col-sm-3">
+                 <input required class="form-control" data-bind="value: selected.condicionImpositiva" type="text" placeholder="Condicion impositiva" ></input>
+                </div>
+          </div>
+
+          <div class="row margenArriba text-right">
+
+                <div   class="text-right col-sm-2">Ingresos Brutos</div>
+                <div class="col-sm-3">
+                <input required class=" form-control"  data-bind="value: selected.ingresosBrutos" type="text" placeholder="Ingresos Brutos" ></input>
+                </div>
+                <div class="text-right col-sm-2">Observaciones</div>
+                <div class="col-sm-3">
+                <input class=" form-control" data-bind="value: selected.observaciones"  type="text" placeholder="Observaciones"></input>
+                </div>
+          </div>
+          <!-- ko if: formVisible -->
+	          <div class="row margenArriba panel panel-default ">
+	          <div class="panel-heading">
+			    <h3 class="panel-title"><i class="glyphicon glyphicon-tags "></i> Etiquetas</h3>
+			  </div>
+			  <div class="panel-body">
+			  
+					<div class="col-sm-3">
+						<input placeholder="Etiquetas" class="form-control" list="taglist" id ="tagInput"data-bind="event: { keypress: addTag}"class="col-sm-2"/>
+					</div>
+					<div class="col-sm-9">
+						<ul class="list-inline" data-bind="foreach: selected.etiquetas">
+							<li class="tag label label-success" >
+							   <i class="glyphicon glyphicon-tag "></i> 
+							      <span data-bind="text: name"></span>
+							      <span data-bind="click: $root.unTag" ><i class="glyphicon glyphicon-remove"></i></span> 
+							</li>
+						</ul>
+						
+						<datalist id="taglist" data-bind="foreach: etiquetas" >
+							<option  data-bind="text: name"></option>
+						</datalist>
+					</div>
+	         	</div>
+	          </div>
+	          <!-- /ko -->
+			
+				
+          <div class="row margenArriba">
+	           <div class="col-sm-1 text-right">
+	            <button  class="btn btn-default" data-bind="click: cancelForm"><i class="glyphicon glyphicon-remove "></i>  Cancel</button>
+	           </div>
+	           <div class="col-sm-5">
+	           </div>
+	           <div class="col-sm-4 text-right">
+	            <!-- ko if: createNew -->
+		             <button  class="btn btn-primary" data-bind="click:save">Aceptar</button>
+	             <!-- /ko -->
+                <!-- ko ifnot: createNew -->
+				     <button class="btn" data-bind="click: editSucursales, visible: showable">Sucursales</button>
+		             <button  class="btn btn-success" data-bind="click:update">Aceptar</button>
+		             <button  class="btn btn-danger" data-bind="click:remove">Borrar</button>
+	             <!-- /ko -->
+	           </div>
+           </div>
+          </div>
+      </div>
+
+         <div class="grid container" data-bind="visible: showable">
+                        <table class="container table table-hover">
+                            <thead><tr>
+	                            <th>Nombre</th><th>razon Social</th>
+	                            <th>CUIT</th><th>Condicion Impositiva</th>
+	                            <th>Ingresos Brutos</th><th>Observaciones</th>
+                            </tr></thead>
+                            <tbody data-bind="foreach: proveedores">
+                                <tr data-bind="click: $root.edit">
+                                    <td data-bind="text: name" ></td>
+                                    <td data-bind="text: razonSocial"></td>
+                                    <td data-bind="text: cuit"></td>
+                                    <td data-bind="text: condicionImpositiva"></td>
+                                    <td data-bind="text: ingresosBrutos"></td>
+                                    <td data-bind="text: observaciones"></td>
+                                </tr>     
+                            </tbody>
+                        </table>
+          </div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+<div id="contactoView">
+
+
+        <!-- ko if: showable -->
+        
+        
+        <div class="modal fade" id="modalContactos">
+			  <div class="modal-dialog modal-lg">
+				    <div class="modal-content">
+					      <div class="modal-header">
+						        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						        <h4 class="modal-title">Modal title</h4>
+					      </div>
+					      <div class="modal-body">
+
+
+	                        <table class="container table table-hover">
+	                            <thead><tr>
+		                            <th>Nombre</th>
+		                            <th>radio</th>
+		                            <th>telefono movil</th><th>telefono fijo</th>
+	                            </tr></thead>
+	                            <tbody data-bind="foreach: contactosEoi">
+	                                <tr data-bind="click: $root.addToSucursal">
+	                                    <td data-bind="text: name" ></td>
+	                                    <td data-bind="text: radio"></td>
+	                                    <td data-bind="text: telefonoMovil"></td>
+	                                    <td data-bind="text: telefonoFijo"></td>
+	                                </tr>     
+	                            </tbody>
+	                        </table>
+
+
+					      </div>
+					      <div class="modal-footer">
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						        <button type="button" class="btn btn-primary">Save changes</button>
+					      </div>
+				    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+        
+        
+
+        <div class="container" >
+          <h2 class="showCursor" data-bind="click: backToSucursal"><i class="glyphicon glyphicon-chevron-left"></i> <span data-bind="text: sucursal.name"></span></h2>
+
+          <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
+          <button class="btn btn-default" data-bind="click: listContactosEoi, disable:formVisible">Otros contactos del proveedor</button>
+          
+          <form action="#" class="container margenArriba "  data-bind="fadeVisible: formVisible">
+
+          <div class="row show-grid bs-docs-grid margenArriba">
+                <div class="text-right col-sm-2">Nombre</div>
+                <div class="col-sm-3">
+                <input required class="form-control" data-bind="value: selected.name" type="text" placeholder="Nombre" ></input>  
+                </div>
+                <div  class="text-right col-sm-2">Sitio Web</div>
+                <div class="col-sm-3">
+                <input class=" form-control" data-bind="value: selected.webSite" type="text" placeholder="Sitio web" ></input>    
+                </div>     
+          </div>
+
+          <div class="row margenArriba">
+                <div class="text-right col-sm-2">Blog</div>
+                <div class="col-sm-3">
+                  <input class=" form-control" data-bind="value: selected.blog" type="text" placeholder="Blog" ></input>
+                </div>
+                <div  class="text-right col-sm-2">Telefono Movil</div>
+                <div class="col-sm-3">
+                 <input required class="form-control" data-bind="value: selected.telefonoMovil" type="text" placeholder="Telefono Movil" ></input>
+                </div>
+          </div>
+
+          <div class="row margenArriba">
+
+                <div   class="text-right col-sm-2">Telefono Fijo</div>
+                <div class="col-sm-3">
+                <input required class=" form-control"  data-bind="value: selected.telefonoFijo" type="text" placeholder="Telefono Fijo" ></input>
+                </div>
+                <div class="text-right col-sm-2">Fax</div>
+                <div class="col-sm-3">
+                <input class=" form-control" data-bind="value: selected.fax"  type="text" placeholder="Fax"></input>
+                </div>
+          </div>
+
+          <div class="row margenArriba">
+                <div class="text-right col-sm-2">Radio</div>
+                <div class="col-sm-3">
+                <input class="form-control" data-bind="value: selected.radio"  type="text" placeholder="Radio" ></input>
+                </div>
+                <div class="text-right col-sm-2">Dia y hora de contacto </div>
+                <div class="col-sm-3">
+                <input required class=" form-control" data-bind="value: selected.diaHoraContacto"  type="text" placeholder="Dia y hora de contacto" ></input>
+                </div>
+          </div>
+          <div class="row margenArriba">
+	           <div class="col-sm-1 text-right">
+	            <button  class="btn btn-link" data-bind="click: cancelForm"><i class="glyphicon glyphicon-remove "></i>  Cancel</button>
+	           </div>
+	           <div class="col-sm-6">
+	           </div>
+	           <div class="col-sm-3 text-right">
+	            <!-- ko if: createNew -->
+		             <button  class="btn btn-primary" data-bind="click:save">Aceptar</button>
+	             <!-- /ko -->
+                <!-- ko ifnot: createNew -->
+		             <button  class="btn btn-success" data-bind="click:update">Aceptar</button>
+		             <button  class="btn btn-danger" data-bind="click:remove">Borrar</button>
+	             <!-- /ko -->
+	           </div>
+           </div>
+          </form>
+      </div>
+         <div class="grid container">
+                        <table class="container table table-hover">
+                            <thead><tr>
+	                            <th>Nombre</th><th>blog</th>
+	                            <th>fax</th><th>radio</th>
+	                            <th>telefono movil</th><th>telefono fijo</th>
+	                            <th>Dia y hora de contacto</th><th>website</th>
+                            </tr></thead>
+                            <tbody data-bind="foreach: contactos">
+                                <tr data-bind="click: $root.edit">
+                                    <td data-bind="text: name" ></td>
+                                    <td data-bind="text: blog"></td>
+                                    <td data-bind="text: fax"></td>
+                                    <td data-bind="text: radio"></td>
+                                    <td data-bind="text: telefonoMovil"></td>
+                                    <td data-bind="text: telefonoFijo"></td>
+                                    <td data-bind="text: diaHoraContacto"></td>
+                                    <td data-bind="text: webSite"></td>
+                                </tr>     
+                            </tbody>
+                        </table>
+          </div>
+
+
+      <!-- /ko -->
+</div>
+
+  </body>
+</html>

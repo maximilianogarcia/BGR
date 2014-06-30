@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.com.bgr.serrano.dao.ProductoProveedorDAO;
 import ar.com.bgr.serrano.dao.ProveedorDAO;
 import ar.com.bgr.serrano.model.ProductoProveedor;
+
+	
+
 import ar.com.bgr.serrano.model.Proveedor;
 
 /**
@@ -30,6 +33,25 @@ public class ProveedorService {
 	
 	@Autowired
 	ProveedorDAO dao;
+
+@Autowired
+	EOIDao dao;
+
+	public Eoi save(Eoi proveedor) {
+		return dao.saveOrUpdateProveedor(proveedor);
+	}
+
+	public List<Eoi> list() {
+		return dao.listProveedores();
+	}
+
+	public void remove(int id) {
+		dao.removeProveedor(id);		
+	}
+
+	public Eoi getById(int id) {
+		return dao.getProveedorById(id);
+	}
 	
 	@Autowired
 	ProductoProveedorDAO rdao;

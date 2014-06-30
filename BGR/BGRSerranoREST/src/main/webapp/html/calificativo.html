@@ -1,0 +1,184 @@
+<html>
+<head>
+<title></title>
+<meta content="">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="css/bootstrap-dialog.min.css" rel="stylesheet">
+
+<style>
+.show-inline {
+	display: inline;
+}
+
+.hide {
+	display: none;
+	visibility: hidden;
+}
+
+.tag {
+	margin-top: 2px;
+}
+
+.margenArriba {
+	margin-top: 1em;
+}
+
+.margenDerecha {
+	margin-right: 1em;
+}
+
+.margenIzquierda {
+	margin-left: 1em;
+}
+
+.grid {
+	overflow: auto;
+	min-height: 150px;
+	height: 60%;
+}
+
+.showCursor {
+	cursor: pointer;
+	cursor: hand;
+}
+
+.padeado {
+	padding: 0.5em;
+}
+</style>
+
+<script type='text/javascript' src='lib/jquery-2.1.1.min.js'></script>
+<script type='text/javascript' src='lib/knockout-3.1.0.js'></script>
+<script type='text/javascript' src='lib/knockout-mapping.js'></script>
+<script type='text/javascript' src='lib/knockout-bootstrap.min.js'></script>
+
+<script type='text/javascript' src='js/CalificativoViewModel.js'></script>
+<script type='text/javascript' src='js/Calificativo.js'></script>
+
+
+
+<script type='text/javascript' src='js/utils.js'></script>
+<script type='text/javascript' src='js/config.js'></script>
+
+<script type='text/javascript' src='bootstrap/js/bootstrap.min.js'></script>
+<script type='text/javascript' src='js/bootstrap-dialog.min.js'></script>
+
+
+<script type='text/javascript'>
+	$(document).ready(function() {
+		model = new CalificativoViewModel()
+		model.init();
+
+		ko.applyBindings(model);
+
+	});
+</script>
+
+</head>
+<body>
+
+
+	<div class="navbar navbar-inverse navbar-static-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand">Serrano</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="#">Home</a></li>
+					<li class="active dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown">Clientes y proveedores <span
+							class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="cliente.html">Clientes</a></li>
+							<li><a href="proveedor.html">Proveedores</a></li>
+							<li class="divider"></li>
+							<li class="dropdown-header">Settings</li>
+							<li class="active"><a href="#">Calificativos</a></li>
+							<li><a href="#">Etiquetas</a></li>
+						</ul></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">Login</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</div>
+
+
+
+
+	<div class="container" data-bind="visible: showable">
+
+
+		<h2>Calificativos</h2>
+		
+		<div class="row show-grid bs-docs-grid ">
+			<div class="col-sm-1">
+				<button class="btn btn-default"	data-bind="click: create, disable:formVisible">Crear</button>
+			</div>
+			<div class="col-sm-2">
+				<select class="form-control"
+					data-bind=" disable:formVisible, options: calificativosTypes, optionsText: 'name', value: typeSelected ,  event:{ change: change}"></select>
+			</div>
+		</div>
+		
+		<form action="#" class="container margenArriba "
+			data-bind="fadeVisible: formVisible">
+
+			<div class="row show-grid bs-docs-grid margenArriba">
+				<div class="text-right col-sm-2">Nombre</div>
+				<div class="col-sm-3">
+					<input required class="form-control"
+						data-bind="value: selected.name" type="text" placeholder="Nombre"></input>
+				</div>
+			</div>
+
+			<div class="row margenArriba">
+				<div class="col-sm-1 text-right">
+					<button class="btn btn-link" data-bind="click: cancelForm">
+						<i class="glyphicon glyphicon-remove "></i> Cancel
+					</button>
+				</div>
+				<div class="col-sm-6"></div>
+				<div class="col-sm-3 text-right">
+					<!-- ko if: createNew -->
+					<button class="btn btn-primary" data-bind="click:save">Aceptar</button>
+					<!-- /ko -->
+					<!-- ko ifnot: createNew -->
+					<button class="btn btn-success" data-bind="click:update">Aceptar</button>
+					<button class="btn btn-danger" data-bind="click:remove">Borrar</button>
+					<!-- /ko -->
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="grid container" data-bind="visible: showable">
+		<table class="container table table-hover">
+			<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>tipo</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: calificativos">
+				<tr data-bind="click: $root.edit">
+					<td data-bind="text: name"></td>
+					<td data-bind="text: type"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+</body>
+</html>
