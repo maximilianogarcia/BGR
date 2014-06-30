@@ -2,7 +2,6 @@ package ar.com.bgr.serrano.service;
 
 import java.util.List;
 
-import org.hibernate.ejb.event.ListenerCallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

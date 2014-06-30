@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.com.bgr.serrano.dao.EOIDAO;
 import ar.com.bgr.serrano.dao.ProductoProveedorDAO;
 import ar.com.bgr.serrano.dao.ProveedorDAO;
+import ar.com.bgr.serrano.model.Eoi;
 import ar.com.bgr.serrano.model.ProductoProveedor;
 
 	
@@ -34,23 +36,23 @@ public class ProveedorService {
 	@Autowired
 	ProveedorDAO dao;
 
-@Autowired
-	EOIDao dao;
+	@Autowired
+	EOIDAO daoE;
 
 	public Eoi save(Eoi proveedor) {
-		return dao.saveOrUpdateProveedor(proveedor);
+		return daoE.saveOrUpdateProveedor(proveedor);
 	}
 
 	public List<Eoi> list() {
-		return dao.listProveedores();
+		return daoE.listProveedores();
 	}
 
 	public void remove(int id) {
-		dao.removeProveedor(id);		
+		daoE.removeProveedor(id);		
 	}
 
 	public Eoi getById(int id) {
-		return dao.getProveedorById(id);
+		return daoE.getProveedorById(id);
 	}
 	
 	@Autowired
@@ -60,15 +62,15 @@ public class ProveedorService {
 		return dao.saveOrUpdate(proveedor);
 	}
 
-	public List<Proveedor> list() {
+	public List<Proveedor> listP() {
 		return dao.list();
 	}
 
-	public void remove(int id) {
+	public void removeP(int id) {
 		dao.remove(id);		
 	}
 	
-	public Proveedor getById(int id) {
+	public Proveedor getByIdP(int id) {
 		return dao.getById(id);
 	}
 	

@@ -3,16 +3,16 @@ function ProveedorViewModel() {
    var self = this;
    
    self.getAll = function(destino){
-	   $.getJSON(BASE_REST_URL+"/proveedor/getAll", function(result){ destino(result);});
+	   $.getJSON(BASE_REST_URL+"/proveedorOld/getAll", function(result){ destino(result);});
    }
 
    self.getProveedoresByProductoId = function(producto_id, destino){
-       $.postJSON(BASE_REST_URL+"/proveedor/getProveedoresByProductoId",JSON.stringify(producto_id)).
+       $.postJSON(BASE_REST_URL+"/proveedorOld/getProveedoresByProductoId",JSON.stringify(producto_id)).
           done(function(result) { destino(result);});
    }
    
    self.saveRelation = function(proveedor,destino){
-   	   $.postJSON(BASE_REST_URL+"/proveedor/saveRelation",JSON.stringify(JSON.parse(ko.mapping.toJSON(proveedor)))).
+   	   $.postJSON(BASE_REST_URL+"/proveedorOld/saveRelation",JSON.stringify(JSON.parse(ko.mapping.toJSON(proveedor)))).
    	      done(function(result) { destino(result); alert("Guardado correctamente");}).
    	      fail(function(){ alert("Ocurrio un error al salvar"); });
    }

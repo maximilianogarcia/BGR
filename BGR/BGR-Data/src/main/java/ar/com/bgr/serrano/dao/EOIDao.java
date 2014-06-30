@@ -12,13 +12,13 @@ import ar.com.bgr.serrano.dao.exception.EntityDontMatchException;
 import ar.com.bgr.serrano.model.Eoi;
 
 @Repository
-public class EOIDao extends AbstractDAO<Eoi>{
+public class EOIDAO extends AbstractDAO<Eoi>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	public static final String PROVEEDOR = "PROVEEDOR", CLIENTE="CLIENTE";
-	public EOIDao() {
+	public EOIDAO() {
 		setClasz(Eoi.class);
 	}
 	

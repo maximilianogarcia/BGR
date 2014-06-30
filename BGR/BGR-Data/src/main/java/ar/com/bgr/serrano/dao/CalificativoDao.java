@@ -21,11 +21,11 @@ import ar.com.bgr.serrano.model.Calificativo;
  * @since 31/05/2014
  */
 @Repository
-public class CalificativoDao extends AbstractDAO<Calificativo> {
+public class CalificativoDAO extends AbstractDAO<Calificativo> {
 
 	protected static final String CLIENTE = "CLIENTE", PROVEEDOR = "PROVEEDOR";
 
-	public CalificativoDao() {
+	public CalificativoDAO() {
 		setClasz(Calificativo.class);
 	}
 

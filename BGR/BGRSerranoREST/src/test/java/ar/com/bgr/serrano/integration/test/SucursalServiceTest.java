@@ -8,7 +8,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.bgr.serrano.dao.EOIDao;
+import ar.com.bgr.serrano.dao.EOIDAO;
 import ar.com.bgr.serrano.model.Contacto;
 import ar.com.bgr.serrano.model.Eoi;
 import ar.com.bgr.serrano.model.Sucursal;
@@ -52,7 +52,7 @@ public class SucursalServiceTest {
 		eoi.setName("asasadasdasd");
 		eoi.setObservaciones("asdd asda asd asd  asdasd asda sd asd a");
 		eoi.setRazonSocial("asdasdadsa asd a");
-		eoi.setType(EOIDao.PROVEEDOR);
+		eoi.setType(EOIDAO.PROVEEDOR);
 		eoi = proveedorService.save(eoi);
 		
 		

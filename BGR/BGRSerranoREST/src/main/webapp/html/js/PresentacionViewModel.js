@@ -222,9 +222,6 @@ function PresentacionViewModel() {
     }
    }   
    
-   
-   
-
 
    self.update = function(){
       var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
@@ -289,7 +286,7 @@ function PresentacionViewModel() {
 	  });
   }
   self.getProveedoresByProductoId = function(producto_id,destino){
-	  $.postJSON(BASE_REST_URL+"/proveedor/getProveedoresByProductoId",JSON.stringify(producto_id)).done(function(result) { 
+	  $.postJSON(BASE_REST_URL+"/proveedorOld/getProveedoresByProductoId",JSON.stringify(producto_id)).done(function(result) { 
           self.proveedores(result);
           self.doNext(function(){self.selectedProveedorId(self.selectedUnmapped.proveedor.id());});
 	  });
@@ -381,19 +378,8 @@ function PresentacionViewModel() {
     callback();
    }
    
-	self.validarPaquete = function(paqueteId){
-		
-//	  $.ajax(BASE_REST_URL+"/presentacion/getPaqueteById", {
-//            type: "POST",
-//            data: {'presentacion': JSON.stringify(self.selected.id()), 'paquete': paqueteId },
-//            success: function(result) {
-//                 self.setFraccionamiento(self.selectedProducto());
-//            },
-//            error: function(error){
-//            	 alert(error.responseText);
-//            }
-//      });
-//	  
+	self.validarPaquete = function(paqueteId){		
+
 		var	result = ko.utils.arrayFirst(self.selected.paquetes(), function(pq) {
 		    return paqueteId == pq.id();
 		});
@@ -461,7 +447,6 @@ function PresentacionViewModel() {
    self.back = function(data){
    	if (self.backeable())
    	self.step(self.step()-1);
-      //return self.backeable() && self.soloActivos();
    }
 
    self.toggleActivos= function(){

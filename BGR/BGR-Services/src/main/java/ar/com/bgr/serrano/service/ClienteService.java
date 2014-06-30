@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.bgr.serrano.dao.EOIDao;
+import ar.com.bgr.serrano.dao.EOIDAO;
 import ar.com.bgr.serrano.model.Eoi;
 
 @Component
@@ -14,7 +14,7 @@ import ar.com.bgr.serrano.model.Eoi;
 public class ClienteService {
 
 	@Autowired
-	EOIDao dao;
+	EOIDAO dao;
 
 	public Eoi save(Eoi cliente) {
 		return dao.saveOrUpdateCliente(cliente);
