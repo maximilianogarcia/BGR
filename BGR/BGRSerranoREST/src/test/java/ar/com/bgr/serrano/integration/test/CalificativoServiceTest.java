@@ -22,7 +22,7 @@ public class CalificativoServiceTest {
 		Calificativo calificativo = new Calificativo();
 		calificativo.setName("negocio grande");
 		calificativo.setType("Proveedor");
-		service.save(calificativo);
+		service.create(calificativo);
 	}
 
 	@Test

@@ -35,8 +35,7 @@ public class EtiquetaController {
 	
 	
 	/**
-	 * Da de alta o Actualiza en caso de existir una contacto.
-	 * {"id":anIdValue,"name":"aName","descripcion":"aDescription"}
+	 * crea una etiqueta
 	 */
 	@RequestMapping(value="create", method = RequestMethod.POST)
 	public @ResponseBody Etiqueta create(@RequestBody String name) {
