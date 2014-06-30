@@ -1,0 +1,229 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+
+      .hide{
+          display: none;
+          visibility: hidden;
+      }
+      .error{
+          display:block;
+		  color:red;
+      }
+      .margenArriba{
+        margin-top: 1em;
+      }
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
+      }
+    </style>
+
+	<script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
+    <script type='text/javascript'  src='js/utils.js'></script>
+    <script type='text/javascript'  src='lib/knockout-3.1.0.js'></script>
+    <script type='text/javascript'  src='lib/knockout-mapping.js'></script>   
+    <script type='text/javascript'  src='lib/moment.min.js'></script>
+
+    
+    <script type='text/javascript'  src='js/Producto.js'></script>
+    <script type='text/javascript'  src='js/Categoria.js'></script>
+    <script type='text/javascript'  src='js/Mix.js'></script>
+    
+    
+    <script type='text/javascript'  src='js/MixViewModel.js'></script>
+    <script type='text/javascript'  src='js/CategoriaViewModel.js'></script>
+
+    
+
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+    <script type='text/javascript'  src='js/config.js'></script>
+
+    <script type='text/javascript'>
+       $(document).ready(function(){
+            viewModel = new MixViewModel();
+            viewModel.apply();
+       });
+    </script>
+   
+  </head>
+  <body>
+
+        <div class="modal fade" id="editMix" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Seleccionar Mix</h4>
+              </div>
+              <div class="modal-body" data-bind="">
+              
+              		<div class="span3">
+	               		<select class="span3"  data-bind="options: allProductos, selectedOptions: selectedProductos, optionsText: 'name'" size="10" multiple="true"></select>
+	               	</div>
+	               	<div class="span3">
+	               		<p>Productos Seleccionados</p>
+		               	<ul  class="unstyled" data-bind="foreach: selectedProductos">
+						    <li data-bind="text: name"/>
+						</ul>
+             		</div>
+             
+              </div>
+              <div class="modal-footer">
+                      <input type="button" value="Cancelar"  class="btn btn-default"/>
+                      <input type="button" value="Siguiente" data-bind="click:getRemanentesPorProductos" class="btn btn-primary"/>
+               </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    <div class="container">
+      <div class="navbar navbar-default" role="navigation">
+        
+        <div class="navbar-collapse in collapse" style="height: auto;">
+           <ul class="nav navbar-nav">
+            <li><a href="categoria.html">Categorias</a></li>
+            <li><a href="unidadMedida.html">Unidades de medida</a></li>
+            <li><a href="producto.html">Productos</a></li>
+            <li><a href="lote.html">Lotes</a></li>
+            <li><a href="material.html">Materiales de presentacion</a></li>
+            <li><a href="presentacion.html">Presentaciones</a></li>
+            <li class="active"><a href="#">Mixes</a></li>
+            <li><a href="stock.html">Stock</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+
+        <h3>Mix de productos</h3>
+			<div class="container">
+	        
+                  <!-- ko if: step1 -->
+                    <div class="span4">
+	               		<select class="span4"  data-bind="options: allProductos, selectedOptions: selectedProductos, optionsText: 'name'" size="10" multiple="true"></select>
+	               	</div>
+	               	<div class="span3">
+	               		<p>Productos Seleccionados</p>
+		               	<ul  class="unstyled" data-bind="foreach: selectedProductos">
+						    <li data-bind="text: name"/>
+						</ul>
+             		</div>
+             		
+				  <!--/ko -->
+     
+			
+	               	<!-- ko if: step2 -->
+	              	<div class="span5"  data-bind="foreach: selectedProductos">
+						<label class="span5" data-bind="text: name"></label>	              	   
+	              		<span class="span4"><input list="paquetesList" data-bind="attr: {id: 'producto'+ id}, click:$root.getPaquetesByProducto " type="text" class="input-block-level"  /></span>	         
+	              		<input data-bind="click: $root.addSelectedPaquete" type="button" class="btn span1"  value="+"/>
+	    				<datalist style="height: 100px; overflow-y: scroll;" id="paquetesList" data-bind="foreach: $root.paquetesPorProducto">
+		 				    <option data-bind="value:id">
+						</datalist>
+	               	</div>
+	               	
+	               	<div class="span5"  data-bind="foreach: selectedProductos">
+						<label data-bind="text: name"></label>
+					      <ul class="nav nav-list" data-bind="foreach: $root.paquetesPorProductoSelected">
+		                  <!-- ko if: $parent.id == id -->
+						  	<!-- ko foreach: data -->
+		                      <li  >
+		                          <a data-bind="click:function(data, event) { $root.removePaquete($parent.id,data,event) }">
+		                             <span data-bind="text:id"></span><i class="icon-remove"></i>
+		                          </a>
+		                      </li>     
+		          		   		<!-- /ko -->
+					   	  <!-- /ko -->
+		                  </ul>
+
+	               	</div>
+
+             		<!--/ko -->
+             		
+           		  	<!-- ko if: step3 -->
+						<div class="step6">
+		                    <label>Nombre</label>
+		                      <input   required data-bind="value: selected.name" 
+		                            class="input-block-level " 
+		                            placeholder="Nombre">
+		                    <label>Descripcion</label>        
+		                      <input   required data-bind="value: selected.descripcion" 
+		                            class="input-block-level " 
+		                            placeholder="Descripcion">
+     						<label class="margenArriba"> Unidad De Medida</label>
+							
+							 <select class="input-block-level form-control" data-bind="options: allUnidades, 
+							 optionsText: 'name', 
+                    		 optionsValue: 'id', 
+                    		 value: selectedUnidadId, 
+                    		 optionsCaption:'Seleccione'" required></select>
+							
+						
+							<!-- 
+							<select class="form-control" data-bind="foreach: allUnidades,
+							selectedOptions: $root.selected.unidad_de_medidas,optionsValue: 'id'" >
+							
+							<option data-bind="text: name "></option>
+							</select> -->
+							
+							 <select class="input-block-level form-control" data-bind="options: allCategorias, 
+							 optionsText: 'name', 
+                    		 optionsValue: 'id', 
+                    		 value: selectedCategoriaId, 
+                    		 optionsCaption:'Seleccione'" required></select>
+                    
+							<!-- 
+							
+							<label class="margenArriba"> Categoria</label>
+							<select class="form-control" data-bind="foreach: allCategorias,
+							optionsValue: 'id',
+							value: selectedCategoriaId,
+							selectedOptions: $root.selectedCategoria
+							">
+								  		<option data-bind="text: name "></option>
+							</select> -->
+							
+							<label class="margenArriba">Fecha de vencimiento</label>
+							 <input   type="date" required data-bind="value: selected.vencimiento" 
+		                            class="input-block-level " >
+						</div>		
+
+					<!-- /ko -->
+
+           		  	<!-- ko if: step4 -->
+						<div class="step6">
+		                    <label>Elegir cantidades </label>
+				            <ul  class="unstyled" data-bind="foreach: selectedProductos">
+								    <li data-bind="text: 'cantidad de '+name"/>
+									
+					                <li>  
+					                  <!-- ko foreach:  $root.totalesByProducto -->
+					                      <!-- ko if: $parent.id == id -->
+					                   		<input class="input-block-level"
+					                   				id=" " 
+					                   				type="number" 
+					                   				min="1" 
+					                   				data-bind="value: 1, attr: { max : cantidad, id: 'cant_elegida'+$index()}">
+					                      <!-- /ko -->
+						  		      <!-- /ko -->
+					                         
+					                         
+									</li>
+							</ul>	                    
+						</div>		
+					<!-- /ko -->  
+             		
+			</div>
+
+			<input type="button" value="Siguiente"  class="btn btn-primary" data-bind="click:next,visible: shouldShowNext"/>
+			<input type="button" value="Guardar"  class="btn btn-primary" data-bind="click:next,visible:step4"/>
+			<input type="button" value="volver"  class="btn btn-primary" data-bind="visible:showBackButton ,click:back"/>
+			<a href="mixGrid.html" class="btn btn-default">Cancelar</a>
+			
+      </div>
+
+  </body>
+</html>

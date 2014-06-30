@@ -3,7 +3,7 @@
  */
 package ar.com.bgr.serrano.dao;
 
-import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -22,17 +22,17 @@ import ar.com.bgr.serrano.model.UnidadDeMedida;
  * @since 01/06/2014
  */
 @Repository
-public class UnidadDeMedidaDao extends AbstractDAO<UnidadDeMedida> {
+public class UnidadDeMedidaDAO extends AbstractDAO<UnidadDeMedida> {
 
 	private final Integer NO_DIVISBLE = 0;
 
-	public UnidadDeMedidaDao(){
+	public UnidadDeMedidaDAO(){
 		setClasz(UnidadDeMedida.class);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<UnidadDeMedida> listNoDivisibles(){
+	public Set<UnidadDeMedida> listNoDivisibles(){
 		Criteria criteria =  getCurrentSession().createCriteria(getClasz());
-		return (List<UnidadDeMedida>) criteria.add(Restrictions.eq("divisible", NO_DIVISBLE));
+		return (Set<UnidadDeMedida>) criteria.add(Restrictions.eq("divisible", NO_DIVISBLE));
 	}
 }

@@ -1,0 +1,370 @@
+<html>
+  <head>
+    <title></title>
+    <meta content="">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+ 
+    <style>
+      .spanRight{
+       	float: right;
+      }       
+      .spanLeft{
+      	float: left;
+			margin-right: 33%;
+      } 
+      .spanCenter{
+			margin-left: 50%;      
+      }
+      .hide{
+          display: none;
+          visibility: hidden;
+      }
+      .grid {
+        overflow: auto;
+        min-height:150px ;
+        height: 60%;
+      }
+      .margenArriba{
+        margin-top: 1em;
+      }
+      .desactivado{
+        backGround:#B8B8B8;
+        
+      }
+      .oculto{
+        display:none;
+        
+      }
+    </style>
+    <script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
+    <script type='text/javascript'  src='js/utils.js'></script>
+    <script type='text/javascript'  src='lib/knockout-3.1.0.js'></script>
+    <script type='text/javascript'  src='lib/knockout-mapping.js'></script>   
+    <script type='text/javascript'  src='lib/moment.min.js'></script>
+
+    
+    <script type='text/javascript'  src='js/Producto.js'></script>
+    <script type='text/javascript'  src='js/ProductoProveedor.js'></script>
+    <script type='text/javascript'  src='js/Lote.js'></script>
+    <script type='text/javascript'  src='js/Proveedor.js'></script>
+    <script type='text/javascript'  src='js/Presentacion.js'></script>
+    <script type='text/javascript'  src='js/Material.js'></script>
+    <script type='text/javascript'  src='js/UnidadMedida.js'></script>
+    
+    
+    <script type='text/javascript'  src='js/LoteViewModel.js'></script>
+    <script type='text/javascript'  src='js/UnidadMedidaViewModel.js'></script>
+    <script type='text/javascript'  src='js/ProveedorViewModel.js'></script>
+    <script type='text/javascript'  src='js/PresentacionViewModel.js'></script>
+    <script type='text/javascript'  src='js/ProductoViewModel.js'></script>
+    
+
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
+    <script type='text/javascript'  src='js/config.js'></script>
+
+    <script type='text/javascript'>
+       $(document).ready(function(){
+            viewModel = new PresentacionViewModel();
+            viewModel.apply();
+       });
+    </script>
+   
+  </head>
+  <body>
+
+        <div class="modal fade" id="editPresentacion" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Editar presentaci&oacute;n</h4>
+              </div>
+              <div class="modal-body">
+                <form action="#" id="editPresentacionForm" >
+                <div id="step1" data-bind="visible: step1">
+                    <label class="margenArriba"> Producto 
+                      <select class="input-block-level form-control" data-bind="options: productos, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedProductoId" size="10" required></select>
+                    </label>
+                  <input 
+                  type="button" data-bind="click: function(data, event) { next('lote', data, event) },
+                  enable: hayProductoSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+
+                <div id="step2" data-bind="visible: step2">
+                    <label class="margenArriba"> Lote 
+                      <select class="input-block-level form-control" data-bind="options: lotes, optionsText: 'fechaDeVencimiento', 
+                     optionsValue: 'id', value: selectedLoteId" size="10" ></select>
+                    </label>
+                  <input type="button" data-bind="click: function(data, event) { next('material', data, event) },
+                  enable: hayLoteSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                  <input class="btn margenArriba" type="button" data-bind="click: saltarLote, disable: hayLoteSeleccionado" value="Omitir por ahora"/>  
+                </div>
+                
+                <div id="step3" data-bind="visible: step3">
+                    <label class="margenArriba"> Material 
+                      <select class="input-block-level form-control" data-bind="options: materiales, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedMaterialId" size="10" required></select>
+                    </label>
+                  <input type="button" data-bind="click: function(data, event) { next('medida', data, event) },
+                  enable: hayMaterialSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+
+                <div id="step4" data-bind="visible: step4">
+                    <label class="margenArriba"> Unidades de medida 
+                      <select class="input-block-level form-control" data-bind="options: medidas, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedMedidaId," size="10" required></select>
+                    </label>
+                  <input type="button" data-bind="click: function(data, event) { next('proveedor', data, event) },
+                  enable: hayMedidaSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+               <div id="step5" data-bind="visible: step5">
+                    <label class="margenArriba"> Proveedores
+                      <select class="input-block-level form-control" data-bind="options: proveedores, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedProveedorId," size="10" required></select>
+                    </label>
+                  <input type="button" data-bind="click: function(data, event) { next('form', data, event) },
+                  enable: hayMedidaSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
+                </div>
+
+                <div id="step6" data-bind="visible: step6">
+                      <label>Descripcion</label>
+                      <input   required data-bind="value: selected.descripcion" 
+                            class="input-block-level " 
+                            placeholder="Descripci&oacute;n">
+
+                      <label class=" checkbox margenArriba">Fraccionable
+                       <input type="checkbox" data-bind="checked: selected.fraccionable" /> 
+                      </label>
+                      
+
+                      
+                      <label class="margenArriba">Peso neto
+                      <input type="number"  min="1"  required data-bind="value: selected.peso_neto" 
+                            class="input-block-level " 
+                            placeholder="Peso Neto en gramos">
+                     </label>
+                     <label class="margenArriba">Peso escurrido
+                      <input type="number"  min="0" data-bind="value: selected.peso_escurrido" 
+                            class="input-block-level " 
+                            placeholder="Peso escurrido en gramos">
+                     </label>
+                     <label class="margenArriba"><span data-bind="text: $root.medidaName"> </span>
+                      <input type="number"  min="1"   
+                            class="input-block-level " 
+                            placeholder="Cantidad" data-bind="value: selected.cantidad" >
+                     </label>
+                     <label class="margenArriba">Stock Disponible
+                      <input type="number"  min="1" required data-bind=" value: selected.cantidad_paquetes , enable: createNew" 
+                            class="input-block-level " 
+                            placeholder="Stock Disponible">
+                     </label>
+                     <input type="submit"  id="submitOculto" class="hide"/>
+						</div>		
+                </form> 
+              </div>
+              <div class="modal-footer">
+                <input type="button" data-bind="click: back,visible: backeable" value="Atras" class="btn btn-primary"/>
+                <!-- ko if: createNew -->
+                <input type="button" data-bind="click: save,visible: step6" value="crear" class="btn btn-primary"/>
+                <!-- /ko -->
+                <!-- ko ifnot: createNew -->
+                <input type="button" data-bind="click: update,visible: step6" value="Guardar" class="btn btn-primary"/> 
+                <!-- /ko -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <!-- ko ifnot: createNew -->
+
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: showdesactivar, visible: selected.active">
+                  Desactivar presentacion</button>
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: showdesactivar, visible: !selected.active()">
+                  Activar presentacion</button>
+               <!-- /ko -->
+
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        
+       <div class="modal fade" id="desactivarPresentacion" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Desactivar presentaci&oacute;n</h4>
+              </div>
+              <div class="modal-body">
+              		<form action="#" id="desactivarPresentacionForm" >
+              		 	<input type="text" data-bind="value: messageDesactivar,
+              		 	 attr: {'placeholder': placeHolderDesactivar}
+              		 	" class="input-block-level" > </input>
+              		</form>
+              </div>
+              <div class="modal-footer">
+               <!-- ko ifnot: createNew -->
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: desactivar, visible: selected.active, enable:messageDesactivarOn">
+                  Desactivar presentacion</button>
+                <button 
+                  type="button" class="btn btn-danger" 
+                  data-bind="click: activar, visible: !selected.active(), enable:messageDesactivarOn">
+                  Activar presentacion</button>
+               <!-- /ko --> 
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal desactivarPresentacion -->
+
+        <div class="modal fade" id="fraccionarPresentacion" style="display: none;">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Fraccionar presentaci&oacute;n</h4>
+              </div>
+              <div class="modal-body">
+                                
+                 <form action="#" id="createPresentacionForm" >
+                     <div id="createStep1" data-bind="visible: createStep1">
+                     	<input type="number" data-bind="value: selectedPaqueteId "  required="required" class="input-block-level " placeholder="Ingrese codigo del paquete..."/>
+          
+                        <input 
+                  			type="button" data-bind="click: function(data, event) { nextFraccionar('form', data, event) },
+                  			enable: hayPaqueteParaFraccionar" value="siguiente" class="btn btn-primary margenArriba"/>    
+                       
+                		</div>
+                		
+                		<div id="createStep2" data-bind="visible: createStep2">
+                      <label>Descripcion</label>
+                      <input   required data-bind="value: selected.descripcion" 
+                            class="input-block-level " 
+                            placeholder="Descripci&oacute;n"> 
+                      <label class=" checkbox margenArriba">Fraccionable
+                       <input type="checkbox" data-bind="checked: selected.fraccionable" /> 
+                      </label>
+                      
+                      <label class="margenArriba">Peso neto
+                      <input type="number"  min="1"  required data-bind="value: selected.peso_neto" 
+                            class="input-block-level " 
+                            placeholder="Peso Neto en gramos">
+                     </label>
+                     <label class="margenArriba">Peso escurrido
+                      <input type="number"  min="0"  required data-bind="value: selected.peso_escurrido" 
+                            class="input-block-level " 
+                            placeholder="Peso escurrido en gramos">
+                     </label>
+                     <label class="margenArriba"><span data-bind="text: $root.medidaName"> </span>
+                     <span data-bind="text: selected.cantidad">
+                     
+                     </span>
+                     <input type="number"  min="1"    
+                             class="input-block-level " 
+                             placeholder="Nueva Cantidad" data-bind="value: cantidad_fraccionada , 'attr': { 'max': selected.cantidad  }" >
+                     </label>
+                     <input type="button" data-bind="click: saveFraccion,visible: createStep2" value="Guardar" class="btn btn-primary"/> 
+                     <input type="submit"  id="submitFraccion" class="hide"/>
+						</div>	
+                 
+                 </form>         
+              
+              </div>
+              <div class="modal-footer">
+                <input type="button" data-bind="click: back,visible: backeable" value="Atras" class="btn btn-primary"/>
+                <!-- ko if: createNew -->
+                <input type="button" data-bind="click: save,visible: step6" value="crear" class="btn btn-primary"/>
+                <!-- /ko -->
+                <!-- ko ifnot: createNew -->
+                <input type="button" data-bind="click: update,visible: step6" value="Guardar" class="btn btn-primary"/> 
+                <!-- /ko -->
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal fraccionarPresentacion -->
+
+
+    <div class="container">
+
+      <div class="navbar navbar-default" role="navigation">
+        
+        <div class="navbar-collapse in collapse" style="height: auto;">
+           <ul class="nav navbar-nav">
+            <li ><a href="categoria.html">Categorias</a></li>
+            <li><a href="unidadMedida.html">Unidades de medida</a></li>
+            <li><a href="producto.html">Productos</a></li>
+            <li><a href="lote.html">Lotes</a></li>
+            <li><a href="material.html">Materiales de presentacion</a></li>
+            <li class="active"><a href="#">Presentaciones</a></li>
+            <li><a href="mixGrid.html">Mixes</a></li>
+            <li><a href="stock.html">Stock</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+        <h3>Edicion de presentaciones</h3>
+
+        <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>
+        <input type="button" data-bind="click: toggleActivos, visible: soloActivos" value="Mostrar Inactivos" class="btn btn-default"/>
+        <input type="button" data-bind="click: toggleActivos, visible: !soloActivos()" value="Mostrar activos" class="btn btn-default"/>
+<div class="grid">
+
+        <table class="table table-hover">
+            <thead><tr><th>Descripcion</th><th>Producto</th><th>Proveedor</th><th>Peso Neto</th>
+              <th>Peso Escurrido</th><th>Fracionable</th></tr></thead>
+            <tbody data-bind="foreach: presentaciones">
+                <tr data-bind="click: $root.editar , css: { desactivado: !active()  }"  >
+                    <td data-bind="text: descripcion"></td>
+                    <td data-bind="text: producto.name"></td>
+                    <td data-bind="text: proveedor.name"></td>
+                    <td data-bind="text: peso_neto"></td>
+                    <td data-bind="text: peso_escurrido"></td>
+                    <td >
+                    <!-- ko if: fraccionable -->
+                      <span class='icon-ok'></span>
+                    <!-- /ko -->  
+                    <!-- ko ifnot: fraccionable -->
+                      <span class='icon-minus'></span>
+                    <!--/ko -->  
+                    </td>
+                </tr>     
+            </tbody>
+        </table>
+</div>
+
+      </div>
+
+
+
+
+
+
+	  <div class="modal fade" id="alertaFraccionable" style="display: none;">
+          <div class="modal-dialog">
+             <div class="modal-content">
+                <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+			        <h4>La presentaci&oacute;n que eligio es fraccionable</h4>
+			        <hr/>
+			        <p>Que desea hacer?</p>
+					<br/>
+			        <p>
+			          <button type="button" data-bind="click: doEditar" class="btn btn-default btn-large">Editar</button>
+			          <button type="button" data-bind="click: fraccionar" class="btn btn-default btn-large">Fraccionar</button>
+			        </p>
+			    </div>
+			  </div>
+	      </div>
+      </div>
+
+
+
+
+
+
+
+  </body>
+</html>

@@ -3,18 +3,18 @@ package ar.com.bgr.serrano.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.bgr.serrano.dao.CalificativoDao;
+import ar.com.bgr.serrano.dao.CalificativoDAO;
 import ar.com.bgr.serrano.model.Calificativo;
 
-@Component
+@Service
 @Transactional
 public class CalificativoService {
 
 	@Autowired
-	CalificativoDao dao;
+	CalificativoDAO dao;
 	
 	public Calificativo save(Calificativo calificativo) {
 		return dao.saveOrUpdate(calificativo);

@@ -3,7 +3,6 @@
     <title></title>
     <meta content="">
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="bootstrap/css/navbar.css" rel="stylesheet">
 
     <style>
       .hide{
@@ -17,6 +16,14 @@
       .margenArriba{
         margin-top: 1em;
       }
+      
+      .selectSelected{
+      	background: #509BDD;
+      }
+      
+      .selectUnselected{
+      	background: #d2322d;
+      }
     </style>
 
     <script type='text/javascript'  src='lib/jquery-2.1.1.min.js'></script>
@@ -26,7 +33,8 @@
     <script type='text/javascript'  src='js/Producto.js'></script>
     <script type='text/javascript'  src='js/Categoria.js'></script>
     <script type='text/javascript'  src='js/UnidadMedida.js'></script> 
-    <script type='text/javascript'  src='js/ProductoProveedor.js'></script> 
+    <script type='text/javascript'  src='js/ProductoProveedor.js'></script>
+    <script type='text/javascript'  src='js/Proveedor.js'></script>  
 
     <script type='text/javascript'  src='js/ProductoViewModel.js'></script>
     <script type='text/javascript'  src='js/CategoriaViewModel.js'></script>
@@ -75,7 +83,7 @@
 	              <span class="span3" ><h4>Precio de reposici&oacute;n</h4></span>
               
                  <div data-bind="foreach: $root.productoProveedor">
-		            <form data-bind="attr: { id: 'precioForm' + proveedor_id() }">
+		            <form data-bind="attr: { id: 'precioForm' + proveedor.id }">
 		                    <span class="span3" data-bind="text: name"></span>
 		                    <input class="span3" data-bind="value: precio_reposicion"></input>
 		                    <input type="button" data-bind="click: $root.savePrecio" value="Guardar" class="btn btn-primary "/>
@@ -102,12 +110,12 @@
                 <form action="#" id="editProductForm" >
 
                     <label class="margenArriba"> Categoria
-                      <select class="input-block-level form-control" data-bind="options: categorias, optionsText: 'name', 
-                     optionsValue: 'id', value: selectedCategoriaId, optionsCaption:'Seleccione', click:loadProductoByCategoria" required></select>
+                      <select class="form-control form-control" data-bind="options: categorias, optionsText: 'name', 
+                     optionsValue: 'id', value: selectedCategoriaId, optionsCaption:'Seleccione',  event: {change: loadProductoByCategoria } " required></select>
                     </label>
                     <label>Nombre
                        <input list="productosXcategoria" required data-bind="value: selected.name" 
-                       class="input-block-level" placeholder="Nombre del producto"> 
+                       class="form-control" placeholder="Nombre del producto"> 
 						<datalist id="productosXcategoria" data-bind="foreach: productosByCategoria">
 						  <option data-bind="value:name">
 						</datalist>
@@ -116,33 +124,33 @@
                     
                    <label>Porcentaje para actualizaci&oacute;n de precio</label>
                       <input   required data-bind="value: selected.actualizador_precio" 
-                               class="input-block-level " 
+                               class="form-control " 
                                placeholder="Porcentaje para actualizaci&oacute;n de precio"> 
                     <input type="submit"  id="submitOculto" class="hide"/>
-                    <label>Unidades de medida
+                    <label class="col-md-6">Unidades de medida</label>  <label class="col-md-6">Unidades de medida Seleccionadas</label>
    					<div>
-	       			    <select class="form-control" data-bind="foreach: selected.unidad_de_medidas" multiple="false">
-							  		<option data-bind="text: name, click: $root.unSelectUnidad "></option>
-						</select>	
-							  
-						<select class="form-control" data-bind="foreach: notSelectedUnidadDeMedidas" multiple="false">
+   					
+   						<select class="col-md-6" data-bind="foreach: notSelectedUnidadDeMedidas" multiple="false">
 							  		<option data-bind="text: name, click: $root.selectUnidad "></option>
+						</select>
+						
+	       			    <select class="col-md-6" data-bind="foreach: selected.unidadesDeMedida" multiple="false">
+							  		<option class="selectSelected" data-bind="text: name, click: $root.unSelectUnidad "></option>
 						</select>	
 					</div>
-					</label>
-
-					<label>Proveedores
+					
+					<label class="col-md-6">Proveedores</label> <label class="col-md-6">Proveedores Seleccionados</label>
    					<div>
-	       			    <select class="form-control" data-bind="foreach: selected.proveedores" multiple="false">
-							  		<option data-bind="text: name, click: $root.unSelectProveedor "></option>
-						</select>	
-							  
-						<select class="form-control" data-bind="foreach: notSelectedProveedores" multiple="false">
+   					
+   						<select class="col-md-6" data-bind="foreach: notSelectedProveedores" multiple="false">
 							  		<option data-bind="text: name, click: $root.selectProveedor "></option>
 						</select>	
-					</div>
-					</label>
+	       			    <select class="col-md-6" data-bind="foreach: selected.proveedores" multiple="false">
+							  		<option class="selectSelected" data-bind="text: name, click: $root.unSelectProveedor "></option>
+						</select>	
+							  
 
+					</div>
 
 
                  </form>

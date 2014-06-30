@@ -3,9 +3,16 @@
  */
 package ar.com.bgr.serrano.dao;
 
+import java.util.List;
+import java.util.TreeSet;
+
+import org.hibernate.Criteria;
+import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import ar.com.bgr.serrano.model.Producto;
+import ar.com.bgr.serrano.model.ProductoProveedor;
 
 /**
  * 
@@ -18,10 +25,55 @@ import ar.com.bgr.serrano.model.Producto;
  * @since 01/06/2014
  */
 @Repository
-public class ProductoDao extends AbstractDAO<Producto> {
+public class ProductoDAO extends AbstractDAO<Producto> {
 
-	public ProductoDao(){
+	public ProductoDAO(){
 		setClasz(Producto.class);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Producto> getProductosByCategoria(Integer categoriaId){
+		Criteria criteria =  getCurrentSession().createCriteria(getClasz());
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.add(Restrictions.eq("categoria.id", categoriaId));
+		return  criteria.list();
+	}
+	
+	public Producto saveOrUpdateAndDelete(Producto producto){		
+		Producto persisted = getById(producto.getId());		
+		removeRelation(producto, persisted);		
+		getCurrentSession().merge(producto);
+		getCurrentSession().saveOrUpdate(persisted);		
+		return producto;
+	}
+
+	@Override
+	public void remove(int id){
+		Producto persisted =   (Producto) getCurrentSession().get(getClasz(), id);
+		Producto producto = new Producto();
+		producto.setProductoProveedor(new TreeSet<ProductoProveedor>());
+		removeRelation(producto, persisted);
+		getCurrentSession().merge(persisted);
+		getCurrentSession().delete(persisted);
+	}	
+	
+	private void removeRelation(Producto producto, Producto persisted) {
+		for(ProductoProveedor pp : persisted.getProductoProveedor()){
+			
+			Boolean found = Boolean.FALSE;
+			for(ProductoProveedor ppnp : producto.getProductoProveedor()){
+				if(ppnp.getProveedor().getId() == pp.getProveedor().getId()){
+					found = true;
+				}
+			}
+			if(!found){				
+				Query query = getCurrentSession().createQuery("delete Producto_proveedor where proveedor_id = :proveedor_id and producto_id = :producto_id");
+				query.setParameter("proveedor_id", pp.getProveedor().getId());
+				query.setParameter("producto_id", pp.getProducto().getId());
+				query.executeUpdate();
+			}
+		}
+	}
+	
+
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.bgr.serrano.controller.material;
+package ar.com.bgr.serrano.controller;
 
 import java.util.List;
 
@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ar.com.bgr.serrano.model.Material;
-import ar.com.bgr.serrano.service.MaterialService;
+import ar.com.bgr.serrano.model.ProductoProveedor;
+import ar.com.bgr.serrano.model.Proveedor;
+import ar.com.bgr.serrano.service.ProveedorService;
 
 /**
  * 
@@ -24,20 +25,20 @@ import ar.com.bgr.serrano.service.MaterialService;
  *
  * @author matias
  * 
- * @since 31/05/2014
+ * @since 01/06/2014
  */
 @Controller
-@RequestMapping("/material")
-public class MaterialController {
-	
+@RequestMapping("/proveedor")
+public class ProveedorController {
+
 	@Autowired
-	MaterialService service;
+	ProveedorService service;
 	
-    /**
+	/**
 	 * Devuelve la categoria ligada al identificador recibido
      */
 	@RequestMapping(value="get/{id}",method = RequestMethod.GET)
-	public @ResponseBody Material get(@PathVariable("id") int id) {
+	public @ResponseBody Proveedor get(@PathVariable("id") int id) {
 		return service.getById(id);
 	}
 
@@ -45,8 +46,24 @@ public class MaterialController {
 	 * Lista todas las categorias. 
 	 */
 	@RequestMapping(value="getAll",method = RequestMethod.GET)
-	public @ResponseBody List<Material> execute() {
+	public @ResponseBody List<Proveedor> execute() {
 		return service.list();
+	}
+	
+	/**
+	 * Lista todas las categorias. 
+	 */
+	@RequestMapping(value="getProveedoresByProductoId",method = RequestMethod.POST)
+	public @ResponseBody List<Proveedor> getProveedoresByProductoId(@RequestBody Integer id) {
+		return service.list();
+	}
+	
+	/**
+	 * guarda la relacion entre un producto y un proveedor
+	 */
+	@RequestMapping(value="saveRelation",method = RequestMethod.POST)
+	public @ResponseBody ProductoProveedor saveRelation(@RequestBody ProductoProveedor productoProveedor) {
+		return service.saveRelation(productoProveedor);
 	}
 	
 	/**
@@ -54,8 +71,8 @@ public class MaterialController {
 	 * {"id":anIdValue,"name":"aName","descripcion":"aDescription"}
 	 */
 	@RequestMapping(value="save", method = RequestMethod.POST)
-	public @ResponseBody Material execute(@RequestBody Material material) {
-		return service.save(material);
+	public @ResponseBody Proveedor execute(@RequestBody Proveedor proveedor) {
+		return service.save(proveedor);
 	}
 	
 	/**

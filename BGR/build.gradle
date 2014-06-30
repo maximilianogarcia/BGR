@@ -31,6 +31,9 @@ subprojects {
 		
 		/* Jackson JSON Mapper */
 		compile("org.codehaus.jackson:jackson-mapper-asl:1.9.2")
+		
+		/* local jars*/
+		compile fileTree(dir: 'libs', include: ['*.jar'])
     }
     
 

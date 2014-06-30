@@ -4,12 +4,13 @@
 package ar.com.bgr.serrano.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.bgr.serrano.dao.UnidadDeMedidaDao;
+import ar.com.bgr.serrano.dao.UnidadDeMedidaDAO;
 import ar.com.bgr.serrano.model.UnidadDeMedida;
 
 /**
@@ -22,13 +23,13 @@ import ar.com.bgr.serrano.model.UnidadDeMedida;
  * 
  * @since 01/06/2014
  */
-@Component
+@Service
 @Transactional
 public class UnidadDeMedidaService {
 
 	
 	@Autowired
-	UnidadDeMedidaDao dao;
+	UnidadDeMedidaDAO dao;
 	
 	public UnidadDeMedida save(UnidadDeMedida unidad) {
 		return dao.saveOrUpdate(unidad);
@@ -38,7 +39,7 @@ public class UnidadDeMedidaService {
 		return dao.list();
 	}
 	
-	public List<UnidadDeMedida> listNoDivisibles() {
+	public Set<UnidadDeMedida> listNoDivisibles() {
 		return dao.listNoDivisibles();
 	}	
 

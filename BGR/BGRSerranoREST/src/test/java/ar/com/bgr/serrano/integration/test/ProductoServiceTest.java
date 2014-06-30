@@ -47,6 +47,16 @@ public class ProductoServiceTest {
 		assertNotNull(result);
 		assertNotNull(service.getById(result.getId()));
 	}
+	
+	
+	@Test
+	public void testGetById(){
+		Producto result = service.getById(2);
+		assertNotNull(result);
+		Categoria categoria = result.getCategoria();
+		assertNotNull(categoria);
+		
+	}
 
 	@Test
 	public void testList() {

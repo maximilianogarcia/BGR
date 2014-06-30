@@ -18,9 +18,9 @@ import ar.com.bgr.serrano.model.Material;
  * @since 01/06/2014
  */
 @Repository
-public class MaterialDao extends AbstractDAO<Material>{
+public class MaterialDAO extends AbstractDAO<Material>{
 
-	public MaterialDao() {
+	public MaterialDAO() {
 		setClasz(Material.class);
 	}
 }

@@ -16,9 +16,9 @@ import ar.com.bgr.serrano.model.Etiqueta;
  * @since 31/05/2014
  */
 @Repository
-public class EtiquetaDao extends AbstractDAO<Etiqueta>{
+public class EtiquetaDAO extends AbstractDAO<Etiqueta>{
    
-	public EtiquetaDao() {
+	public EtiquetaDAO() {
 		setClasz(Etiqueta.class);
 	}
 }

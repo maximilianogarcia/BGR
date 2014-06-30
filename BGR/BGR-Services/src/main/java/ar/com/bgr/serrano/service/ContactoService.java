@@ -3,18 +3,18 @@ package ar.com.bgr.serrano.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.bgr.serrano.dao.ContactoDao;
+import ar.com.bgr.serrano.dao.ContactoDAO;
 import ar.com.bgr.serrano.model.Contacto;
 
-@Component
+@Service
 @Transactional
 public class ContactoService {
 
 	@Autowired
-	ContactoDao dao;
+	ContactoDAO dao;
 	
 	public Contacto save(Contacto contacto) {
 		return dao.saveOrUpdate(contacto);

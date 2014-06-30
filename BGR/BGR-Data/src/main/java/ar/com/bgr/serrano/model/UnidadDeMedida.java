@@ -3,10 +3,13 @@
  */
 package ar.com.bgr.serrano.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -19,8 +22,8 @@ import javax.persistence.Table;
  * 
  * @since 01/06/2014
  */
-@Entity(name="unidadDeMedida")
-@Table(name="unidadDeMedida")
+@Entity(name="UnidadDeMedida")
+@Table(name="UnidadDeMedida")
 public class UnidadDeMedida {
 	
 	@Id
@@ -32,9 +35,10 @@ public class UnidadDeMedida {
 
 	@Column(name = "descripcion")
 	private String descripcion;	
-
-	@Column(name = "deriva_de")
-	private Integer deriva_de;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "deriva_de_id")
+	private UnidadDeMedida deriva_de;
 
 	@Column(name = "divisible")
 	private Boolean divisible;
@@ -87,14 +91,14 @@ public class UnidadDeMedida {
 	/**
 	 * @return the derivaDe
 	 */
-	public Integer getDerivaDe() {
+	public UnidadDeMedida getDerivaDe() {
 		return deriva_de;
 	}
 
 	/**
 	 * @param derivaDe the derivaDe to set
 	 */
-	public void setDerivaDe(Integer derivaDe) {
+	public void setDerivaDe(UnidadDeMedida derivaDe) {
 		this.deriva_de = derivaDe;
 	}
 

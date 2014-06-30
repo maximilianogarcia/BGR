@@ -2,3 +2,6 @@
 /BGR/BGRSerranoREST/bin
 /BGR/BGRSerranoREST/.settings
 /BGR/BGRSerranoREST/.gradle
+/BGR/BGRSerranoREST/build/.*
+/BGR/BGR-Services/build/.*
+/BGR/BGR-Data/build/.*

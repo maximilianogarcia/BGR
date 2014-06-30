@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.bgr.serrano.controller.categoria;
+package ar.com.bgr.serrano.controller;
 
 import java.util.List;
 
@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ar.com.bgr.serrano.model.Categoria;
-import ar.com.bgr.serrano.service.CategoriaService;
+import ar.com.bgr.serrano.model.Material;
+import ar.com.bgr.serrano.model.Producto;
+import ar.com.bgr.serrano.service.MaterialService;
 
 /**
  * 
@@ -27,17 +28,17 @@ import ar.com.bgr.serrano.service.CategoriaService;
  * @since 31/05/2014
  */
 @Controller
-@RequestMapping("/categoria")
-public class CategoriaController {
+@RequestMapping("/material")
+public class MaterialController {
 	
 	@Autowired
-	CategoriaService service;
+	MaterialService service;
 	
     /**
 	 * Devuelve la categoria ligada al identificador recibido
      */
 	@RequestMapping(value="get/{id}",method = RequestMethod.GET)
-	public @ResponseBody Categoria get(@PathVariable("id") int id) {
+	public @ResponseBody Material get(@PathVariable("id") int id) {
 		return service.getById(id);
 	}
 
@@ -45,7 +46,7 @@ public class CategoriaController {
 	 * Lista todas las categorias. 
 	 */
 	@RequestMapping(value="getAll",method = RequestMethod.GET)
-	public @ResponseBody List<Categoria> execute() {
+	public @ResponseBody List<Material> execute() {
 		return service.list();
 	}
 	
@@ -54,8 +55,8 @@ public class CategoriaController {
 	 * {"id":anIdValue,"name":"aName","descripcion":"aDescription"}
 	 */
 	@RequestMapping(value="save", method = RequestMethod.POST)
-	public @ResponseBody Categoria execute(@RequestBody Categoria categoria) {
-		return service.save(categoria);
+	public @ResponseBody Material execute(@RequestBody Material material) {
+		return service.save(material);
 	}
 	
 	/**
@@ -66,4 +67,14 @@ public class CategoriaController {
        service.remove(id);
        return true;
 	}
+	
+	/**
+	 * Da de alta o Actualiza en caso de existir una categoria.
+	 * {"id":anIdValue,"name":"aName","descripcion":"aDescription"}
+	 */
+	@RequestMapping(value="getMaterialesByProducto", method = RequestMethod.POST)
+	public @ResponseBody List<Material> executeGetMaterialesByProducto(@RequestBody Producto producto) {
+		return service.list();
+	}
+	 
 }

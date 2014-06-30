@@ -17,13 +17,13 @@ import javax.persistence.Table;
  * @since 31/05/2014
  */
 
-@Entity(name="categoria")
-@Table(name="categoria")
+@Entity(name="Categoria")
+@Table(name="Categoria")
 public class Categoria {
 	
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 
 	@Column(name = "name")
 	private String name;
@@ -34,14 +34,14 @@ public class Categoria {
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

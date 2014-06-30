@@ -29,7 +29,7 @@ function ProductoViewModel() {
 
    self.loadProductoByCategoria = function() {
 		 if(self.hayCategoriaSeleccionada()){
-			 $.postJSON(BASE_REST_URL+"/producto/getByCategoria",self.selectedCategoriaId()).done(function(result) { 
+			 $.postJSON(BASE_REST_URL+"/producto/getByCategoria",JSON.stringify(self.selectedCategoriaId())).done(function(result) { 
 				 	self.productosByCategoria(result);
 		     });
 		 }
@@ -66,8 +66,8 @@ function ProductoViewModel() {
 	  
 		self.unidadesNotSelected = ko.mapping.fromJS(ko.toJS(self.allUnidadDeMedidas));
 		try{
-		   self.unidadesSelected = ko.mapping.fromJS(ko.toJS(data.unidad_de_medidas));
-		   self.unidades = ko.mapping.fromJS(ko.toJS(data.unidad_de_medidas));
+		   self.unidadesSelected = ko.mapping.fromJS(ko.toJS(data.unidadesDeMedida));
+		   self.unidades = ko.mapping.fromJS(ko.toJS(data.unidadesDeMedida));
 		   $.each(self.unidades(), function( index, value ) {
 
 			   self.unidadesNotSelected.remove(self.containThisId(self.unidadesNotSelected(),value.id()));	
@@ -130,8 +130,8 @@ function ProductoViewModel() {
     var $myForm = $('#editProductForm');
     if ($myForm[0].checkValidity()) {
     	
-    	$.postJSON(BASE_REST_URL+"/producto/save",JSON.stringify(serializado)).done(function(result) { 
-    		 $('#editProducto').modal('hide');
+    	$.postJSON(BASE_REST_URL+"/producto/update",JSON.stringify(serializado)).done(function(result) { 
+    		 $('#editProduct').modal('hide');
              self.productos.push(ko.mapping.fromJS(result)); 
           }).fail(function(){ alert("Ocurrio un error al salvar"); });
     	
@@ -144,24 +144,25 @@ function ProductoViewModel() {
    self.update = function(){
       var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
       serializado.categoria = self.selectedCategoria();
-      serializado.unidad_de_medidas = ko.toJS(self.selected.unidad_de_medidas());
+      serializado.unidadesDeMedida = ko.toJS(self.selected.unidadesDeMedida());
       serializado.proveedores = ko.toJS(self.selected.proveedores());
-
       
+      serializado.productoProveedor = new Array();
+      for ( j = 0; j < self.selected.proveedores().length; j++){
+    	  var pp = new ProductoProveedor();    	  
+    	  pp.producto_id(self.selected.id());
+    	  pp.proveedor(self.selected.proveedores()[j]);
+    	  pp.producto(JSON.parse(ko.mapping.toJSON(self.selected)));
+    	  pp.precio_reposicion(self.selected.actualizador_precio());
+     	  serializado.productoProveedor.push(pp);
+      }
+      serializado.productoProveedor = JSON.parse(ko.mapping.toJSON(serializado.productoProveedor));
       
       var $myForm = $('#editProductForm');
-      if ($myForm[0].checkValidity()) {
+      if ($myForm[0].checkValidity()) {    	  
     	  
-    	  
-      	$.postJSON(BASE_REST_URL+"/producto/save",JSON.stringify(serializado)).done(function(result) { 
-      	  self.selectedUnmapped.name(result.name);
-          self.selectedUnmapped.actualizador_precio(result.actualizador_precio);
-          self.selectedUnmapped.categoria.id(result.categoria.id);
-          self.selectedUnmapped.categoria.name(result.categoria.name);
-          self.selectedUnmapped.categoria.descripcion(result.descripcion);
-          self.selectedUnmapped.unidad_de_medidas(result.unidad_de_medidas);	
-		  self.selectedUnmapped.proveedores(result.proveedores);	
-
+      	$.postJSON(BASE_REST_URL+"/producto/save",JSON.stringify(serializado)).done(function(result) {       		
+      	  self.reloadData(result);	
 		  $('#editProduct').modal('hide');
          }).fail(function(error){ alert(error.responseText); });
     	  
@@ -175,10 +176,7 @@ function ProductoViewModel() {
    }
 
    self.borrar = function(data){
-      serializado=ko.mapping.toJSON(self.selected);
-      serializado.categoria = self.selectedCategoria();
-     
-	  $.deleteJSON(BASE_REST_URL+"/producto/delete",serializado).done(function(result) { 
+	  $.deleteJSON(BASE_REST_URL+"/producto/delete",JSON.stringify(self.selected.id())).done(function(result) { 
 		  $('#editProduct').modal('hide');
           self.productos.remove(self.selectedUnmapped); 
 	  }).fail(function(error){ alert(error.responseText);});
@@ -189,6 +187,12 @@ function ProductoViewModel() {
       self.selectedCategoriaId(data.categoria.id());
       self.createNew(false);
       self.selectedUnmapped = data;
+      self.selectedUnmapped.proveedores = ko.observableArray();
+      
+      for(var j = 0; j< data.productoProveedor().length; j++){
+    	  self.selectedUnmapped.proveedores.push(data.productoProveedor()[j].proveedor);
+      }
+
       self.selected.categoria(null);
       self.notSelectedUnidadDeMedidas(self.chargeUnidades(data));
       self.notSelectedProveedores(self.chargeProveedores(data));
@@ -210,11 +214,11 @@ function ProductoViewModel() {
    
    self.selectUnidad = function(data){   	
 		self.notSelectedUnidadDeMedidas.remove(data);
-		self.selected.unidad_de_medidas.push(data);
+		self.selected.unidadesDeMedida.push(data);
    }
    
    self.unSelectUnidad = function(data){
-		self.selected.unidad_de_medidas.remove(data);
+		self.selected.unidadesDeMedida.remove(data);
 		self.notSelectedUnidadDeMedidas.push(data);  
    }
 
@@ -229,17 +233,50 @@ function ProductoViewModel() {
 
    self.editPrecios = function(data){
 	      var viewModelProveedores = new ProveedorViewModel();
-	      viewModelProveedores.getAllProductoRelations(self.selected.id(),self.mapProductosProveedores);
-	      $('#editProduct').modal('hide');
-	      $('#editPrecioReposicion').modal('show');
+	      self.getAllProductoRelations(self.selected.id(),self.showEditPrecios);
   }
+   
+   self.showEditPrecios = function(data){
+	  self.mapProductosProveedores(data);
+      $('#editProduct').modal('hide');
+      $('#editPrecioReposicion').modal('show');
+   }
+   
    self.savePrecio = function(data){
 	      var viewModelProveedores = new ProveedorViewModel();
+	      data.producto = self.selected;
 	      viewModelProveedores.saveRelation(data, self.desactivarBotonSavePrecio);
    }
    
    self.desactivarBotonSavePrecio = function(){
 	   
+   }
+   
+
+   self.getAllProductoRelations = function(producto_id, destino){
+       $.postJSON(BASE_REST_URL+"/producto/getAllProductoRelations",JSON.stringify(producto_id)).
+          done(function(result) { destino(result);});
+   }
+   
+   self.reloadData = function(result){
+	  self.selectedUnmapped.name(result.name);
+      self.selectedUnmapped.actualizador_precio(result.actualizador_precio);
+      self.selectedUnmapped.categoria.id(result.categoria.id);
+      self.selectedUnmapped.categoria.name(result.categoria.name);
+      self.selectedUnmapped.categoria.descripcion(result.descripcion);
+      self.selectedUnmapped.unidadesDeMedida(result.unidadesDeMedida);
+      
+      self.selectedUnmapped.proveedores = ko.observableArray();
+      for(var j = 0; j< result.productoProveedor.length; j++){
+    	  self.selectedUnmapped.proveedores.push(result.productoProveedor[j].proveedor);
+      }
+      for(var j = 0; j < self.productos().length; j++){
+    	  if (self.productos()[j].id() == self.selectedUnmapped.id() ){
+    		  self.productos()[j] = self.selectedUnmapped;
+    	  }
+      }
+      
+      
    }
    
 

@@ -1,6 +1,8 @@
 package ar.com.bgr.serrano.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -23,6 +25,7 @@ public abstract class AbstractDAO<T> {
 	
 	public List<T> list(){
 		Criteria criteria =  getCurrentSession().createCriteria(getClasz());
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return  criteria.list();
 	}
 
@@ -59,5 +62,22 @@ public abstract class AbstractDAO<T> {
 	
 	public  void setSessionFactory(SessionFactory sessionFactory){
 		this.sessionFactory = sessionFactory;
+	}
+	
+	public enum State {
+		DISPONIBLE, DESACTIVADO, MIXED;
+		
+		private static Map<Boolean, State> stateMap;				
+	    public static State getState(Boolean state) {
+	        if (stateMap == null)       
+	        initMap();	        
+	        return stateMap.get(state);
+	    }
+	    
+		private static void initMap() {
+			stateMap = new HashMap<Boolean, State>();
+	        stateMap.put(Boolean.TRUE, State.DISPONIBLE);
+	        stateMap.put(Boolean.FALSE, State.DESACTIVADO);	
+		}
 	}
 }

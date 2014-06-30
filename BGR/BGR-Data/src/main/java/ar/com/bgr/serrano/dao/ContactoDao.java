@@ -16,9 +16,9 @@ import ar.com.bgr.serrano.model.Contacto;
  * @since 31/05/2014
  */
 @Repository
-public class ContactoDao extends AbstractDAO<Contacto>{
+public class ContactoDAO extends AbstractDAO<Contacto>{
 
-	public ContactoDao() {
+	public ContactoDAO() {
 		setClasz(Contacto.class);
 	}
 

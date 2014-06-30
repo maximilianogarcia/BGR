@@ -18,9 +18,9 @@ import ar.com.bgr.serrano.model.Categoria;
  * @since 31/05/2014
  */
 @Repository
-public class CategoriaDao extends AbstractDAO<Categoria> {
+public class CategoriaDAO extends AbstractDAO<Categoria> {
 
-	public CategoriaDao() {
+	public CategoriaDAO() {
 		setClasz(Categoria.class);
 	}
 	

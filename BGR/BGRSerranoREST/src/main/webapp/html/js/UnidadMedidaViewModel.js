@@ -33,7 +33,7 @@ function UnidadMedidaViewModel() {
    }
 
    self.getAll = function(callback){
-	  $.getJSON(BASE_REST_URL+"/unidadDeMedida/getAll", function(result){ destino(result);});
+	  $.getJSON(BASE_REST_URL+"/unidadDeMedida/getAll", function(result){ callback(result);});
    }
    
    self.save = function(){

@@ -19,8 +19,8 @@ import javax.persistence.Table;
  * 
  * @since 01/06/2014
  */
-@Entity(name="material")
-@Table(name="material")
+@Entity(name="Material")
+@Table(name="Material")
 public class Material {
 
 	@Id

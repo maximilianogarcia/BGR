@@ -6,10 +6,10 @@ package ar.com.bgr.serrano.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.bgr.serrano.dao.MaterialDao;
+import ar.com.bgr.serrano.dao.MaterialDAO;
 import ar.com.bgr.serrano.model.Material;
 
 /**
@@ -22,12 +22,12 @@ import ar.com.bgr.serrano.model.Material;
  * 
  * @since 01/06/2014
  */
-@Component
+@Service
 @Transactional
 public class MaterialService {
 	
 	@Autowired
-	MaterialDao dao;
+	MaterialDAO dao;
 	
 	public Material save(Material material) {
 		return dao.saveOrUpdate(material);
