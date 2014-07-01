@@ -38,7 +38,7 @@ public class PaqueteService {
 	}
 
 	public void markMixed(int id) {
-		// TODO Auto-generated method stub
-		
+		dao.markMixed(id);	
 	}
+
 }

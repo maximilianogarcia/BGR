@@ -46,5 +46,17 @@ public class PresentacionService {
 	
 	public Presentacion activar(Integer id, String message) {
 		return dao.changeState(id,message,Boolean.FALSE);
+	}	
+	
+	public List<Object[]> getStocks(){
+		return dao.getStocks();
+	}
+	
+	public List<Object[]> getStocksByCategory(Integer id){
+		return dao.getStocksByCategory(id);		
+	}
+	
+	public List<Object[]> getStocksByProduct(Integer id){
+		return dao.getStocksByProduct(id);
 	}
 }

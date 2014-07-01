@@ -16,3 +16,15 @@
 /BGR/BGR-Data/bin
 /BGR/BGR-Data/*.classpath
 build
+/BGR/BGR-Data/.gradle/1.10/taskArtifacts/cache.properties
+/BGR/BGR-Data/.gradle/1.10/taskArtifacts/cache.properties.lock
+/BGR/BGR-Services/.gradle/1.10/taskArtifacts/cache.properties
+/BGR/BGR-Services/.gradle/1.10/taskArtifacts/cache.properties.lock
+/BGR/BGR-Services/.settings/org.eclipse.wst.common.component
+/BGR/BGR-Services/.settings/org.eclipse.wst.common.project.facet.core.xml
+/BGR/bin/.gitignore
+/BGR/bin/.gradle/1.10/taskArtifacts/cache.properties
+/BGR/bin/.gradle/1.10/taskArtifacts/cache.properties.lock
+/BGR/bin/.settings/gradle/org.springsource.ide.eclipse.gradle.core.import.prefs
+/BGR/bin/build.gradle
+/BGR/bin/settings.gradle

@@ -99,5 +99,21 @@ public class PresentacionController {
 	public @ResponseBody Presentacion executeActivar(@RequestBody HashMap<String,String> map ) {
        return service.activar(Integer.parseInt(map.get("data")),map.get("message"));
 	}
+	
+	@RequestMapping(value="getStocks",method = RequestMethod.GET)
+	public @ResponseBody List<Object[]> getStocks() {
+       return service.getStocks();
+	}
+	
+	@RequestMapping(value="getStocksByCategoria",method = RequestMethod.POST)
+	public @ResponseBody List<Object[]> getStocksByCategory(@RequestBody Integer id ) {
+       return service.getStocksByCategory(id);
+	}
+	
+	@RequestMapping(value="getStocksByProducto",method = RequestMethod.POST)
+	public @ResponseBody List<Object[]> getStocksByProduct(@RequestBody Integer id ) {
+       return service.getStocksByProduct(id);
+	}
+	
 
 }

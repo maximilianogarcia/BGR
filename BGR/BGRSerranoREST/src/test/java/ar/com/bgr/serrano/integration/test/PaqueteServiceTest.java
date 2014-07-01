@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.bgr.serrano.model.Paquete;
 import ar.com.bgr.serrano.service.PaqueteService;
+import ar.com.bgr.serrano.service.PresentacionService;
 import ar.com.bgr.serrano.utils.PaqueteFromQuery;
 
 /**
@@ -33,6 +34,9 @@ public class PaqueteServiceTest {
 
 	@Autowired
 	PaqueteService service;
+	
+	@Autowired
+	PresentacionService presentacionService;
 	
 	@Test
 	public void testGetDisponibles(){
@@ -57,6 +61,8 @@ public class PaqueteServiceTest {
 	}
 
 	@Test
-	public void testRemove(){
+	public void testStocks(){
+		List<Object[]> list = presentacionService.getStocks();
+		assertNotNull(list);
 	}
 }

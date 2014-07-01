@@ -1,7 +1,5 @@
 package ar.com.bgr.serrano.integration.test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import ar.com.bgr.serrano.controller.util.JsonUtils;
