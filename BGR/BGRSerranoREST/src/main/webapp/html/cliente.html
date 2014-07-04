@@ -350,8 +350,9 @@
 						Calificativo
 				</div>
 				<div class="col-sm-3">
-					<select class="form-control">
-					</select>
+		             <select class="form-control"
+					data-bind="  options: calificativos, optionsText: 'name', optionsValue: 'id', value: selectedCalificativoId"></select>
+	
 				</div>
 		  </div>
           <!-- ko if: formVisible -->

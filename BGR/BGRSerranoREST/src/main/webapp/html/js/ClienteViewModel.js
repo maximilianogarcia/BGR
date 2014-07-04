@@ -1,13 +1,24 @@
 function ClienteViewModel() {
 	var self = this;
 
+	
 	self.formVisible = ko.observable(false);
 	self.createNew = ko.observable(false);
 	self.selected = ko.mapping.fromJS(new Cliente());
 	self.clientes = ko.observableArray();
 	self.utils = new Utils();
 	self.etiquetas = ko.observableArray();
+	self.calificativos = ko.observableArray();
 
+	self.selectedCalificativoId = ko.observable();
+	
+	self.selectedCalificativo = function() {
+       var self = this;
+       return ko.utils.arrayFirst(self.calificativos(), function(item) {
+           return self.selectedCalificativoId() == item.id;
+       });
+	}.bind(this);
+	   
 	self.showable = ko.observable(true);
 
 	self.addTag = function(data) {
@@ -48,22 +59,32 @@ function ClienteViewModel() {
 	self.init = function() {
 		self.utils.getAll(self.initLoad, "/cliente/list");
 		self.utils.getAll(self.etiquetas, "/etiqueta/list");
+		
+		$.getJSON(BASE_REST_URL+"/calificativo/listCliente/", function(data){  
+			 self.calificativos(data);
+		});
 	}
 
 	self.initLoad = function(data) {
+		
 		self.clientes(data);
 
 	}
 
 	self.edit = function(data) {
 		ko.mapping.fromJS(data, self.selected);
+
+		self.selectedCalificativoId(self.selected.calificativo().id());
 		self.formVisible(true);
 		self.createNew(false);
 	}
 
 	self.save = function(data) {
-		$.postJSON(BASE_REST_URL + "/cliente/save",
-				ko.mapping.toJSON(self.selected)).done(self.pushInGrid).fail(
+	    var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
+        serializado.calificativo = self.selectedCalificativo();
+
+		$.postJSON(BASE_REST_URL + "/cliente/save",JSON.stringify(serializado))
+		        .done(self.pushInGrid).fail(
 				function() {
 					alert("Ocurrio un error al salvar");
 				});
@@ -71,22 +92,9 @@ function ClienteViewModel() {
 	}
 
 	self.unTag = function(data) {
-		/*var match = ko.utils.arrayFirst(self.selected.etiquetas(), function(
-				item) {
-			return data.id === item.id();
-		});*/
 		self.selected.etiquetas.remove(data);
 	}
 
-/*	self.removeTag = function(data) {
-		var datos = {};
-		datos.etiqueta = data.id();
-		datos.cliente = self.selected.id();
-		$.deleteJSON(BASE_REST_URL + "/etiqueta/untag", JSON.stringify(datos))
-				.done(self.unTag).fail(function(error) {
-					alert(error.responseText);
-				});
-	}*/
 
 	self.remove = function(data) {
 
@@ -99,19 +107,25 @@ function ClienteViewModel() {
 	}
 
 	self.update = function(data) {
-		self.formVisible(true);
+	    var serializado=JSON.parse(ko.mapping.toJSON(self.selected));
+        serializado.calificativo = self.selectedCalificativo();
 		$.postJSON(BASE_REST_URL + "/cliente/save",
-				ko.mapping.toJSON(self.selected)).done(self.updateGrid).fail(
+				JSON.stringify(serializado)).done(self.updateGrid).fail(
 				function() {
 					alert("Ocurrio un error al salvar");
 				});
 	}
 
 	self.updateGrid = function(data) {
-		self.utils.updateGrid(data, self.clientes);
+		self.utils.updateGrid(ko.myToJSON(data), self.clientes);
 		alert("Actualizado correctamente");
 		self.formVisible(false);
 	}
+	
+	self.replaceClientes = function(origen, destino){
+		
+	}
+	
 
 	self.pushInGrid = function(data) {
 		self.utils.pushInGrid(data, self.clientes);
@@ -157,4 +171,15 @@ function ClienteViewModel() {
 		self.showable(true);
 	}
 
+	ko.observableArray.fn.find = function(prop, data) {
+		var valueToMatch = data[prop]; 
+		return ko.utils.arrayFirst(this(), function(item) {
+			return item[prop] === valueToMatch; 
+		});
+	};
 }
+
+/**
+ * Busqueda en un array observable
+ * @author maxi
+ */
