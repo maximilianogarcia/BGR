@@ -1,3 +1,4 @@
+
 function ClienteViewModel() {
 	var self = this;
 
@@ -117,9 +118,16 @@ function ClienteViewModel() {
 	}
 
 	self.updateGrid = function(data) {
-		self.utils.updateGrid(ko.myToJSON(data), self.clientes);
+	/*	self.utils.updateGrid(ko.myToJSON(data), self.clientes);
 		alert("Actualizado correctamente");
-		self.formVisible(false);
+		self.formVisible(false);*/
+		self.utils.getAll(
+				function(data){
+					self.clientes(data);
+					alert("Actualizado Correctamente");	
+				}
+				, "/cliente/list");
+
 	}
 	
 	self.replaceClientes = function(origen, destino){
@@ -128,9 +136,17 @@ function ClienteViewModel() {
 	
 
 	self.pushInGrid = function(data) {
-		self.utils.pushInGrid(data, self.clientes);
+	/*	self.utils.pushInGrid(data, self.clientes);
 		alert("Guardado correctamente");
-		self.formVisible(false);
+		self.formVisible(false);*/
+		
+		self.utils.getAll(
+				function(data){
+					self.clientes(data);
+					alert("Guardado Correctamente");	
+				}
+				, "/cliente/list");
+
 	}
 
 	self.removeFromGrid = function(data) {

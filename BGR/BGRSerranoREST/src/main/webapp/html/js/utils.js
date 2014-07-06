@@ -119,9 +119,9 @@ function Utils(){
 				var value = valueAccessor();
 				ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
 			}
-		};
+		};	
+}
 
-	
-	
-	
+alert = function(data){
+	BootstrapDialog.alert(data)
 }
