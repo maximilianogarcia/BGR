@@ -19,3 +19,4 @@
 /BGR/BGR-Data/bin
 /BGR/BGR-Data/*.classpath
 build
+/BGR/BGR-Services/.classpath
