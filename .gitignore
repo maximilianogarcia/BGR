@@ -28,3 +28,5 @@ build
 /BGR/bin/.settings/gradle/org.springsource.ide.eclipse.gradle.core.import.prefs
 /BGR/bin/build.gradle
 /BGR/bin/settings.gradle
+/BGR/BGR-Services/.classpath
+/BGR/BGR-Services/.settings
