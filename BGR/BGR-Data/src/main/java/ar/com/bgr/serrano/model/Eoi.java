@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -51,6 +52,12 @@ public class Eoi {
 	@Type(type = "true_false")
 	private Boolean active;
 
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "calificativo_id", nullable = false)
+	private Calificativo calificativo;
+	
+	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "etiquetas_eoi",  joinColumns = { 
 			@JoinColumn(name = "EOI_ID", nullable = false, updatable = false) }, 
@@ -136,5 +143,13 @@ public class Eoi {
 
 	public void setEtiquetas(Set<Etiqueta> etiquetas) {
 		this.etiquetas = etiquetas;
+	}
+
+	public Calificativo getCalificativo() {
+		return calificativo;
+	}
+
+	public void setCalificativo(Calificativo calificativo) {
+		this.calificativo = calificativo;
 	}
 }

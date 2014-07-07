@@ -16,6 +16,7 @@
 /BGR/BGR-Data/bin
 /BGR/BGR-Data/*.classpath
 build
+<<<<<<< HEAD
 /BGR/BGR-Data/.gradle/1.10/taskArtifacts/cache.properties
 /BGR/BGR-Data/.gradle/1.10/taskArtifacts/cache.properties.lock
 /BGR/BGR-Services/.gradle/1.10/taskArtifacts/cache.properties
@@ -30,3 +31,6 @@ build
 /BGR/bin/settings.gradle
 /BGR/BGR-Services/.classpath
 /BGR/BGR-Services/.settings
+=======
+/BGR/BGR-Services/.classpath
+>>>>>>> master

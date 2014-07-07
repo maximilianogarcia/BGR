@@ -17,6 +17,8 @@ function Cliente(){
 
 	self.observaciones= ko.observable();
 
+	self.calificativo= ko.observable();
+
 	self.active= ko.observable(true);
 
 	self.etiquetas= ko.observableArray();

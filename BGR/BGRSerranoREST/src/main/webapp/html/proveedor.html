@@ -343,6 +343,16 @@
                 <input class=" form-control" data-bind="value: selected.observaciones"  type="text" placeholder="Observaciones"></input>
                 </div>
           </div>
+          <div class="row margenArriba">
+				<div class="col-sm-2 text-right ">
+						Calificativo
+				</div>
+				<div class="col-sm-3">
+		             <select class="form-control"
+					data-bind="  options: calificativos, optionsText: 'name', optionsValue: 'id', value: selectedCalificativoId"></select>
+	
+				</div>
+		  </div>
           <!-- ko if: formVisible -->
 	          <div class="row margenArriba panel panel-default ">
 	          <div class="panel-heading">

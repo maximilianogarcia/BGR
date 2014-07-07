@@ -1,3 +1,4 @@
+
 /**
 * soporte extendido para JSON ajax_request.
 * 
@@ -75,7 +76,6 @@ function Utils(){
 	
 	
 	self.pushInGrid  = function(data, grid) {
-		var id = data.id;
 		grid.push(data);
 	}
 	self.removeFromGrid  = function(data, grid) {
@@ -91,13 +91,14 @@ function Utils(){
 	}
 	
 	self.updateGrid= function(data, grid) {
-		var id = data.id;
+		var id = ko.toJS(data).id;
 		var innerArray = grid();
 		
 	    for (var i = 0, len = innerArray.length; i < len; ++i) {
 	        var item = innerArray[i];
 	        if(item.id == id){
-	        	grid.replace(grid()[i], data);	        	
+	        	grid.remove(grid()[i]);
+	        	grid.push(data);
 	        }
 	    }		
 	}
@@ -118,8 +119,10 @@ function Utils(){
 				var value = valueAccessor();
 				ko.unwrap(value) ? $(element).fadeIn() : $(element).fadeOut();
 			}
-		};
+		};	
+}
 
+<<<<<<< HEAD
 	
 	
 	
@@ -130,3 +133,8 @@ function closeMe(val){
 	$(val).attr("type", "text");
 	$(val).attr("type", "date");
  }
+=======
+alert = function(data){
+	BootstrapDialog.alert(data)
+}
+>>>>>>> master

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -28,6 +29,7 @@ public class EOIDAO extends AbstractDAO<Eoi>{
 		criteria.add(Restrictions.eq("type", PROVEEDOR));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.add(Restrictions.eq("active", true));
+		criteria.addOrder(Order.desc("name"));
 		return  (List<Eoi>)criteria.list();
 	}
 	public Eoi getProveedorById(int id){
@@ -84,6 +86,7 @@ public class EOIDAO extends AbstractDAO<Eoi>{
 		criteria.add(Restrictions.eq("type", CLIENTE));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.add(Restrictions.eq("active", true));
+		criteria.addOrder(Order.desc("name"));
 		return  (List<Eoi>)criteria.list();
 	}
 	public Eoi getClienteById(int id){

@@ -6,7 +6,7 @@ function CalificativoViewModel() {
 	self.selected = ko.mapping.fromJS(new Calificativo());
 	self.utils = new Utils();
 	self.calificativos= ko.observableArray();
-	self.typeSelected = ko.observable({"id":"1","name":"CLIENTE"});
+	self.typeSelected = ko.observable();
 	
 	self.calificativosTypes = ko.observableArray(
 			[
@@ -17,12 +17,23 @@ function CalificativoViewModel() {
 
 	self.showable = ko.observable(false);
 
-	self.init = function() {
+	self.init = function(tipo) {
 		var nuevo = new Calificativo();
+		var url = "";
+		if(tipo=="PROVEEDOR"){
+			self.typeSelected({"id":"2","name":"PROVEEDOR"});
+			url= BASE_REST_URL+"/calificativo/listProveedor/"
+		}else{
+			self.typeSelected({"id":"1","name":"CLIENTE"})
+			url= BASE_REST_URL+"/calificativo/listCliente/"
+		}
 		nuevo.type(self.typeSelected().name);
+		
 		ko.mapping.fromJS(nuevo, self.selected);
+		
+		
 		self.formVisible(false);
-		$.getJSON(BASE_REST_URL+"/calificativo/listCliente/", function(data){  
+		$.getJSON(url, function(data){  
 			 self.calificativos(data);
 			 self.showable(true);
 		});
@@ -136,6 +147,21 @@ function CalificativoViewModel() {
 	}
 
 	ko.bindingHandlers.fadeVisible =self.utils.fadeVisible;  
-
 	
+	self.lala = function(data){
+		location.hash = self.typeSelected().name + "="+ self.selected.id();
+		
+	};
+    Sammy(function() {
+    	this.get('#:type=:calId', function() {
+    		alert(this.params.calId);
+    	});
+        this.get('#:type', function() {
+        	self.init(this.params.type)
+        });
+
+        this.get('', function() { this.app.runRoute('get', '#CLIENTE') });
+    }).run();    
+	
+
 }
