@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.bgr.serrano.dao3;
+package ar.com.bgr.serrano.dao;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;

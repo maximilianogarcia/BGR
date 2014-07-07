@@ -1,4 +1,4 @@
-package ar.com.bgr.serrano.dao3;
+package ar.com.bgr.serrano.dao;
 
 import java.util.Set;
 
