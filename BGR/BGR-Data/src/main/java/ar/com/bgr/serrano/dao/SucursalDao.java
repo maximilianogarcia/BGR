@@ -12,12 +12,12 @@ import ar.com.bgr.serrano.model.Contacto;
 import ar.com.bgr.serrano.model.Sucursal;
 
 @Repository
-public class SucursalDao extends AbstractDAO<Sucursal>{
+public class SucursalDAO extends AbstractDAO<Sucursal>{
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	public SucursalDao() {
+	public SucursalDAO() {
 		setClasz(Sucursal.class);
 	}
 
