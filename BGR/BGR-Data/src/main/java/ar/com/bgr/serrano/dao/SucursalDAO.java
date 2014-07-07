@@ -1,4 +1,4 @@
-package ar.com.bgr.serrano.dao.exception;
+package ar.com.bgr.serrano.dao;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import ar.com.bgr.serrano.dao.AbstractDAO;
 import ar.com.bgr.serrano.model.Contacto;
 import ar.com.bgr.serrano.model.Sucursal;
 
