@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.bgr.serrano.dao.SucursalDao;
+import ar.com.bgr.serrano.dao.SucursalDAO;
 import ar.com.bgr.serrano.model.Contacto;
 import ar.com.bgr.serrano.model.Sucursal;
 
@@ -15,7 +15,7 @@ import ar.com.bgr.serrano.model.Sucursal;
 public class SucursalService {
 
 	@Autowired
-	SucursalDao dao;
+	SucursalDAO dao;
 	
 	public Sucursal save(Sucursal sucursal) {
 		return dao.saveOrUpdate(sucursal);
