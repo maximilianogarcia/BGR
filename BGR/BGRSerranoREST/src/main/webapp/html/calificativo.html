@@ -52,6 +52,7 @@
 <script type='text/javascript' src='lib/knockout-3.1.0.js'></script>
 <script type='text/javascript' src='lib/knockout-mapping.js'></script>
 <script type='text/javascript' src='lib/knockout-bootstrap.min.js'></script>
+<script type='text/javascript' src='lib/sammy.js'></script>
 
 <script type='text/javascript' src='js/CalificativoViewModel.js'></script>
 <script type='text/javascript' src='js/Calificativo.js'></script>
@@ -67,10 +68,10 @@
 
 <script type='text/javascript'>
 	$(document).ready(function() {
-		model = new CalificativoViewModel()
-		model.init();
+		calModel = new CalificativoViewModel()
+		//calModel.init();
 
-		ko.applyBindings(model);
+        ko.applyBindings(calModel, document.getElementById("calificativoView"));
 
 	});
 </script>
@@ -116,6 +117,7 @@
 
 
 
+<div id="calificativoView" >
 	<div class="container" data-bind="visible: showable">
 
 
@@ -148,13 +150,16 @@
 						<i class="glyphicon glyphicon-remove "></i> Cancel
 					</button>
 				</div>
-				<div class="col-sm-6"></div>
-				<div class="col-sm-3 text-right">
+				<div class="col-sm-5"></div>
+				<div class="col-sm-4 text-right">
 					<!-- ko if: createNew -->
 					<button class="btn btn-primary" data-bind="click:save">Aceptar</button>
 					<!-- /ko -->
 					<!-- ko ifnot: createNew -->
-					<button class="btn btn-success" data-bind="click:update">Aceptar</button>
+						<!-- ko if: typeSelected.id = 1  -->
+							<button class="btn btn-default" data-bind="click:lala">Lista de precios</button>
+						<!-- /ko -->
+						<button class="btn btn-success" data-bind="click:update">Aceptar</button>
 					<button class="btn btn-danger" data-bind="click:remove">Borrar</button>
 					<!-- /ko -->
 				</div>
@@ -178,6 +183,8 @@
 			</tbody>
 		</table>
 	</div>
+
+</div>
 
 
 </body>

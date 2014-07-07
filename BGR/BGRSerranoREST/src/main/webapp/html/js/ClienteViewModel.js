@@ -193,6 +193,10 @@ function ClienteViewModel() {
 			return item[prop] === valueToMatch; 
 		});
 	};
+	
+	
+
+	
 }
 
 /**
