@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.bgr.serrano.dao;
+package ar.com.bgr.serrano.dao3;
 
 import java.util.List;
 import java.util.TreeSet;
