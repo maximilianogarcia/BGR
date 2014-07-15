@@ -55,7 +55,8 @@ function StockViewModel() {
 		   done(function(result) { 
 			   self.productos(result);
 		   });
-		   $.postJSON(BASE_REST_URL+"/presentacion/getStocksByCategoria", JSON.stringify(self.selectedCategoria()) ).
+		   
+		   $.getJSON(BASE_REST_URL+"/presentacion/getStocksByCategoria/"+ self.selectedCategoria().id).
 		   done(function(result) { 
 			   ko.mapping.fromJS( result, self.stocks);
 		   });

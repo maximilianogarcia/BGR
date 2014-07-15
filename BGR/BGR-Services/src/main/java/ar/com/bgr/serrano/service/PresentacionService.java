@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.com.bgr.serrano.dao.PaqueteDAO;
 import ar.com.bgr.serrano.dao.PresentacionDAO;
+import ar.com.bgr.serrano.model.Paquete;
 import ar.com.bgr.serrano.model.Presentacion;
 
 @Service
@@ -15,9 +17,20 @@ public class PresentacionService {
 
 	@Autowired
 	PresentacionDAO dao;
+	@Autowired
+	PaqueteDAO paqueteDAO;
 	
 	public Presentacion save(Presentacion presentacion) {
-		return dao.saveOrUpdate(presentacion);
+		Presentacion pres = dao.saveOrUpdate(presentacion);
+		
+		for (int i =0; i< presentacion.getCantidad_paquetes(); i++){
+			Paquete paquete = new Paquete();
+			paquete.setPresentacion_id(presentacion.getId());
+			paquete.setCodigo("un codigo");
+			paquete.setEstado("DISPONIBLE");
+			paqueteDAO.saveOrUpdate(paquete);
+		}
+		return pres;
 	}
 
 	public List<Presentacion> list() {

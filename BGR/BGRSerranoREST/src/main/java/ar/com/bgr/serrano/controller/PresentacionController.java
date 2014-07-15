@@ -105,8 +105,8 @@ public class PresentacionController {
        return service.getStocks();
 	}
 	
-	@RequestMapping(value="getStocksByCategoria",method = RequestMethod.POST)
-	public @ResponseBody List<Object[]> getStocksByCategory(@RequestBody Integer id ) {
+	@RequestMapping(value="getStocksByCategoria/{categoriaID}",method = RequestMethod.GET)
+	public @ResponseBody List<Object[]> getStocksByCategory(@PathVariable("categoriaID") Integer id ) {
        return service.getStocksByCategory(id);
 	}
 	
