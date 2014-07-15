@@ -6,6 +6,7 @@ package ar.com.bgr.serrano.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ar.com.bgr.serrano.dao.exception.ConstraintViolatedException;
 import ar.com.bgr.serrano.model.Categoria;
 import ar.com.bgr.serrano.service.CategoriaService;
 
@@ -63,7 +65,11 @@ public class CategoriaController {
      */
 	@RequestMapping(value="delete",method = RequestMethod.DELETE)
 	public @ResponseBody Boolean execute(@RequestBody Integer id) {
-       service.remove(id);
+		try {
+    	   service.remove(id);
+		}catch(DataIntegrityViolationException e){
+			throw new ConstraintViolatedException();
+		}
        return true;
 	}
 }

@@ -28,6 +28,7 @@
 
     <script type='text/javascript'>
        $(document).ready(function(){
+    	    $("#navigationBar").load("navigationBar.html"); 
             viewModel = new MaterialViewModel();
             viewModel.apply();
        });
@@ -35,29 +36,9 @@
    
   </head>
   <body>
-
+    <div id="navigationBar"></div>
 
     <div class="container">
-
-
-
-      <div class="navbar navbar-default" role="navigation">
-        
-        <div class="navbar-collapse in collapse" style="height: auto;">
-           <ul class="nav navbar-nav">
-            <li ><a href="categoria.html">Categorias</a></li>
-            <li><a href="unidadMedida.html">Unidades de medida</a></li>
-            <li><a href="producto.html">Productos</a></li>
-            <li><a href="lote.html">Lotes</a></li>
-            <li class="active"><a href="#">Materiales de presentacion</a></li>
-            <li><a href="presentacion.html">Presentaciones</a></li>
-            <li><a href="mixGrid.html">Mixes</a></li>
-            <li><a href="stock.html">Stock</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-
-
 
         <h3>Edicion de materiales de presentaci&oacute;n</h3>
 

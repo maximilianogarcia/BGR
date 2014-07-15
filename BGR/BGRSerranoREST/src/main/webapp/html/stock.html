@@ -32,9 +32,11 @@
     <script type='text/javascript'  src='js/Stock.js'></script>    
     <script type='text/javascript'  src='js/CategoriaViewModel.js'></script>
     <script type='text/javascript'  src='js/StockViewModel.js'></script>
+    <script type='text/javascript'  src='bootstrap/js/bootstrap.min.js'></script>
 
     <script type='text/javascript'>
        $(document).ready(function(){
+    	    
             viewModel = new StockViewModel();
             viewModel.apply();
             jQuery.expr[":"].Contains = jQuery.expr.createPseudo(function(arg) {
@@ -61,29 +63,16 @@
                     return false;
                 }).show();
             });
+            
+            $("#navigationBar").load("navigationBar.html"); 
        });
        
     </script>
    
   </head>
   <body>
+    <div id="navigationBar"></div>
     <div class="container">
-
-      <div class="navbar navbar-default" role="navigation">
-        
-        <div class="navbar-collapse in collapse" style="height: auto;">
-           <ul class="nav navbar-nav">
-            <li><a href="categoria.html">Categorias</a></li>
-            <li><a href="unidadMedida.html">Unidades de medida</a></li>
-            <li><a href="producto.html">Productos</a></li>
-            <li><a href="lote.html">Lotes</a></li>
-            <li><a href="material.html">Materiales de presentacion</a></li>
-            <li><a href="presentacion.html">Presentaciones</a></li>
-            <li><a href="mixGrid.html">Mixes</a></li>
-            <li class="active"><a href="#">Stock</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
 
         <h3>Consultar stock</h3>
 
@@ -99,23 +88,23 @@
                    <input class="input-large search-query" id="search"/>
               </span>
               <div class="grid">
-             <table id ="table" class="table table-hover">
-                  <thead><tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Total de KG</th><th>Presentacion</th>
-                  <th>lote</th><th>Fecha de elaboracion</th><th>fecha de vencimiento</th></tr></thead>
-                  <tbody data-bind="foreach: stocks">
-                      <tr>
-                          <td data-bind="text: producto"></td>
-                          <td data-bind="text: stock"></td>
-                          <td data-bind="text: medida"></td>
-                          <td data-bind="text: kgTotal"></td>
-                          <td data-bind="text: presentacion"></td>
-                          <td data-bind="text: lote"></td>
-                          <td data-bind="text: elaboracion"></td>
-                          <td data-bind="text: vencimiento"></td>
-                      </tr>     
-                  </tbody>
-              </table>
-</div>
+	             <table id ="table" class="table table-hover">
+	                  <thead><tr><th>Producto</th><th>Cantidad</th><th>Unidad</th><th>Total de KG</th><th>Presentacion</th>
+	                  <th>lote</th><th>Fecha de elaboracion</th><th>fecha de vencimiento</th></tr></thead>
+	                  <tbody data-bind="foreach: stocks">
+	                      <tr>
+	                          <td data-bind="text: producto"></td>
+	                          <td data-bind="text: stock"></td>
+	                          <td data-bind="text: medida"></td>
+	                          <td data-bind="text: kgTotal"></td>
+	                          <td data-bind="text: presentacion"></td>
+	                          <td data-bind="text: lote"></td>
+	                          <td data-bind="text: elaboracion"></td>
+	                          <td data-bind="text: vencimiento"></td>
+	                      </tr>     
+	                  </tbody>
+	              </table>
+			 </div>
       </div>
   </body>
 </html>
