@@ -41,4 +41,21 @@ public class EtiquetaController {
 	public @ResponseBody Etiqueta create(@RequestBody String name) {
 		return service.create(name);
 	}
+
+	/**
+	 * Actualiza etiqueta
+	 */
+	@RequestMapping(value="update", method = RequestMethod.POST)
+	public @ResponseBody Etiqueta create(@RequestBody Etiqueta etiqueta) {
+		return service.save(etiqueta);
+	}
+	
+
+	/**
+	 * elimina una etiqueta
+	 */
+	@RequestMapping(value="remove", method = RequestMethod.DELETE)
+	public @ResponseBody Boolean delete(@RequestBody Integer id) {
+		return service.remove(id);
+	}
 }

@@ -45,4 +45,12 @@ public class EtiquetaDAO extends AbstractDAO<Etiqueta>{
 		}
 		return null;
 	}
+	
+	public void remove(int id){
+		
+		String query = "delete from etiquetas_eoi where ETIQUETA_ID="+ id;
+	    getCurrentSession().createSQLQuery(query).executeUpdate();
+	    super.remove(id);
+
+	}
 }

@@ -148,20 +148,10 @@ function CalificativoViewModel() {
 
 	ko.bindingHandlers.fadeVisible =self.utils.fadeVisible;  
 	
-	self.lala = function(data){
+	self.listaDePrecios = function(data){
 		location.hash = self.typeSelected().name + "="+ self.selected.id();
 		
 	};
-    Sammy(function() {
-    	this.get('#:type=:calId', function() {
-    		alert(this.params.calId);
-    	});
-        this.get('#:type', function() {
-        	self.init(this.params.type)
-        });
-
-        this.get('', function() { this.app.runRoute('get', '#CLIENTE') });
-    }).run();    
-	
+ 
 
 }

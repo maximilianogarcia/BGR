@@ -30,8 +30,9 @@ public class EtiquetaService {
 		return dao.list();
 	}
 
-	public void remove(int id) {
-		dao.remove(id);		
+	public Boolean remove(int id) {
+		dao.remove(id);	
+		return true;
 	}
 	public Etiqueta unTag(int etiquetaId, int eoiId) {
 		return dao.unTag(etiquetaId,eoiId);		
@@ -40,4 +41,5 @@ public class EtiquetaService {
 	public Etiqueta getById(int id) {
 		return dao.getById(id);
 	}
+
 }

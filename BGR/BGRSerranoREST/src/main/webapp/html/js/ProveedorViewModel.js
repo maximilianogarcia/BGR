@@ -1,5 +1,4 @@
 function ProveedorViewModel() {
-<<<<<<< HEAD
 	
    var self = this;
    
@@ -17,11 +16,7 @@ function ProveedorViewModel() {
    	      done(function(result) { destino(result); alert("Guardado correctamente");}).
    	      fail(function(){ alert("Ocurrio un error al salvar"); });
    }
-=======
-	var self = this;
 
-	
->>>>>>> master
 	self.formVisible = ko.observable(false);
 	self.createNew = ko.observable(false);
 	self.selected = ko.mapping.fromJS(new Proveedor());

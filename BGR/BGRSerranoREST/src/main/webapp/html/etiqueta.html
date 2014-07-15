@@ -42,6 +42,10 @@
 	cursor: pointer;
 	cursor: hand;
 }
+.etiquetaList{
+	background: #efe;
+	margin-top: 4px;
+}
 
 .padeado {
 	padding: 0.5em;
@@ -53,8 +57,8 @@
 <script type='text/javascript' src='lib/knockout-mapping.js'></script>
 <script type='text/javascript' src='lib/knockout-bootstrap.min.js'></script>
 
-<script type='text/javascript' src='js/CalificativoViewModel.js'></script>
-<script type='text/javascript' src='js/Calificativo.js'></script>
+<script type='text/javascript' src='js/EtiquetaViewModel.js'></script>
+<script type='text/javascript' src='js/Etiqueta.js'></script>
 
 
 
@@ -67,10 +71,10 @@
 
 <script type='text/javascript'>
 	$(document).ready(function() {
-		calModel = new CalificativoViewModel()
-		calModel.init();
+		etiquetaModel = new EtiquetaViewModel()
+		etiquetaModel.init();
 
-        ko.applyBindings(calModel, document.getElementById("calificativoView"));
+        ko.applyBindings(etiquetaModel, document.getElementById("etiquetaView"));
 
 	});
 </script>
@@ -101,8 +105,8 @@
 							<li><a href="proveedor.html">Proveedores</a></li>
 							<li class="divider"></li>
 							<li class="dropdown-header">Settings</li>
-							<li class="active"><a href="#">Calificativos</a></li>
-							<li><a href="etiqueta.html">Etiquetas</a></li>
+							<li ><a href="calificativo.html">Calificativos</a></li>
+							<li class="active"><a href="#">Etiquetas</a></li>
 						</ul></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -116,21 +120,13 @@
 
 
 
-<div id="calificativoView" >
+<div id="etiquetaView" >
 	<div class="container" data-bind="visible: showable">
 
 
-		<h2>Calificativos</h2>
-		
-		<div class="row show-grid bs-docs-grid ">
-			<div class="col-sm-1">
-				<button class="btn btn-default"	data-bind="click: create, disable:formVisible">Crear</button>
-			</div>
-			<div class="col-sm-2">
-				<select class="form-control"
-					data-bind=" disable:formVisible, options: calificativosTypes, optionsText: 'name', value: typeSelected ,  event:{ change: change}"></select>
-			</div>
-		</div>
+		<h2>Etiquetas</h2>
+
+		 <button class="btn btn-default" data-bind="click: create, disable:formVisible">Crear</button>
 		
 		<form action="#" class="container margenArriba "
 			data-bind="fadeVisible: formVisible">
@@ -155,9 +151,6 @@
 					<button class="btn btn-primary" data-bind="click:save">Aceptar</button>
 					<!-- /ko -->
 					<!-- ko ifnot: createNew -->
-						<!-- ko if: typeSelected.id = 1  -->
-							<button class="btn btn-default" data-bind="click:listaDePrecios">Lista de precios</button>
-						<!-- /ko -->
 						<button class="btn btn-success" data-bind="click:update">Aceptar</button>
 					<button class="btn btn-danger" data-bind="click:remove">Borrar</button>
 					<!-- /ko -->
@@ -166,21 +159,17 @@
 		</form>
 	</div>
 
-	<div class="grid container" data-bind="visible: showable">
-		<table class="container table table-hover">
-			<thead>
-				<tr>
-					<th>Nombre</th>
-					<th>tipo</th>
-				</tr>
-			</thead>
-			<tbody data-bind="foreach: calificativos">
-				<tr data-bind="click: $root.edit">
-					<td data-bind="text: name"></td>
-					<td data-bind="text: type"></td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="grid container margenArriba" data-bind="visible: showable">
+
+	     <div class="" data-bind="foreach: etiquetas">
+				<div class="etiquetaList" data-bind="click:$root.edit " >
+				      <i class="glyphicon glyphicon-tag "></i>
+				      <span data-bind="text: name"></span>
+				      <br>
+				      <br>
+				</div>
+		</div>
+
 	</div>
 
 </div>

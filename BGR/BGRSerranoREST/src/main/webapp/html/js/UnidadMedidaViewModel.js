@@ -38,7 +38,9 @@ function UnidadMedidaViewModel() {
    
    self.save = function(){
     var $myForm = $('#editUnityForm');
-    self.selected.deriva_de(self.selectedMedida());
+    if(self.selectedMedida()){    	
+    	self.selected.deriva_de(self.selectedMedida());
+    }
     if ($myForm[0].checkValidity()) {
     	
     	$.postJSON(BASE_REST_URL+"/unidadDeMedida/save",self.serialized()).done(function(result) { 
