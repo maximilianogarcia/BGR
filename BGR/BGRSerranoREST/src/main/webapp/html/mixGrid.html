@@ -42,6 +42,7 @@
 
     <script type='text/javascript'>
        $(document).ready(function(){
+    	    $("#navigationBar").load("navigationBar.html");
             viewModel = new MixViewModel();
             viewModel.apply();
        });
@@ -50,24 +51,8 @@
   </head>
   <body>
 
-       
+    <div id="navigationBar"></div>   
     <div class="container">
-      <div class="navbar navbar-default" role="navigation">
-        
-        <div class="navbar-collapse in collapse" style="height: auto;">
-           <ul class="nav navbar-nav">
-            <li><a href="categoria.html">Categorias</a></li>
-            <li><a href="unidadMedida.html">Unidades de medida</a></li>
-            <li><a href="producto.html">Productos</a></li>
-            <li><a href="lote.html">Lotes</a></li>
-            <li><a href="material.html">Materiales de presentacion</a></li>
-            <li><a href="presentacion.html">Presentaciones</a></li>
-            <li class="active"><a href="#">Mixes</a></li>
-            <li><a href="stock.html">Stock</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-
         <h3>Mix de productos</h3>
 			<div class="container">
 	            <a href="mix.html" class="btn btn-default" >Agregar</a>

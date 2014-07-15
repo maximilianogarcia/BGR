@@ -2,6 +2,7 @@ package ar.com.bgr.serrano.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,7 +33,7 @@ public class Mix {
     @JoinColumn(name="unidad_de_medida_id")
     private UnidadDeMedida unidad_de_medida;
 
-	@ManyToOne(fetch = FetchType.EAGER)	
+	@ManyToOne(fetch = FetchType.EAGER, cascade=CascadeType.ALL)	
 	@JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 

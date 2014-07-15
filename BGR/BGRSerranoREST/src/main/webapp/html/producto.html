@@ -47,7 +47,7 @@
 
     <script type='text/javascript'>
        $(document).ready(function(){
-
+    	    $("#navigationBar").load("navigationBar.html"); 
             viewModel = new ProductoViewModel();
             viewModel.apply();
 
@@ -58,16 +58,7 @@
   </head>
   <body>
 
-
-
-
-
-
-
-
-
-
-
+	<div id="navigationBar"></div>
 
        <div class="modal fade" id="editPrecioReposicion" style="display: none;">
           <div class="modal-dialog">
@@ -184,23 +175,6 @@
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
     <div class="container">
-
-      <div class="navbar navbar-default" role="navigation">
-        
-        <div class="navbar-collapse in collapse" style="height: auto;">
-           <ul class="nav navbar-nav">
-            <li ><a href="categoria.html">Categorias</a></li>
-            <li><a href="unidadMedida.html">Unidades de medida</a></li>
-            <li class="active"><a href="#">Productos</a></li>
-            <li><a href="lote.html">Lotes</a></li>
-            <li><a href="material.html">Materiales de presentacion</a></li>
-            <li><a href="presentacion.html">Presentaciones</a></li>
-            <li><a href="mixGrid.html">Mixes</a></li>
-            <li><a href="stock.html">Stock</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-
 
         <h3>Edicion de productos</h3>
         <input type="button" data-bind="click: create" value="Agregar" class="btn btn-default"/>

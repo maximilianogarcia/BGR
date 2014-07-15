@@ -1,5 +1,6 @@
 package ar.com.bgr.serrano.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.bgr.serrano.dao.CategoriaDAO;
+import ar.com.bgr.serrano.dao.exception.ConstraintViolatedException;
 import ar.com.bgr.serrano.model.Categoria;
 
 @Service
@@ -25,7 +27,7 @@ public class CategoriaService {
 	}
 
 	public void remove(int id) {
-		dao.remove(id);		
+		dao.remove(id);
 	}
 	
 	public Categoria getById(int id) {
