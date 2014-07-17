@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.bgr.serrano.model.Paquete;
+import ar.com.bgr.serrano.model.Stock;
 import ar.com.bgr.serrano.service.PaqueteService;
 import ar.com.bgr.serrano.service.PresentacionService;
 import ar.com.bgr.serrano.utils.PaqueteFromQuery;
@@ -62,7 +63,7 @@ public class PaqueteServiceTest {
 
 	@Test
 	public void testStocks(){
-		List<Object[]> list = presentacionService.getStocks();
+		List<Stock> list = presentacionService.getStocks();
 		assertNotNull(list);
 	}
 }

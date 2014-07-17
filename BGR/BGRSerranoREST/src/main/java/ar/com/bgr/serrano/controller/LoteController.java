@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ar.com.bgr.serrano.model.Lote;
-import ar.com.bgr.serrano.model.Producto;
 import ar.com.bgr.serrano.service.LoteService;
 
 /**
@@ -71,9 +70,9 @@ public class LoteController {
 	/**
 	 * Lista todas las lotes de un producto. 
 	 */
-	@RequestMapping(value="getLotesByProducto",method = RequestMethod.GET)
-	public @ResponseBody List<Lote> executeLotesByProducto(Producto producto) {
-		return service.getLotesByProducto(producto);
+	@RequestMapping(value="getLotesByProducto/{productoId}",method = RequestMethod.GET)
+	public @ResponseBody List<Lote> executeLotesByProducto(@PathVariable("productoId")Integer id) {
+		return service.getLotesByProducto(id);
 	}
 	
 	/**

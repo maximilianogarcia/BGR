@@ -19,19 +19,19 @@
 <tr>
 <td>
 <div class="infoBox" id="tests">
-<div class="counter">16</div>
+<div class="counter">25</div>
 <p>tests</p>
 </div>
 </td>
 <td>
 <div class="infoBox" id="failures">
-<div class="counter">0</div>
+<div class="counter">6</div>
 <p>failures</p>
 </div>
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">25.571s</div>
+<div class="counter">8.000s</div>
 <p>duration</p>
 </div>
 </td>
@@ -40,8 +40,8 @@
 </div>
 </td>
 <td>
-<div class="infoBox success" id="successRate">
-<div class="percent">100%</div>
+<div class="infoBox failures" id="successRate">
+<div class="percent">76%</div>
 <p>successful</p>
 </div>
 </td>
@@ -51,13 +51,45 @@
 <div id="tabs">
 <ul class="tabLinks">
 <li>
-<a href="#tab0">Packages</a>
+<a href="#tab0">Failed tests</a>
 </li>
 <li>
-<a href="#tab1">Classes</a>
+<a href="#tab1">Packages</a>
+</li>
+<li>
+<a href="#tab2">Classes</a>
 </li>
 </ul>
 <div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<ul class="linkList">
+<li>
+<a href="classes/ar.com.bgr.serrano.integration.test.ProductoProveedorTest.html">ProductoProveedorTest</a>.
+<a href="classes/ar.com.bgr.serrano.integration.test.ProductoProveedorTest.html#testRemove">testRemove</a>
+</li>
+<li>
+<a href="classes/ar.com.bgr.serrano.integration.test.ProductoProveedorTest.html">ProductoProveedorTest</a>.
+<a href="classes/ar.com.bgr.serrano.integration.test.ProductoProveedorTest.html#testRemoveProduct">testRemoveProduct</a>
+</li>
+<li>
+<a href="classes/ar.com.bgr.serrano.integration.test.ProductoServiceTest.html">ProductoServiceTest</a>.
+<a href="classes/ar.com.bgr.serrano.integration.test.ProductoServiceTest.html#testGetById">testGetById</a>
+</li>
+<li>
+<a href="classes/ar.com.bgr.serrano.integration.test.ProductoServiceTest.html">ProductoServiceTest</a>.
+<a href="classes/ar.com.bgr.serrano.integration.test.ProductoServiceTest.html#testSave">testSave</a>
+</li>
+<li>
+<a href="classes/ar.com.bgr.serrano.integration.test.SucursalServiceTest.html">SucursalServiceTest</a>.
+<a href="classes/ar.com.bgr.serrano.integration.test.SucursalServiceTest.html#initializationError">initializationError</a>
+</li>
+<li>
+<a href="classes/ar.com.bgr.serrano.integration.test.jsonConvertTest.html">jsonConvertTest</a>.
+<a href="classes/ar.com.bgr.serrano.integration.test.jsonConvertTest.html#test">test</a>
+</li>
+</ul>
+</div>
+<div id="tab1" class="tab">
 <h2>Packages</h2>
 <table>
 <thead>
@@ -71,18 +103,18 @@
 </thead>
 <tbody>
 <tr>
-<td class="success">
+<td class="failures">
 <a href="packages/ar.com.bgr.serrano.integration.test.html">ar.com.bgr.serrano.integration.test</a>
 </td>
-<td>16</td>
-<td>0</td>
-<td>25.571s</td>
-<td class="success">100%</td>
+<td>25</td>
+<td>6</td>
+<td>8.000s</td>
+<td class="failures">76%</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="tab1" class="tab">
+<div id="tab2" class="tab">
 <h2>Classes</h2>
 <table>
 <thead>
@@ -100,7 +132,7 @@
 <a href="classes/ar.com.bgr.serrano.integration.test.CalificativoServiceTest.html">ar.com.bgr.serrano.integration.test.CalificativoServiceTest</a>
 <td>3</td>
 <td>0</td>
-<td>17.647s</td>
+<td>6.584s</td>
 <td class="success">100%</td>
 </tr>
 <tr>
@@ -108,15 +140,15 @@
 <a href="classes/ar.com.bgr.serrano.integration.test.CategoriaServiceTest.html">ar.com.bgr.serrano.integration.test.CategoriaServiceTest</a>
 <td>3</td>
 <td>0</td>
-<td>0.422s</td>
+<td>0.121s</td>
 <td class="success">100%</td>
 </tr>
 <tr>
 <td class="success"/>
 <a href="classes/ar.com.bgr.serrano.integration.test.ContactoServiceTest.html">ar.com.bgr.serrano.integration.test.ContactoServiceTest</a>
-<td>3</td>
+<td>1</td>
 <td>0</td>
-<td>4.679s</td>
+<td>0.092s</td>
 <td class="success">100%</td>
 </tr>
 <tr>
@@ -124,16 +156,48 @@
 <a href="classes/ar.com.bgr.serrano.integration.test.EtiquetaServiceTest.html">ar.com.bgr.serrano.integration.test.EtiquetaServiceTest</a>
 <td>3</td>
 <td>0</td>
-<td>1.440s</td>
+<td>0.087s</td>
 <td class="success">100%</td>
 </tr>
 <tr>
 <td class="success"/>
+<a href="classes/ar.com.bgr.serrano.integration.test.PaqueteServiceTest.html">ar.com.bgr.serrano.integration.test.PaqueteServiceTest</a>
+<td>5</td>
+<td>0</td>
+<td>0.780s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="failures"/>
+<a href="classes/ar.com.bgr.serrano.integration.test.ProductoProveedorTest.html">ar.com.bgr.serrano.integration.test.ProductoProveedorTest</a>
+<td>4</td>
+<td>2</td>
+<td>0.110s</td>
+<td class="failures">50%</td>
+</tr>
+<tr>
+<td class="failures"/>
 <a href="classes/ar.com.bgr.serrano.integration.test.ProductoServiceTest.html">ar.com.bgr.serrano.integration.test.ProductoServiceTest</a>
 <td>4</td>
-<td>0</td>
-<td>1.383s</td>
-<td class="success">100%</td>
+<td>2</td>
+<td>0.148s</td>
+<td class="failures">50%</td>
+</tr>
+<tr>
+<td class="failures"/>
+<a href="classes/ar.com.bgr.serrano.integration.test.SucursalServiceTest.html">ar.com.bgr.serrano.integration.test.SucursalServiceTest</a>
+<td>1</td>
+<td>1</td>
+<td>0s</td>
+<td class="failures">0%</td>
+</tr>
+<tr>
+<td class="failures"/>
+<a href="classes/ar.com.bgr.serrano.integration.test.jsonConvertTest.html">ar.com.bgr.serrano.integration.test.jsonConvertTest</a>
+<td>1</td>
+<td>1</td>
+<td>0.078s</td>
+<td class="failures">0%</td>
 </tr>
 </tbody>
 </table>
@@ -141,7 +205,7 @@
 </div>
 <div id="footer">
 <p>Generated by 
-<a href="http://www.gradle.org">Gradle 1.10</a> at 18/06/2014 01:41:21</p>
+<a href="http://www.gradle.org">Gradle 1.10</a> at 16/07/2014 23:37:15</p>
 </div>
 </div>
 </body>

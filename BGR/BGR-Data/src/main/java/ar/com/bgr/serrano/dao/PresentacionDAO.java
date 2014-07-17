@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import ar.com.bgr.serrano.model.Presentacion;
+import ar.com.bgr.serrano.model.Stock;
 
 /**
  * 
@@ -43,112 +44,29 @@ public class PresentacionDAO extends AbstractDAO<Presentacion>{
 	}
 	
 	
-	public List<Object[]> getStocks(){
-    
-    	String select = "  SELECT  "+ 
-        		"	COUNT( * ) as stock,  "+
-        		"	p.id as id, "+
-         		"	u.name as medida, "+
-         		"	p.descripcion as presentacion, "+
-        		"	(p.peso_neto * COUNT( * ) )/ 1000 as kgTotal, "+
-        		"	pr.name as producto, "+
-        		"	lote.descripcion as lote, "+
-        		"	lote.fechaDeElaboracion as elaboracion, "+
-        		"	lote.fechaDeVencimiento as vencimiento";
-
-
-        String from =" FROM Presentacion p                                            "+
-	                 " JOIN Paquete pa ON ( pa.presentacion_id = p.id )      "+
-	            	 " JOIN Producto pr on (p.producto_id = pr.id)           "+
-	                 " JOIN Lote lote on (p.lote_id = lote.id)               "+
-	                 " JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) "; 
-        
-        
-		String where =" WHERE pa.estado= :estado" +
-					  " GROUP BY pa.presentacion_id";
-
-		Query query = getCurrentSession().createSQLQuery(select+from+where)
-		.setParameter("estado", State.DISPONIBLE.toString());
-
-    
-		@SuppressWarnings("unchecked")
-		List<Object[]> rows = query.list();
-//		List<PaqueteFromQuery> m = new ArrayList<PaqueteFromQuery>();
-//		for (Object[] row : rows) {
-//			m.add(new PaqueteFromQuery((Integer) row[0], (Integer) row[1], (String) row[2], (String) row[3], (Double) row[4], (Integer) row[5] ));
-//		}
-
-		return rows;
+	@SuppressWarnings("unchecked")
+	public List<Stock> getStocks(){
+		Criteria criteria = getCurrentSession().createCriteria(Stock.class);
+		criteria.add(Restrictions.eq("estado", "DISPONIBLE"));
+		return criteria.list();		
 	}
 
-	public List<Object[]> getStocksByCategory(Integer id){
-	    
-		String select = "SELECT  " +
-				"  COUNT( * ) as stock,                               "+
-				" p.id as id,                                         "+
-				" u.name as medida,                                   "+
-				" p.descripcion as presentacion,                      "+
-				" (p.peso_neto * COUNT( * ) )/ 1000 as kgTotal,       "+
-				" pr.name as producto,                                "+
-				" lote.descripcion as lote,                           "+
-				" lote.fechaDeElaboracion as elaboracion,             "+
-				" lote.fechaDeVencimiento as vencimiento              ";
-				    			
-        String from = "  FROM Presentacion p                           "+
-				        "  JOIN Paquete pa ON ( pa.presentacion_id = p.id )      "+
-				    	"  JOIN Producto pr on (p.producto_id = pr.id)           "+
-				    	"  JOIN Categoria cat on ( pr.categoria_id = cat.id)     "+
-						"  JOIN Lote lote on (p.lote_id = lote.id)               "+
-						"  JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) ";	
-					String where = "	   WHERE cat.id = :id AND pa.estado= :estado  GROUP BY pa.presentacion_id";
-
-		Query query = getCurrentSession().createSQLQuery(select+from+where)
-		.setParameter("estado", State.DISPONIBLE.toString()).setParameter("id", id);
-
-    
-		@SuppressWarnings("unchecked")
-		List<Object[]> rows = query.list();
-//		List<PaqueteFromQuery> m = new ArrayList<PaqueteFromQuery>();
-//		for (Object[] row : rows) {
-//			m.add(new PaqueteFromQuery((Integer) row[0], (Integer) row[1], (String) row[2], (String) row[3], (Double) row[4], (Integer) row[5] ));
-//		}
-
-		return rows;
+	@SuppressWarnings("unchecked")
+	public List<Stock> getStocksByCategory(Integer id){
+		Criteria criteria = getCurrentSession().createCriteria(Stock.class);
+		criteria.add(Restrictions.eq("estado", "DISPONIBLE"));
+		criteria.add(Restrictions.eq("categoria", id));
+		return criteria.list();		
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getStocksByProduct(Integer id){
+		Criteria criteria = getCurrentSession().createCriteria(Stock.class);
+		criteria.add(Restrictions.eq("estado", "DISPONIBLE"));
+		criteria.add(Restrictions.eq("productoId", id));
+		return criteria.list();		
 	    
-		String select = "SELECT  " +
-				"  COUNT( * ) as stock,                               "+
-				" p.id as id,                                         "+
-				" u.name as medida,                                   "+
-				" p.descripcion as presentacion,                      "+
-				" (p.peso_neto * COUNT( * ) )/ 1000 as kgTotal,       "+
-				" pr.name as producto,                                "+
-				" lote.descripcion as lote,                           "+
-				" lote.fechaDeElaboracion as elaboracion,             "+
-				" lote.fechaDeVencimiento as vencimiento              ";
-				    			
-        String from = "  FROM Presentacion p                           "+
-				        "  JOIN Paquete pa ON ( pa.presentacion_id = p.id )      "+
-				    	"  JOIN Producto pr on (p.producto_id = pr.id)           "+
-				    	"  JOIN Categoria cat on ( pr.categoria_id = cat.id)     "+
-						"  JOIN Lote lote on (p.lote_id = lote.id)               "+
-						"  JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) ";	
-					String where = "	  WHERE  p.producto_id = :id AND pa.estado= :estado  GROUP BY pa.presentacion_id";
 
-		Query query = getCurrentSession().createSQLQuery(select+from+where)
-		.setParameter("estado", State.DISPONIBLE.toString()).setParameter("id", id);
-
-    
-		@SuppressWarnings("unchecked")
-		List<Object[]> rows = query.list();
-//		List<PaqueteFromQuery> m = new ArrayList<PaqueteFromQuery>();
-//		for (Object[] row : rows) {
-//			m.add(new PaqueteFromQuery((Integer) row[0], (Integer) row[1], (String) row[2], (String) row[3], (Double) row[4], (Integer) row[5] ));
-//		}
-
-		return rows;
 	}
 }

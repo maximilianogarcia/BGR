@@ -266,7 +266,7 @@ function PresentacionViewModel() {
    }
 
    self.getLotesByProducto = function(producto){	  
-	 $.getJSON(BASE_REST_URL+"/lote/getLotesByProducto",JSON.stringify(producto)).done(function(result) { 
+	 $.getJSON(BASE_REST_URL+"/lote/getLotesByProducto/"+JSON.stringify(producto.id)).done(function(result) { 
 		 self.lotes(result);
          self.doNext(function(){self.selectedLoteId(self.selectedUnmapped.lote.id());});
      });

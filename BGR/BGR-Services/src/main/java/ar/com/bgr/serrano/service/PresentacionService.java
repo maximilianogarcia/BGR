@@ -10,6 +10,7 @@ import ar.com.bgr.serrano.dao.PaqueteDAO;
 import ar.com.bgr.serrano.dao.PresentacionDAO;
 import ar.com.bgr.serrano.model.Paquete;
 import ar.com.bgr.serrano.model.Presentacion;
+import ar.com.bgr.serrano.model.Stock;
 
 @Service
 @Transactional
@@ -61,11 +62,11 @@ public class PresentacionService {
 		return dao.changeState(id,message,Boolean.FALSE);
 	}	
 	
-	public List<Object[]> getStocks(){
+	public List<Stock> getStocks(){
 		return dao.getStocks();
 	}
 	
-	public List<Object[]> getStocksByCategory(Integer id){
+	public List<Stock> getStocksByCategory(Integer id){
 		return dao.getStocksByCategory(id);		
 	}
 	

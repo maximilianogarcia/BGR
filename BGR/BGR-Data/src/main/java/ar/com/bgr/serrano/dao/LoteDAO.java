@@ -11,7 +11,6 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import ar.com.bgr.serrano.model.Lote;
-import ar.com.bgr.serrano.model.Producto;
 
 /**
  * 
@@ -31,10 +30,10 @@ public class LoteDAO extends AbstractDAO<Lote>{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Lote> getLotesByProducto(Producto producto){
+	public List<Lote> getLotesByProducto(Integer productoId){
 		Criteria criteria =  getCurrentSession().createCriteria(getClasz());
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.add(Restrictions.eq("productoId", producto.getId()));
+		criteria.add(Restrictions.eq("productoId", productoId));
 		return  criteria.list();
 	}
 	

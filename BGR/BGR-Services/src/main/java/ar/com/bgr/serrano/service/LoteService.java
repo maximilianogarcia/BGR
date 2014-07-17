@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.bgr.serrano.dao.LoteDAO;
 import ar.com.bgr.serrano.model.Lote;
-import ar.com.bgr.serrano.model.Producto;
 
 /**
  * 
@@ -46,8 +45,8 @@ public class LoteService {
 		return dao.getById(id);
 	}
 	
-	public List<Lote> getLotesByProducto(Producto producto){
-		return dao.getLotesByProducto(producto);
+	public List<Lote> getLotesByProducto(Integer productoId){
+		return dao.getLotesByProducto(productoId);
 	}
 	
 	public Lote desactivar(Integer id){

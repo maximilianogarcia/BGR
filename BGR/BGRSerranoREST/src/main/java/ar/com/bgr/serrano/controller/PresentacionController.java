@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import ar.com.bgr.serrano.model.Presentacion;
+import ar.com.bgr.serrano.model.Stock;
 import ar.com.bgr.serrano.service.PresentacionService;
 
 /**
@@ -101,12 +102,12 @@ public class PresentacionController {
 	}
 	
 	@RequestMapping(value="getStocks",method = RequestMethod.GET)
-	public @ResponseBody List<Object[]> getStocks() {
+	public @ResponseBody List<Stock> getStocks() {
        return service.getStocks();
 	}
 	
 	@RequestMapping(value="getStocksByCategoria/{categoriaID}",method = RequestMethod.GET)
-	public @ResponseBody List<Object[]> getStocksByCategory(@PathVariable("categoriaID") Integer id ) {
+	public @ResponseBody List<Stock> getStocksByCategory(@PathVariable("categoriaID") Integer id ) {
        return service.getStocksByCategory(id);
 	}
 	
