@@ -21,7 +21,9 @@ import org.hibernate.annotations.Synchronize;
 		+ "JOIN Producto pr on (p.producto_id = pr.id)           "
     	+ "JOIN Categoria cat on ( pr.categoria_id = cat.id)     "
 		+ "JOIN Lote lote on (p.lote_id = lote.id)               "
-		+ "JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) ")
+		+ "JOIN UnidadDeMedida u on (p.unidadDeMedida_id = u.id) "
+		+ "GROUP BY p.id "
+		)
 @Synchronize({ "Presentacion", "Paquete", "Producto", "Lote", "UnidadDeMedida", "Categoria" })
 public class Stock {
 
