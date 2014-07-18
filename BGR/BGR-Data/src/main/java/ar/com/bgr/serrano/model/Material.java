@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * 
@@ -20,7 +21,7 @@ import javax.persistence.Table;
  * @since 01/06/2014
  */
 @Entity(name="Material")
-@Table(name="Material")
+@Table(name="Material", uniqueConstraints = @UniqueConstraint(columnNames={"name"}))
 public class Material {
 
 	@Id

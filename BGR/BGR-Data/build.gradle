@@ -20,8 +20,8 @@ dependencies {
 	compile("org.springframework:spring-test:$springVersion")
     
     compile("org.springframework:spring-orm:$springVersion")
-    compile("org.hibernate:hibernate-core:4.0.1.Final")
-	compile("org.hibernate:hibernate-entitymanager:4.0.1.Final")
+    compile("org.hibernate:hibernate-core:4.2.1.Final")
+	compile("org.hibernate:hibernate-entitymanager:4.2.1.Final")
 	compile("commons-dbcp:commons-dbcp:1.4")
     compile("mysql:mysql-connector-java:5.1.10")    
         /* Freemarker dependencies */

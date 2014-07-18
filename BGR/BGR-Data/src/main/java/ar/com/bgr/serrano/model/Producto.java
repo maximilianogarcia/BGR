@@ -15,9 +15,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -40,7 +42,7 @@ import ar.com.bgr.serrano.utils.ProductoJsonSerializer;
  * @since 01/06/2014
  */
 @Entity(name="Producto")
-@Table(name="Producto")
+@Table(name="Producto", uniqueConstraints = @UniqueConstraint(columnNames={"name"}))
 @JsonDeserialize(using= ProductoJsonDeserializer.class)
 @JsonSerialize(using = ProductoJsonSerializer.class)
 public class Producto {
@@ -64,8 +66,14 @@ public class Producto {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "productoProveedoresId.producto", cascade=CascadeType.ALL)
 	private Set<ProductoProveedor> productoProveedoresId;
 	
-	@IndexColumn(name = "id")
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
+//	@IndexColumn(name = "id")
+//	@OneToMany(fetch = FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+//	@JoinTable(name = "producto_unidad_de_medida", joinColumns = { 
+//			@JoinColumn(name = "producto_id", nullable = false, updatable = false) }, 
+//			inverseJoinColumns = { @JoinColumn(name = "unidaddemedida_id", 
+//					nullable = false, updatable = false) })
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "producto_unidad_de_medida", joinColumns = { 
 			@JoinColumn(name = "producto_id", nullable = false, updatable = false) }, 
 			inverseJoinColumns = { @JoinColumn(name = "unidaddemedida_id", 

@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * 
@@ -18,14 +19,14 @@ import javax.persistence.Table;
  */
 
 @Entity(name="Categoria")
-@Table(name="Categoria")
+@Table(name="Categoria", uniqueConstraints = @UniqueConstraint(columnNames={"name"}))
 public class Categoria {
 	
 	@Id
 	@GeneratedValue
 	private Integer id;
 
-	@Column(name = "name")
+	@Column(name = "name")	
 	private String name;
 
 	@Column(name = "descripcion")

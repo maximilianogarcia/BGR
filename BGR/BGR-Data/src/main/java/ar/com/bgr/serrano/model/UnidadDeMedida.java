@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.map.annotate.JsonDeserialize;
@@ -27,7 +28,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
  * @since 01/06/2014
  */
 @Entity(name="UnidadDeMedida")
-@Table(name="UnidadDeMedida")
+@Table(name="UnidadDeMedida", uniqueConstraints = @UniqueConstraint(columnNames={"name"}))
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UnidadDeMedida {
 	

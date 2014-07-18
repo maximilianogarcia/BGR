@@ -270,13 +270,15 @@ function ProductoViewModel() {
       for(var j = 0; j< result.productoProveedor.length; j++){
     	  self.selectedUnmapped.proveedores.push(result.productoProveedor[j].proveedor);
       }
+      
+      self.selectedUnmapped.productoProveedor(result.productoProveedor);
+      
       for(var j = 0; j < self.productos().length; j++){
     	  if (self.productos()[j].id() == self.selectedUnmapped.id() ){
     		  self.productos()[j] = self.selectedUnmapped;
     	  }
       }
-      
-      
+
    }
    
 
