@@ -1,4 +1,4 @@
-package ar.com.bgr.serrano.jackson;
+package ar.com.bgr.serrano.utils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -19,7 +19,7 @@ import org.codehaus.jackson.map.SerializerProvider;
  */
 public class DateJsonSerializer extends JsonSerializer<Date> {
 
-	private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("dd/MM/yyyy");
+	private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Override
 	public void serialize(Date value, JsonGenerator jgen,

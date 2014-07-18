@@ -12,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 /**
  * 
  * Descripcion:
@@ -24,6 +28,7 @@ import javax.persistence.Table;
  */
 @Entity(name="UnidadDeMedida")
 @Table(name="UnidadDeMedida")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UnidadDeMedida {
 	
 	@Id

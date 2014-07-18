@@ -39,7 +39,7 @@ public class UnidadDeMedidaService {
 		return dao.list();
 	}
 	
-	public Set<UnidadDeMedida> listNoDivisibles() {
+	public List<UnidadDeMedida> listNoDivisibles() {
 		return dao.listNoDivisibles();
 	}	
 

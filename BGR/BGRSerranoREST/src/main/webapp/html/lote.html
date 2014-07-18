@@ -59,14 +59,14 @@
                 <form action="#" id="editLoteForm" >
                 <div id="step1" data-bind="visible: step1">
                     <label class="margenArriba"> Producto 
-                      <select class="input-block-level form-control" data-bind="options: productos, optionsText: 'name', 
+                      <select class="form-control form-control" data-bind="options: productos, optionsText: 'name', 
                      optionsValue: 'id', value: selectedProductoId," size="10" required></select>
                     </label>
                   <input type="button" data-bind="click: function(data, event) { next('proveedor', data, event) },enable: hayProductoSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
                 </div>
                 <div id="step2" data-bind="visible: step2">
                     <label class="margenArriba"> Proveedor 
-                      <select class="input-block-level form-control" data-bind="options: proveedores, optionsText: 'name', 
+                      <select class="form-control form-control" data-bind="options: proveedores, optionsText: 'name', 
                      optionsValue: 'id', value: selectedProveedorId," size="10" required></select>
                     </label>
                   <input type="button" data-bind="click: function(data, event) { next('form', data, event) },enable: hayProveedorSeleccionado" value="siguiente" class="btn btn-primary margenArriba"/>
@@ -74,17 +74,17 @@
                 <div id="step3" data-bind="visible: step3">
                       <label>Descripcion</label>
                       <input   required data-bind="value: selected.descripcion" 
-                            class="input-block-level " 
+                            class="form-control " 
                             placeholder="Descripci&oacute;n"> 
                       <label class="margenArriba">Fecha de Elaboracion</label>
                       <input type="date" onchange="closeMe(this)"  required data-bind="value: selected.fechaDeElaboracion" 
-                            class="input-block-level"> 
+                            class="form-control"> 
                       <label class="margenArriba">Fecha de vencimiento</label>
                       <input type="date" onchange="closeMe(this)"  required data-bind="value: selected.fechaDeVencimiento" 
-                            class="input-block-level"> 
+                            class="form-control"> 
                       <label class="margenArriba">Precio de compra</label>
                       <input   required data-bind="value: selected.precio_compra" 
-                            class="input-block-level " 
+                            class="form-control " 
                             placeholder="Precio de compra"> 
                       <input type="submit"  id="submitOculto" class="hide"/>
 

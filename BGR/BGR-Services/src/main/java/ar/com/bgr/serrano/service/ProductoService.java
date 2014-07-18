@@ -30,11 +30,11 @@ public class ProductoService {
 	ProductoDAO dao;
 	
 	public Producto save(Producto producto) {
-		return dao.saveOrUpdateAndDelete(producto);
+		return dao.saveOrUpdate(producto);
 	}
 	
 	public Producto update(Producto producto) {
-		return dao.saveOrUpdate(producto);
+		return dao.saveOrUpdateAndDelete(producto);
 	}
 	
 	public List<Producto> list() {
@@ -42,8 +42,14 @@ public class ProductoService {
 	}
 
 	public void remove(int id) {
-		dao.remove(id);		
+		dao.remove(id);
 	}
+	
+
+	public void removeRelations(int id){
+		dao.removeAllRelations(id);
+	}
+	
 	
 	public Producto getById(int id) {
 		return dao.getById(id);

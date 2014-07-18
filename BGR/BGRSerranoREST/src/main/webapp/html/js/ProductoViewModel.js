@@ -130,7 +130,7 @@ function ProductoViewModel() {
     var $myForm = $('#editProductForm');
     if ($myForm[0].checkValidity()) {
     	
-    	$.postJSON(BASE_REST_URL+"/producto/update",JSON.stringify(serializado)).done(function(result) { 
+    	$.postJSON(BASE_REST_URL+"/producto/save",JSON.stringify(serializado)).done(function(result) { 
     		 $('#editProduct').modal('hide');
              self.productos.push(ko.mapping.fromJS(result)); 
           }).fail(function(){ alert("Ocurrio un error al salvar"); });
@@ -161,7 +161,7 @@ function ProductoViewModel() {
       var $myForm = $('#editProductForm');
       if ($myForm[0].checkValidity()) {    	  
     	  
-      	$.postJSON(BASE_REST_URL+"/producto/save",JSON.stringify(serializado)).done(function(result) {       		
+      	$.postJSON(BASE_REST_URL+"/producto/update",JSON.stringify(serializado)).done(function(result) {       		
       	  self.reloadData(result);	
 		  $('#editProduct').modal('hide');
          }).fail(function(error){ alert(error.responseText); });

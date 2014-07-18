@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import ar.com.bgr.serrano.utils.DateJsonSerializer;
 
 /**
  * 
@@ -98,6 +101,7 @@ public class Lote {
 	/**
 	 * @return the fechaDeElaboracion
 	 */
+	@JsonSerialize(using = DateJsonSerializer.class)
 	public Date getFechaDeElaboracion() {
 		return fechaDeElaboracion;
 	}
@@ -112,6 +116,7 @@ public class Lote {
 	/**
 	 * @return the fechaDeVencimiento
 	 */
+	@JsonSerialize(using = DateJsonSerializer.class)
 	public Date getFechaDeVencimiento() {
 		return fechaDeVencimiento;
 	}

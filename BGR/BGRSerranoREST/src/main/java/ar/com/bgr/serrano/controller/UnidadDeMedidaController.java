@@ -5,16 +5,18 @@ package ar.com.bgr.serrano.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ar.com.bgr.serrano.dao.exception.ConstraintViolatedException;
 import ar.com.bgr.serrano.jackson.ProductoPaqueteImpresentation;
 import ar.com.bgr.serrano.model.UnidadDeMedida;
 import ar.com.bgr.serrano.service.UnidadDeMedidaService;
@@ -57,7 +59,7 @@ public class UnidadDeMedidaController {
 	 * Lista todas las categorias. 
 	 */
 	@RequestMapping(value="getNoDivisibles",method = RequestMethod.GET)
-	public @ResponseBody Set<UnidadDeMedida> getUndivisible() {
+	public @ResponseBody List<UnidadDeMedida> getUndivisible() {
 		return service.listNoDivisibles();
 	}
 	
@@ -75,7 +77,11 @@ public class UnidadDeMedidaController {
      */
 	@RequestMapping(value="delete",method = RequestMethod.DELETE)
 	public @ResponseBody Boolean execute(@RequestBody Integer id) {
-       service.remove(id);
+        try{
+		    service.remove(id);
+		}catch(DataIntegrityViolationException e){
+			throw new ConstraintViolatedException();
+		}
        return true;
 	}
 	

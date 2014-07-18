@@ -1,6 +1,7 @@
 package ar.com.bgr.serrano.utils;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 
 import org.codehaus.jackson.JsonNode;
@@ -13,6 +14,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import ar.com.bgr.serrano.model.Categoria;
 import ar.com.bgr.serrano.model.Producto;
 import ar.com.bgr.serrano.model.ProductoProveedor;
+import ar.com.bgr.serrano.model.Proveedor;
 import ar.com.bgr.serrano.model.UnidadDeMedida;
 
 /**
@@ -52,14 +54,16 @@ public class ProductoJsonDeserializer extends JsonDeserializer<Producto> {
 	        	pp.setProducto(p);
 	        }	
 	    	p.setProductoProveedor(list);
-		}/*
-		if(node.get("proveedores") != null){
-			List<Proveedor> list = getMapper().readValue(node.get("proveedores"), mapper.getTypeFactory().constructCollectionType(List.class, Proveedor.class));
-	        for(Proveedor pp : list){
-	        	p.getProductoProveedor().add(new ProductoProveedor(p,pp));
-	        }	
-	    	
-		}*/
+		}else{
+			if(node.get("proveedores") != null){
+				List<Proveedor> list = getMapper().readValue(node.get("proveedores"), mapper.getTypeFactory().constructCollectionType(List.class, Proveedor.class));
+		        for(Proveedor pp : list){
+		        	p.getProductoProveedor().add(new ProductoProveedor(p,pp));
+		        }	
+		    	
+			}
+		}
+
 		return p; 
 	}
 

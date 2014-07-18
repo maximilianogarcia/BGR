@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import ar.com.bgr.serrano.dao.exception.ConstraintViolatedException;
 import ar.com.bgr.serrano.model.Producto;
 import ar.com.bgr.serrano.model.ProductoProveedor;
 import ar.com.bgr.serrano.service.ProductoService;
@@ -74,7 +76,12 @@ public class ProductoController {
      */
 	@RequestMapping(value="delete",method = RequestMethod.DELETE)
 	public @ResponseBody Boolean execute(@RequestBody Integer id) {
-       service.remove(id);
+		try {
+			service.removeRelations(id);
+			service.remove(id);
+		}catch(DataIntegrityViolationException e){
+			throw new ConstraintViolatedException();
+		}
        return true;
 	}
 	

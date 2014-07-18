@@ -6,6 +6,8 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.codehaus.jackson.map.ser.CustomSerializerFactory;
 
+import ar.com.bgr.serrano.utils.DateJsonSerializer;
+
 
 public class CustomObjectMapper extends ObjectMapper {
     

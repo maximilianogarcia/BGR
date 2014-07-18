@@ -4,7 +4,6 @@
 package ar.com.bgr.serrano.dao;
 
 import java.util.List;
-import java.util.TreeSet;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -47,14 +46,15 @@ public class ProductoDAO extends AbstractDAO<Producto> {
 		return producto;
 	}
 
-	@Override
-	public void remove(int id){
-		Producto persisted =   (Producto) getCurrentSession().get(getClasz(), id);
-		Producto producto = new Producto();
-		producto.setProductoProveedor(new TreeSet<ProductoProveedor>());
-		removeRelation(producto, persisted);
-		getCurrentSession().merge(persisted);
-		getCurrentSession().delete(persisted);
+	public void removeAllRelations(int id){
+		Producto persisted =   getById(id);		
+		for(ProductoProveedor pp : persisted.getProductoProveedor()){
+			Query query = getCurrentSession().createQuery("delete Producto_proveedor where proveedor_id = :proveedor_id and producto_id = :producto_id");
+			query.setParameter("proveedor_id", pp.getProveedor().getId());
+			query.setParameter("producto_id", pp.getProducto().getId());
+			query.executeUpdate();
+		}
+		getCurrentSession().saveOrUpdate(persisted);
 	}	
 	
 	private void removeRelation(Producto producto, Producto persisted) {

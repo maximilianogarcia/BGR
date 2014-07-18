@@ -65,7 +65,7 @@ public class Producto {
 	private Set<ProductoProveedor> productoProveedoresId;
 	
 	@IndexColumn(name = "id")
-	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.PERSIST)
 	@JoinTable(name = "producto_unidad_de_medida", joinColumns = { 
 			@JoinColumn(name = "producto_id", nullable = false, updatable = false) }, 
 			inverseJoinColumns = { @JoinColumn(name = "unidaddemedida_id", 

@@ -163,6 +163,18 @@ public class JsonTest {
 	}
 	
 	@Test
+	public void testLote() throws JsonParseException, JsonMappingException, IOException{
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonLote ="{\"precio_compra\":\"12\",\"descripcion\":\"un lote\",\"fechaDeVencimiento\":\"2014-07-19\",\"fechaDeElaboracion\":\"2014-06-25\",\"producto\":{\"id\":3,\"name\":\"producto2432\",\"actualizador_precio\":26,\"categoria\":{\"id\":1,\"name\":\"zxcvbn\",\"descripcion\":\"siiiiekjkhg\"},\"productoProveedor\":[{\"precio_reposicion\":26,\"proveedor\":{\"id\":2,\"name\":\"dos\"}},{\"precio_reposicion\":26,\"proveedor\":{\"id\":1,\"name\":\"uno\"}}],\"unidadesDeMedida\":[]}}";
+		
+		
+		Lote lote = mapper.readValue(jsonLote, Lote.class);
+		
+		System.out.println(mapper.writeValueAsString(lote));
+	}
+	
+	@Test
 	public void testMix() throws JsonParseException, JsonMappingException, IOException{
 		
 		String mixJson = "{\"nombre\":\"un nombre\",\"vencimiento\":\"2014-06-24\",\"unidad_de_medida\":\"2\",\"categoria\":\"1\",\"paquetes_mix\":[{\"id\":2,\"paquetes\":[{\"id\":1,\"presentacion_id\":3,\"codigo\":\"codigo disponible\",\"estado\":\"DISPONIBLE\",\"cantidad\":21,\"unidad\":2,\"nombre\":null}],\"cantidad\":21,\"cant_elegida\":\"3\"}]}";

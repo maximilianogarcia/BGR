@@ -12,6 +12,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import ar.com.bgr.serrano.utils.DateJsonSerializer;
+
 @Entity(name="Mix")
 @Table(name="Mix")
 public class Mix {
@@ -82,6 +86,7 @@ public class Mix {
 	/**
 	 * @return the vencimiento
 	 */
+	@JsonSerialize(using = DateJsonSerializer.class)
 	public Date getVencimiento() {
 		return vencimiento;
 	}

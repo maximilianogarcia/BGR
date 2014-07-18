@@ -62,7 +62,7 @@ function LoteViewModel() {
 
    self.copiarProveedor =function(destino){
        self.proveedores(destino);
-       self.selectedProveedorId(self.selected.proveedor.id())
+       self.selectedProveedorId(self.selected.proveedor_id());
   }
    
    self.save = function(){
